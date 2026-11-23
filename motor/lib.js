@@ -56,6 +56,55 @@
     return lt => { enter(h.children[0], lt, .3, 20); enter(h.children[1], lt, .6, 24); };
   }
 
+  // ---------- protagonista (silueta amb cansament 0..1) ----------
+  function personSVG(w) {
+    return `<svg class="person" width="${w}" height="${w * 1.5}" viewBox="0 0 400 600" style="overflow:visible">
+      <ellipse cx="200" cy="585" rx="120" ry="14" fill="#000" opacity=".35"/>
+      <g class="pbody">
+        <path class="arm l" d="M128,380 C96,440 92,500 104,560" fill="none" stroke="#4338CA" stroke-width="34" stroke-linecap="round"/>
+        <path class="arm r" d="M272,380 C304,440 308,500 296,560" fill="none" stroke="#4338CA" stroke-width="34" stroke-linecap="round"/>
+        <path d="M108,585 C104,430 130,352 200,346 C270,352 296,430 292,585 Z" fill="#4F46E5" stroke="#818CF8" stroke-width="5"/>
+        <path d="M160,352 Q200,392 240,352" fill="none" stroke="#A5B4FC" stroke-width="5"/>
+        <rect x="180" y="318" width="40" height="40" rx="12" fill="#E8B48F"/>
+      </g>
+      <g class="phead">
+        <ellipse cx="108" cy="240" rx="12" ry="20" fill="#E8B48F"/><ellipse cx="292" cy="240" rx="12" ry="20" fill="#E8B48F"/>
+        <circle class="skin" cx="200" cy="230" r="98" fill="#F1C29E"/>
+        <path d="M104,222 C100,140 150,118 202,118 C262,118 304,150 296,222 C280,180 250,166 214,170 C180,150 140,168 104,222 Z" fill="#1E1B4B"/>
+        <g transform="translate(164 238)"><ellipse rx="19" ry="21" fill="#fff"/><circle class="pup" r="9" fill="#1E1B4B"/><rect class="lid" x="-23" y="-25" width="46" height="0"/></g>
+        <g transform="translate(236 238)"><ellipse rx="19" ry="21" fill="#fff"/><circle class="pup" r="9" fill="#1E1B4B"/><rect class="lid" x="-23" y="-25" width="46" height="0"/></g>
+        <path class="bag" d="M146,264 Q164,274 182,264 M218,264 Q236,274 254,264" fill="none" stroke="#7C3AED" stroke-width="5" stroke-linecap="round" opacity="0"/>
+        <path class="brow bl" d="M142,206 L186,206" stroke="#1E1B4B" stroke-width="7" stroke-linecap="round"/>
+        <path class="brow br" d="M214,206 L258,206" stroke="#1E1B4B" stroke-width="7" stroke-linecap="round"/>
+        <path class="mouth" d="M176,288 Q200,306 224,288" fill="none" stroke="#7F1D1D" stroke-width="6" stroke-linecap="round"/>
+        <ellipse class="yawn" cx="200" cy="296" rx="0" ry="0" fill="#7F1D1D"/>
+      </g>
+      <g class="zzz" opacity="0" font-family="Inter Display" font-weight="900" fill="#A5B4FC"><text x="300" y="150" font-size="44">z</text><text x="330" y="110" font-size="56">z</text><text x="366" y="64" font-size="70">Z</text></g>
+    </svg>`;
+  }
+  function personRender(svg, t, f, mood) {
+    f = clamp(f); const sleep = mood === 'sleep';
+    const slump = sleep ? .5 : f;
+    svg.querySelector('.phead').setAttribute('transform', `translate(0 ${slump * 18 + Math.sin(t * 1.6) * 2}) rotate(${slump * 9 + Math.sin(t * .9) * 1.5} 200 300)`);
+    svg.querySelector('.pbody').setAttribute('transform', `translate(0 ${slump * 8})`);
+    const skin = `rgb(${Math.round(lerp(241, 214, f))},${Math.round(lerp(194, 176, f))},${Math.round(lerp(158, 160, f))})`;
+    svg.querySelector('.skin').setAttribute('fill', skin);
+    let lid = sleep ? 1 : clamp(f * .72);
+    const bp = (t * .9) % 3.2; if (!sleep && bp < .2) lid = Math.max(lid, Math.sin(bp / .2 * Math.PI));
+    if (f > .85 && !sleep) { const nod = t % 2.4; if (nod < .8) lid = Math.max(lid, Math.sin(nod / .8 * Math.PI)); }
+    svg.querySelectorAll('.lid').forEach(l => { l.setAttribute('height', 47 * lid); l.setAttribute('fill', skin); });
+    svg.querySelectorAll('.pup').forEach(p => p.setAttribute('transform', `translate(${Math.sin(t * .7) * 3} ${f * 4})`));
+    svg.querySelector('.bag').setAttribute('opacity', clamp(f * 1.4) * .9);
+    const ang = mood === 'angry';
+    svg.querySelector('.bl').setAttribute('d', ang ? 'M142,194 L186,214' : `M142,${206 + f * 6} L186,${206 - f * 2}`);
+    svg.querySelector('.br').setAttribute('d', ang ? 'M214,214 L258,194' : `M214,${206 - f * 2} L258,${206 + f * 6}`);
+    const curve = (mood === 'happy' || sleep) ? 22 : ang ? -14 : lerp(16, -6, clamp(f * 1.3));
+    const ph = t % 7; const yw = (f > .35 && !sleep && !ang && ph < 1.6) ? Math.sin(ph / 1.6 * Math.PI) : 0;
+    const m = svg.querySelector('.mouth'); m.setAttribute('d', `M176,290 Q200,${290 + curve} 224,290`); m.setAttribute('opacity', 1 - yw);
+    const y = svg.querySelector('.yawn'); y.setAttribute('rx', 16 * yw); y.setAttribute('ry', 22 * yw);
+    const z = svg.querySelector('.zzz'); z.setAttribute('opacity', sleep ? .9 : (f > .85 ? .45 : 0)); z.setAttribute('transform', `translate(0 ${-((t * 20) % 30)})`);
+  }
+
   const S = {};
 
   S.counter = (sc) => {
@@ -379,6 +428,14 @@
     return { el, render(lt) { svg.querySelectorAll('.sg').forEach((r, i) => { const k = eo(prog(lt, .3 + i * .1, .3)); r.setAttribute('opacity', k); }); enter(el.children[1], lt, 0, 16); enter(el.children[2], lt, 2, 20); } };
   };
 
+  S.persona = (sc) => {
+    const el = E('div', 'position:absolute;inset:0');
+    const hold = E('div', 'position:absolute;left:250px;top:230px'); hold.innerHTML = personSVG(500); el.appendChild(hold);
+    const c = col(sc.color || (sc.mood === 'angry' ? 'red' : (sc.mood === 'happy' || sc.mood === 'sleep') ? 'cyan' : 'violet'));
+    const hd = header(el, sc.label, sc.sub, c, 1000, 420, 800);
+    return { el, render(lt) { const a = eo(prog(lt, 0, .6)); hold.style.opacity = a; hold.style.transform = `translateY(${(1 - a) * 40}px)`; personRender(hold.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.mood || 'ok'); hd(lt); } };
+  };
+
   S.endcard = (sc) => {
     const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center');
     el.innerHTML = `<img src="../marca/cuerpo_al_limite_perfil.png" style="width:260px;height:260px;border-radius:50%;box-shadow:0 0 60px #6366F188">
@@ -404,11 +461,19 @@
     });
     // HUD de línia de temps
     const hud = document.getElementById('hud'); const marks = [0, 17, 24, 35, 48, 72];
-    hud.innerHTML = `<svg width="1600" height="40" style="position:absolute;top:30px;left:0"><line x1="0" y1="20" x2="1600" y2="20" stroke="#1E293B" stroke-width="8" stroke-linecap="round"/><line class="pr" x1="0" y1="20" x2="0" y2="20" stroke="url(#tg2)" stroke-width="8" stroke-linecap="round"/><circle class="hd" cx="0" cy="20" r="12" fill="#fff"/><defs><linearGradient id="tg2" x1="0" x2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#FB7185"/></linearGradient></defs></svg>` +
+    hud.innerHTML = `<svg width="1600" height="40" style="position:absolute;top:30px;left:0;overflow:visible"><line x1="0" y1="20" x2="1600" y2="20" stroke="#1E293B" stroke-width="8" stroke-linecap="round"/><line class="pr" x1="0" y1="20" x2="0" y2="20" stroke="url(#tg2)" stroke-width="8" stroke-linecap="round"/><g class="hd"><circle r="27" fill="#F1C29E" stroke="#fff" stroke-width="4"/><path d="M-27,-3 C-27,-28 27,-28 27,-3 C18,-17 -18,-17 -27,-3Z" fill="#1E1B4B"/><ellipse class="e1" cx="-9" cy="3" rx="4" ry="5" fill="#1E1B4B"/><ellipse class="e2" cx="9" cy="3" rx="4" ry="5" fill="#1E1B4B"/><path class="hm" d="M-8,14 Q0,19 8,14" stroke="#7F1D1D" stroke-width="3" fill="none" stroke-linecap="round"/></g><defs><linearGradient id="tg2" x1="0" x2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#FB7185"/></linearGradient></defs></svg>` +
       marks.map(h => `<div class="mk" data-h="${h}" style="position:absolute;top:66px;left:${h / 72 * 1600}px;transform:translateX(-50%);color:#64748B;font-weight:700;font-size:24px;white-space:nowrap">${h} h</div>`).join('');
     // hores per escena (arrossegant l'última definida)
     let last = null; scenes.forEach(s => { if (s.sc.hour != null) last = s.sc.hour; s.hour = s.sc.hour != null ? s.sc.hour : (s.sc.calm || s.sc.type === 'endcard' ? null : last); if (s.sc.calm || s.sc.type === 'title' && s.sc.calm) last = null; });
     window.__scenes = scenes;
+    if (V.vertical) {
+      document.body.classList.add('vert');
+      document.getElementById('vtop').innerHTML = `<div style="padding:10px 26px;border-radius:999px;background:#818CF822;color:#A5B4FC;font-size:30px;font-weight:800;letter-spacing:4px">CUERPO AL LÍMITE</div><div class="hk" style="color:#fff;font-size:80px;font-weight:900;line-height:1.05;letter-spacing:-2px;margin-top:26px">${V.hook || ''}</div>`;
+      document.getElementById('vchar').innerHTML = personSVG(300);
+      // paraules amb temps aproximat (proporcional als caràcters dins de cada línia)
+      window.__words = [];
+      V.lines.forEach((ln, i) => { const ws = ln.text.split(/\s+/); const a = V.starts[i], b = i + 1 < V.lines.length ? V.starts[i + 1] : V.total - 1.2; const tot = ws.reduce((x, w) => x + w.length + 1, 0); let cur = a; ws.forEach(w => { const d = (b - a) * (w.length + 1) / tot; window.__words.push({ w, t0: cur, t1: cur + d, line: i }); cur += d; }); });
+    }
   }
   let prevHour = 0;
   function render(t) {
@@ -421,16 +486,40 @@
       const lt = t - s.t0, d = s.t1 - s.t0;
       const aIn = eo(prog(t, s.t0, .45)), aOut = 1 - prog(t, s.t1, .4);
       s.el.style.opacity = Math.min(aIn, aOut);
-      s.el.style.transform = `scale(${1.015 - .015 * aIn + .012 * prog(lt, 0, d)})`;
+      const cam = s.cam || (s.cam = ['in', 'left', 'out', 'right', 'in', 'up'][i % 6]);
+      const ck = eio(prog(lt, 0, d + .4)); let sx = 1, tx = 0, ty = 0;
+      if (cam === 'in') sx = 1 + .05 * ck; if (cam === 'out') sx = 1.06 - .05 * ck;
+      if (cam === 'left') { sx = 1.04; tx = lerp(28, -28, ck); } if (cam === 'right') { sx = 1.04; tx = lerp(-28, 28, ck); } if (cam === 'up') { sx = 1.04; ty = lerp(18, -18, ck); }
+      if (d > 6.5) sx *= 1 + .045 * eo(prog(lt, d * .52, .45));
+      s.el.style.transform = `translate(${tx}px,${ty}px) scale(${sx * (1.015 - .015 * aIn)})`;
       try { s.render(Math.max(0, lt), d); } catch (e) { console.error(e); }
       if (t >= s.t0 && t < s.t1) { active = s; const prev = sc[i - 1]; hourFrom = prev && prev.hour != null ? prev.hour : (s.hour || 0); hourTo = s.hour; hourT0 = s.t0; }
     });
     const hud = document.getElementById('hud');
     const hv = hourTo == null ? null : lerp(hourFrom, hourTo, eio(prog(t, hourT0, 1.2)));
     hud.style.opacity = hourTo == null ? Math.max(0, +hud.style.opacity - 0) * 0 : 1;
-    if (hv != null) { const x = hv / 72 * 1600; hud.querySelector('.pr').setAttribute('x2', x); hud.querySelector('.hd').setAttribute('cx', x); hud.querySelectorAll('.mk').forEach(m => { const on = hv >= +m.dataset.h - .01; m.style.color = on ? '#E2E8F0' : '#64748B'; }); }
+    if (hv != null) { const x = hv / 72 * 1600; hud.querySelector('.pr').setAttribute('x2', x); { const f = hv / 72, bl = (t * .9) % 3.2 < .15 ? .15 : 1; hud.querySelector('.hd').setAttribute('transform', `translate(${x} 8) rotate(${f * 14 + Math.sin(t * 1.5) * 3})`); hud.querySelectorAll('.e1,.e2').forEach(e => e.setAttribute('ry', 5 * Math.max(.12, (1 - .82 * f)) * bl)); hud.querySelector('.hm').setAttribute('d', `M-8,15 Q0,${15 + lerp(5, -3, f)} 8,15`); } hud.querySelectorAll('.mk').forEach(m => { const on = hv >= +m.dataset.h - .01; m.style.color = on ? '#E2E8F0' : '#64748B'; }); }
     const src = document.getElementById('src'); const st = active && active.sc.source; src.textContent = st ? 'Fuente: ' + st : ''; src.style.opacity = st ? eo(prog(t, active.t0 + 1, .6)) * .9 : 0;
-    document.getElementById('fade').style.opacity = 1 - eo(prog(t, 0, .5)) + prog(t, window.VIDEO.total - .6, .6);
+    const V = window.VIDEO, T0 = V.segStart || 0, T1 = V.segEnd || V.total;
+    document.getElementById('fade').style.opacity = 1 - eo(prog(t, T0, .35)) + prog(t, T1 - .5, .5);
+    if (V.vertical) {
+      particles2(t);
+      const f = (hv != null ? hv : (active && active.hour != null ? active.hour : 0)) / 72;
+      const mood = active && (active.sc.calm || active.sc.type === 'endcard') ? 'happy' : active && active.sc.type === 'amygdala' ? 'angry' : 'ok';
+      personRender(document.querySelector('#vchar svg'), t, f, mood);
+      const hk = document.querySelector('#vtop .hk'); if (hk) { const a = eo(prog(t, T0, .6)); hk.style.transform = `scale(${.85 + .15 * back(prog(t, T0, .6))})`; hk.style.opacity = a; }
+      const W2 = window.__words; let k = W2.findIndex(w => t >= w.t0 && t < w.t1); if (k < 0) k = W2.findIndex(w => w.t0 > t) - 1;
+      if (k >= 0) { const st = Math.floor(k / 5) * 5; const chunk = W2.slice(st, st + 5).filter(w => w.line === W2[k].line);
+        document.getElementById('vcap').innerHTML = '<div>' + chunk.map(w => `<span style="display:inline-block;margin:0 .14em;${w === W2[k] ? `color:${C.yellow};transform:scale(1.08)` : ''}">${w.w}</span>`).join('') + '</div>'; }
+      if (t > T1 - 2.6) document.getElementById('vcap').innerHTML = `<div style="color:${C.cyan}">Video completo en el canal ▶</div>`;
+    }
+  }
+  const R2 = rnd(9); const P2 = []; for (let i = 0; i < 80; i++) P2.push({ x: R2() * 1080, y: R2() * 1920, a: R2() * 6.28, sp: .2 + R2() * .6, r: 1 + R2() * 2.4, ph: R2() * 6.28 });
+  function particles2(t) {
+    const cv = document.getElementById('cv2'), cx = cv.getContext('2d'); cx.clearRect(0, 0, 1080, 1920);
+    const pts = P2.map(p => ({ x: ((p.x + Math.cos(p.a) * t * 14 * p.sp) % 1080 + 1080) % 1080, y: ((p.y + Math.sin(p.a) * t * 14 * p.sp) % 1920 + 1920) % 1920, r: p.r, ph: p.ph }));
+    for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) { const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y); if (d < 160) { cx.strokeStyle = `rgba(129,140,248,${(1 - d / 160) * .14})`; cx.beginPath(); cx.moveTo(pts[i].x, pts[i].y); cx.lineTo(pts[j].x, pts[j].y); cx.stroke(); } }
+    pts.forEach(p => { cx.fillStyle = `rgba(165,180,252,${.3 + .2 * Math.sin(t * 2 + p.ph)})`; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.28); cx.fill(); });
   }
   // partícules de fons
   const R0 = rnd(42); const P = []; for (let i = 0; i < 90; i++) P.push({ x: R0() * W, y: R0() * H, a: R0() * 6.28, sp: .2 + R0() * .6, r: 1 + R0() * 2.2, ph: R0() * 6.28 });

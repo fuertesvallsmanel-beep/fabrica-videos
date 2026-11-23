@@ -67,10 +67,11 @@
   {
    "text": "Ahora sí. Te despiertas a las siete de la mañana, y empieza el reloj.",
    "scene": {
-    "type": "clock",
+    "type": "persona",
     "hour": 0,
-    "time": "07:00",
-    "text": "Empieza el reloj"
+    "mood": "ok",
+    "label": "HORA 0 · 07:00",
+    "sub": "Te despiertas descansado.\nEmpieza el reloj."
    }
   },
   {
@@ -246,14 +247,11 @@
   {
    "text": "Resultado: todo te irrita, te enojas por cualquier cosa y tomas peores decisiones.",
    "scene": {
-    "type": "list",
+    "type": "persona",
     "hour": 35,
-    "items": [
-     "Irritabilidad",
-     "Impulsividad",
-     "Peores decisiones"
-    ],
-    "color": "red"
+    "mood": "angry",
+    "label": "HORA 35",
+    "sub": "Irritable, impulsivo\ny peores decisiones"
    }
   },
   {
@@ -271,12 +269,11 @@
   {
    "text": "Hora cuarenta y ocho. Dos días sin dormir. Los microsueños son constantes y pueden aparecer en mitad de una frase.",
    "scene": {
-    "type": "flicker",
+    "type": "persona",
     "hour": 48,
-    "time": "07:00",
-    "label": "48 HORAS",
-    "sub": "Microsueños constantes",
-    "intense": true
+    "fatigue": 0.92,
+    "label": "HORA 48 · MICROSUEÑOS",
+    "sub": "Te duermes en mitad\nde una frase"
    }
   },
   {
@@ -376,13 +373,13 @@
   {
    "text": "Para la mayoría de funciones bastan una o dos noches de buen sueño. Pero cuidado: si la falta de sueño se vuelve crónica, el daño se acumula.",
    "scene": {
-    "type": "list",
-    "items": [
-     "1–2 noches: recuperación de la mayoría de funciones",
-     "Falta de sueño crónica: el daño se acumula"
-    ],
+    "type": "persona",
+    "mood": "sleep",
+    "fatigue": 0.2,
+    "calm": true,
     "color": "cyan",
-    "calm": true
+    "label": "LA RECUPERACIÓN",
+    "sub": "1–2 noches de buen sueño\nrecuperan casi todo"
    }
   },
   {

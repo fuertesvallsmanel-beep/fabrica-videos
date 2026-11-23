@@ -8,7 +8,8 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 - Canal YouTube: «Cuerpo al límite» · platformAccountId `UCBW01NZn4nRgxc_-gKPTY2Q`
 - vidIQ: pla Boost (2.000 crèdits/mes, es renoven el dia 23). **Pressupost: ≤ 900 crèdits per setmana.**
 - Veu: vidIQ `vidiq_voiceover_generate`, voiceId **`EK54is7sa3aPFLD9BwCC`** (Francisco, llatí neutre). Sempre amb `scriptLines` (una línia = una escena).
-- Música: el render sintetitza un fons ambiental propi (no gastis crèdits en música).
+- Música: `marca/musica_fondo.mp3` (generada amb vidIQ el 23/11/2026), en bucle i amb *ducking* automàtic sota la veu. No en generis més; si el fitxer falta, el render sintetitza un fons propi.
+- Efectes de so: el render els posa sols segons el tipus d'escena (whoosh als canvis, tic-tac a `clock`, blips als comptadors, batecs a `amygdala`, cop al zoom de mitja escena).
 - Les URL de `assets.vidiq.com` es poden baixar amb `curl` des d'aquí.
 
 ## 0. Revisió de rendiment (cada setmana, ABANS de produir) — ≤ 60 crèdits
@@ -32,13 +33,15 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
    - Estructura: ganxo amb una dada o història real (0–15 s) → promesa («hora a hora», «lo que dice la ciencia de verdad») → explicació → clímax → part positiva / què fer → tancament «suscríbete».
    - **Rigor**: cada dada numèrica ha de venir d'una font real (revista revisada per experts o organisme oficial) i anar a `sources`. Si no estàs segur d'una xifra, no la posis. Diferencia estudis en animals. Res de consells mèdics personalitzats ni de mites (l'angle del canal és desmuntar mites).
    - Espanyol llatí neutre: «manejar» (no «conducir un coche»), «enojarse», «se te antoja», sense «vale» ni «vosotros».
-   - Cada línia té `scene` d'un tipus que existeixi a `motor/lib.js`: `counter, title, question, brain (mode: adenosine|flow|scn|patches), receptor, clock, gauge, bars, wave, flicker, road, body, stats, amygdala, list, cells, memory, steps, distort, quote, hypnogram, endcard`. Mira com s'usen al vídeo 001. **Si un tema necessita un òrgan o gràfic nou (cor, fetge, pulmons, ronyó, estómac, mapa…), afegeix un tipus d'escena nou i reutilitzable a `lib.js`** amb el mateix estil (fons fosc, línies brillants, colors de la paleta `C`).
+   - Cada línia té `scene` d'un tipus que existeixi a `motor/lib.js`: `counter, title, question, brain (mode: adenosine|flow|scn|patches), receptor, clock, gauge, bars, wave, flicker, road, body, stats, amygdala, list, cells, memory, steps, distort, quote, hypnogram, endcard, persona`. Mira com s'usen al vídeo 001.
+   - **Protagonista** (`persona`: `hour` o `fatigue` 0–1, `mood` ok|tired|angry|sleep|happy, `label`, `sub`, `color`): posa'l 3–5 cops per vídeo en els moments clau (inici, punt de gir, clímax, recuperació). El cap del comptador d'hores també és la seva cara.
+   - **Ritme**: un canvi visual cada 3–4 s com a màxim. Si una línia dura més de 8 s, parteix-la en dues línies amb escenes diferents. El motor ja fa moviments de càmera i un zoom a mitja escena. **Si un tema necessita un òrgan o gràfic nou (cor, fetge, pulmons, ronyó, estómac, mapa…), afegeix un tipus d'escena nou i reutilitzable a `lib.js`** amb el mateix estil (fons fosc, línies brillants, colors de la paleta `C`).
    - Afegeix `title` (≤ 100 caràcters, amb ganxo), `short_title` i `thumb` (vegeu el 001).
 3. **Veu**: `vidiq_voiceover_generate` amb `scriptLines` → desa `timings.json` (`audioUrl`, `total`, `starts` = startSeconds de cada línia) → `curl -o videos/NNN/voz.mp3 <audioUrl>`.
 4. **Prova visual**: `python3 motor/render_video.py videos/NNN --stills t1,t2,…` (un fotograma per escena), fes un full de contactes i **mira'l**: res tallat, res tapant el comptador d'hores de dalt, textos llegibles. Corregeix i repeteix.
 5. **Render**: `nohup python3 motor/render_video.py videos/NNN > videos/NNN/render.log 2>&1 &` (≈ 5 min de render per minut de vídeo; vigila el log). Surt `video.mp4`.
 6. **Miniatura**: `python3 motor/make_thumb.py videos/NNN` → `thumb.jpg`. Mira-la.
-7. **Shorts** (2–3 per vídeo, 25–55 s, trams que s'entenguin sols): `python3 motor/make_short.py videos/NNN <línia_ini> <línia_fi> "<ganxo>" short1`.
+7. **Shorts** (2–3 per vídeo, 25–55 s, trams que s'entenguin sols): vertical nadiu 1080×1920 amb subtítols paraula a paraula i el protagonista: `python3 motor/render_video.py videos/NNN --short <línia_ini> <línia_fi> "<ganxo>" short1` (prova abans amb `--stills 2,15` al final i mira els fotogrames). `make_short.py` queda obsolet.
 8. **Pujar**: `bash motor/publish_media.sh videos/NNN/video.mp4 videos/NNN/thumb.jpg videos/NNN/short1.mp4 …` → URL públiques → `vidiq_video_upload(url=…)` per a cada vídeo (uploadId) i `vidiq_upload_image(image=<url thumb>)` (imageId).
 9. **Esborranys** amb `vidiq_social_post_draft_create` (destinació YOUTUBE, el platformAccountId de dalt, `privacyStatus: "public"`, `categoryId: 27` Educació, `publishAt` programat):
    - Vídeos llargs: dimarts i divendres a les **00:00 UTC** (18:00 Mèxic, 19:00 Colòmbia, 21:00 Argentina: 2–3 h abans del pic d'audiència). Shorts: un cada dia a les **22:00 UTC** (16:00 Mèxic, sortida d'escola/feina).
