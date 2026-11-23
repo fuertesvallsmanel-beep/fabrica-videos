@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#060914;font-family:'Inter Display','Inter',sans-serif;}
+  #bg{position:absolute;inset:0;background:radial-gradient(1200px 800px at 30% 55%,#16123a 0%,#0a0d22 55%,#05070f 100%);}
+  canvas{position:absolute;inset:0;}
+  .abs{position:absolute;}
+  #hora{left:150px;top:190px;color:#fff;font-weight:900;font-size:118px;letter-spacing:-2px;line-height:1;}
+  #hora small{font-size:44px;font-weight:700;color:#67E8F9;letter-spacing:6px;display:block;margin-bottom:10px;}
+  #tl-label{font-size:22px;color:#94A3B8;font-weight:600;letter-spacing:2px}
+  .mk{position:absolute;top:0;white-space:nowrap;transform:translateX(-50%);text-align:center;color:#64748B;font-weight:700;font-size:24px}
+  .dot{width:18px;height:18px;border-radius:50%;background:#1E293B;border:3px solid #334155;margin:0 auto 10px auto}
+  #panel{left:1090px;top:330px;width:680px;}
+  #ptitle{color:#CBD5E1;font-size:30px;font-weight:700;letter-spacing:1px;margin-bottom:34px}
+  .row{margin-bottom:30px}
+  .rlabel{color:#E2E8F0;font-size:26px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between}
+  .track{height:44px;border-radius:22px;background:rgba(148,163,184,0.12);overflow:visible;position:relative}
+  .fill{height:44px;border-radius:22px;width:0}
+  #big{color:#FB7185;font-weight:900;font-size:150px;letter-spacing:-4px;line-height:1;margin-top:26px;text-shadow:0 0 40px rgba(251,113,133,.45)}
+  #sub{color:#E2E8F0;font-size:34px;font-weight:600;line-height:1.3;margin-top:14px;width:640px}
+  #src{right:70px;bottom:44px;color:#64748B;font-size:20px;font-weight:500}
+  #callout{color:#fff;font-size:30px;font-weight:800}
+  #callout span{display:block;color:#FDA4AF;font-size:22px;font-weight:600;letter-spacing:1px;margin-top:4px}
+</style></head>
+<body>
+<div id="bg"></div>
+<canvas id="cv" width="1920" height="1080"></canvas>
+
+<!-- timeline -->
+<div class="abs" id="tl" style="left:160px;top:70px;width:1600px;height:120px">
+  <svg width="1600" height="40" style="position:absolute;top:30px;left:0">
+    <defs><linearGradient id="tg" x1="0" x2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#FB7185"/></linearGradient>
+    <filter id="glow2"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <line id="tl-base" x1="0" y1="20" x2="1600" y2="20" stroke="#1E293B" stroke-width="8" stroke-linecap="round"/>
+    <line id="tl-prog" x1="0" y1="20" x2="0" y2="20" stroke="url(#tg)" stroke-width="8" stroke-linecap="round" filter="url(#glow2)"/>
+    <circle id="tl-head" cx="0" cy="20" r="13" fill="#fff" filter="url(#glow2)"/>
+  </svg>
+  <div id="marks"></div>
+</div>
+
+<div class="abs" id="hora"><small>SIN DORMIR</small><span>HORA </span><span id="hnum">24</span></div>
+
+<!-- brain -->
+<svg class="abs" id="brain" style="left:90px;top:330px" width="840" height="630" viewBox="0 0 640 480">
+  <defs>
+    <radialGradient id="bfill" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#2E2A7A"/><stop offset="1" stop-color="#14123A"/></radialGradient>
+    <radialGradient id="cfill" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#3B2470"/><stop offset="1" stop-color="#1A1240"/></radialGradient>
+    <radialGradient id="amg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFE4E6"/><stop offset=".45" stop-color="#FB7185"/><stop offset="1" stop-color="#E11D48"/></radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="bigglow" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <g id="bgroup">
+    <!-- brainstem -->
+    <path id="bs" class="draw" d="M332,350 C340,392 344,424 338,466 L372,466 C378,430 382,398 384,360 Z" fill="url(#cfill)" stroke="#A78BFA" stroke-width="3"/>
+    <!-- cerebellum -->
+    <path id="cb" class="draw" d="M418,318 C468,318 512,344 506,384 C500,420 452,436 408,424 C376,416 362,392 372,366 C380,342 396,320 418,318 Z" fill="url(#cfill)" stroke="#A78BFA" stroke-width="3"/>
+    <path class="draw g2" d="M388,378 C420,368 460,370 496,384 M384,398 C418,390 456,394 488,408 M398,356 C430,350 466,352 496,362" fill="none" stroke="#A78BFA" stroke-width="2" opacity=".7"/>
+    <!-- cerebrum -->
+    <path id="cer" class="draw" d="M84,252 C66,170 118,96 210,70 C290,44 392,46 460,86 C540,132 572,212 548,280 C534,318 500,334 458,330 C430,352 396,358 368,348 C344,372 300,380 270,366 C236,380 190,376 162,350 C120,340 92,300 84,252 Z" fill="url(#bfill)" stroke="#818CF8" stroke-width="3.5"/>
+    <!-- lateral (Sylvian) sulcus -->
+    <path class="draw g2" d="M168,286 C220,270 262,262 300,246 C330,234 360,226 392,224" fill="none" stroke="#A5B4FC" stroke-width="3"/>
+    <!-- central sulcus -->
+    <path class="draw g2" d="M318,58 C306,96 322,126 304,160 C292,186 304,212 296,240" fill="none" stroke="#A5B4FC" stroke-width="3"/>
+    <!-- gyri -->
+    <path class="draw g3" d="M120,200 C150,170 140,140 176,124 C206,112 200,90 236,84 M150,236 C186,222 190,196 222,186 C252,178 252,150 280,140 M200,250 C226,236 248,236 262,210 C276,186 276,170 290,150 M352,80 C344,118 366,140 356,176 C350,200 364,214 360,234 M396,90 C388,130 414,150 406,184 C400,208 420,220 430,232 M450,116 C440,150 470,170 466,204 C462,234 488,248 510,250 M486,190 C506,214 526,222 540,214 M214,312 C246,300 276,304 304,292 C330,282 352,286 376,276 M240,340 C268,330 300,336 330,324"
+      fill="none" stroke="#818CF8" stroke-width="2.4" opacity=".75"/>
+  </g>
+  <!-- amygdala (anterior medial temporal lobe) -->
+  <g id="amyg" opacity="0">
+    <circle id="ring1" cx="214" cy="306" r="20" fill="none" stroke="#FB7185" stroke-width="3"/>
+    <circle id="ring2" cx="214" cy="306" r="20" fill="none" stroke="#FB7185" stroke-width="3"/>
+    <ellipse cx="214" cy="306" rx="34" ry="24" fill="#FB7185" filter="url(#bigglow)" id="aglow"/>
+    <ellipse id="anode" cx="214" cy="306" rx="17" ry="12" transform="rotate(-20 214 306)" fill="url(#amg)" stroke="#FFE4E6" stroke-width="2"/>
+  </g>
+  <path id="cline" d="M206,318 L170,400 L40,400" fill="none" stroke="#FDA4AF" stroke-width="2.5"/>
+</svg>
+<div class="abs" id="callout" style="left:142px;top:866px;opacity:0">Amígdala<span>ALARMA EMOCIONAL</span></div>
+
+<!-- right panel -->
+<div class="abs" id="panel">
+  <div id="ptitle">REACTIVIDAD DE LA AMÍGDALA</div>
+  <div class="row" id="r1"><div class="rlabel"><span>Descansado</span><span id="v1">0</span></div><div class="track"><div class="fill" id="f1" style="background:linear-gradient(90deg,#0EA5E9,#67E8F9)"></div></div></div>
+  <div class="row" id="r2"><div class="rlabel"><span>35 h sin dormir</span><span id="v2">0</span></div><div class="track"><div class="fill" id="f2" style="background:linear-gradient(90deg,#F97316,#FB7185);box-shadow:0 0 30px rgba(251,113,133,.5)"></div></div></div>
+  <div id="big">+0 %</div>
+  <div id="sub">ante imágenes negativas. Todo te irrita más.</div>
+</div>
+<div class="abs" id="src">Fuente: Yoo et al., <i>Current Biology</i> (2007)</div>
+
+<script>
+const H=[0,17,24,35,48,72];
+const marks=document.getElementById('marks');
+H.forEach((h,i)=>{const d=document.createElement('div');d.className='mk';d.id='m'+i;d.style.left=(h/72*1600)+'px';d.style.top='38px';d.innerHTML='<div class="dot"></div>'+h+' h';marks.appendChild(d);});
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const prog=(t,s,d)=>clamp((t-s)/d);
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+const $=id=>document.getElementById(id);
+
+// prepare stroke drawing
+const drawEls=[...document.querySelectorAll('.draw')];
+drawEls.forEach(e=>{const L=e.getTotalLength();e.dataset.len=L;e.style.strokeDasharray=L;e.style.strokeDashoffset=L;});
+const cl=$('cline');const CL=cl.getTotalLength();cl.style.strokeDasharray=CL;cl.style.strokeDashoffset=CL;
+
+// deterministic particles
+function rnd(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;}}
+const R=rnd(42);const P=[];for(let i=0;i<110;i++)P.push({x:R()*1920,y:R()*1080,a:R()*6.28,sp:.2+R()*.6,r:1+R()*2.2,ph:R()*6.28});
+const cv=$('cv'),cx=cv.getContext('2d');
+
+function render(t){
+  // background particles
+  cx.clearRect(0,0,1920,1080);
+  const bgA=prog(t,0,1);
+  const pts=P.map(p=>({x:p.x+Math.cos(p.a)*t*22*p.sp+Math.sin(t*.7+p.ph)*14,y:p.y+Math.sin(p.a)*t*22*p.sp+Math.cos(t*.5+p.ph)*14,r:p.r,ph:p.ph}));
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);if(d<150){cx.strokeStyle=`rgba(129,140,248,${(1-d/150)*.16*bgA})`;cx.lineWidth=1;cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.stroke();}}
+  pts.forEach(p=>{cx.fillStyle=`rgba(165,180,252,${(.35+.25*Math.sin(t*2+p.ph))*bgA})`;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fill();});
+
+  // timeline
+  const tlA=eo(prog(t,0.1,0.8));
+  $('tl').style.opacity=tlA; $('tl').style.transform=`translateY(${(1-tlA)*-20}px)`;
+  H.forEach((h,i)=>{const m=$('m'+i);const a=eo(prog(t,0.2+i*0.1,0.5));m.style.opacity=a;m.style.transform=`translateX(-50%) scale(${.6+.4*back(a)})`;});
+  const hours=24+11*eio(prog(t,1.0,1.6));
+  const px=hours/72*1600*eo(prog(t,0.2,0.9));
+  $('tl-prog').setAttribute('x2',px);$('tl-head').setAttribute('cx',px);
+  H.forEach((h,i)=>{const dot=$('m'+i).firstChild;const on=hours>=h-0.01;dot.style.background=on?(h>=35?'#FB7185':'#67E8F9'):'#1E293B';dot.style.borderColor=on?'#fff':'#334155';dot.style.boxShadow=on?`0 0 18px ${h>=35?'#FB7185':'#67E8F9'}`:'none';$('m'+i).style.color=on?'#E2E8F0':'#64748B';});
+
+  // HORA counter
+  const ha=eo(prog(t,0.6,0.7));
+  $('hora').style.opacity=ha;$('hora').style.transform=`translateX(${(1-ha)*-60}px)`;
+  $('hnum').textContent=Math.round(hours);
+  const pulse=t>2.6&&t<3.2?1+0.08*Math.sin((t-2.6)/0.6*Math.PI):1;
+  $('hnum').style.display='inline-block';$('hnum').style.transform=`scale(${pulse})`;$('hnum').style.color=hours>=34.5?'#FB7185':'#fff';
+
+  // brain drawing
+  drawEls.forEach((e,i)=>{const L=+e.dataset.len;let s=1.6,d=1.8;if(e.classList.contains('g2')){s=2.6;d=1.2}if(e.classList.contains('g3')){s=3.0;d=1.6}
+    e.style.strokeDashoffset=L*(1-eio(prog(t,s,d)));e.style.fillOpacity=eo(prog(t,3.2,1.0));});
+  const bz=1+0.06*eio(prog(t,4.4,2.0));
+  $('brain').style.transform=`scale(${bz})`;$('brain').style.transformOrigin='35% 60%';
+  $('brain').style.opacity=eo(prog(t,1.4,0.6));
+
+  // amygdala
+  const aa=prog(t,4.6,0.6);
+  $('amyg').setAttribute('opacity',eo(aa));
+  const s=back(clamp(aa));
+  $('anode').setAttribute('transform',`rotate(-20 214 306) translate(214 306) scale(${0.2+0.8*s}) translate(-214 -306)`);
+  const inten=1+eo(prog(t,7.2,1.6))*0.8; // intensifies when +60% appears
+  [['ring1',0],['ring2',0.5]].forEach(([id,off])=>{const ph=((t-4.8+off)%1+1)%1;const r=20+ph*60*inten;$(id).setAttribute('r',r);$(id).setAttribute('opacity',t<4.8?0:(1-ph)*0.9);});
+  $('aglow').setAttribute('opacity',(0.5+0.3*Math.sin(t*6))*inten*0.8);
+
+  // callout
+  cl.style.strokeDashoffset=CL*(1-eio(prog(t,5.4,0.8)));
+  const ca=eo(prog(t,6.0,0.6));$('callout').style.opacity=ca;$('callout').style.transform=`translateY(${(1-ca)*14}px)`;
+
+  // panel
+  const pa=eo(prog(t,6.3,0.6));$('panel').style.opacity=pa;$('panel').style.transform=`translateX(${(1-pa)*50}px)`;
+  const b1=eo(prog(t,6.7,0.9)), b2=eo(prog(t,7.4,1.4));
+  $('f1').style.width=(b1*62.5)+'%';$('v1').textContent=Math.round(100*b1);
+  $('f2').style.width=(b2*100)+'%';$('v2').textContent=Math.round(160*b2);
+  const pct=Math.round(60*eo(prog(t,7.6,1.3)));
+  $('big').textContent='+'+pct+' %';$('big').style.opacity=eo(prog(t,7.5,0.4));
+  const bp=t>8.9&&t<9.5?1+0.06*Math.sin((t-8.9)/0.6*Math.PI):1;$('big').style.transform=`scale(${bp})`;$('big').style.transformOrigin='left center';
+  const sa=eo(prog(t,9.2,0.7));$('sub').style.opacity=sa;$('sub').style.transform=`translateY(${(1-sa)*16}px)`;
+  $('src').style.opacity=eo(prog(t,10,0.8))*0.9;
+
+  // global fade out at end
+  document.body.style.opacity=1-eo(prog(t,13.4,0.6));
+}
+window.render=render;
+render(0);
+</script>
+</body></html>
