@@ -6,7 +6,12 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 
 ## Dades fixes
 - Canal YouTube: «Cuerpo al límite» · platformAccountId `UCBW01NZn4nRgxc_-gKPTY2Q`
-- vidIQ: pla Boost (2.000 crèdits/mes, es renoven el dia 23). **Pressupost: ≤ 900 crèdits per setmana.**
+- vidIQ: pla Boost (2.000 crèdits/mes, es renoven el dia 23). **Control de crèdits (obligatori, al principi de cada execució):**
+  - Mira `vidiq_balance` (gratis) i la data de renovació. Cost real: **≈ 240 crèdits per vídeo llarg** (veu de 8 min ≈ 224 + outliers) · revisió setmanal ≈ 40 · exploració mensual ≈ 60 · Shorts = 0 (surten del vídeo llarg).
+  - Vídeos d'aquesta setmana = els que càpiguen deixant reservats 40 crèdits per a cada revisió setmanal que quedi fins a la renovació, 60 per a l'exploració si toca, i 100 de marge; repartits perquè **cap setmana es quedi sense vídeo**. Si només en cap 1, en fas 1 i en treus 3–4 Shorts (així els Shorts diaris no paren).
+  - Ritme habitual: setmanes de 2, 2, 2 i 1 vídeos (≈ 7 al mes). Fins al 23/12/2026 (1.473 crèdits el 23/11): 2 vídeos el 28/11 i 1 vídeo el 5/12, el 12/12 i el 19/12.
+  - **No facis servir eines de vidIQ que costin crèdits fora d'aquesta llista** (veu, outliers, analítica de la revisió, keyword research mensual). Res de puntuar títols o miniatures, generar imatges o música. Si el Manel ho demana, digues-li abans què costarà.
+  - Digues-li al missatge setmanal quants crèdits queden i quants vídeos hi caben fins a la renovació.
 - Veu: vidIQ `vidiq_voiceover_generate`, voiceId **`EK54is7sa3aPFLD9BwCC`** (Francisco, llatí neutre). Sempre amb `scriptLines` (una línia = una escena).
 - Música: `marca/musica_fondo.mp3` (generada amb vidIQ el 23/11/2026), en bucle i amb *ducking* automàtic sota la veu (≈ 16 dB per sota de la veu mentre parla; no la pugis). No en generis més; si el fitxer falta, el render sintetitza un fons propi.
 - Efectes de so: el render els posa sols segons el tipus d'escena (whoosh als canvis, tic-tac a `clock`, blips als comptadors, batecs a `amygdala`, cop al zoom de mitja escena).
@@ -26,7 +31,7 @@ Objectiu: que cada setmana els vídeos nous siguin millors que els anteriors.
 ## 0c. Avaluació dels 2 mesos (dissabte 23 de gener de 2027)
 Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, subscriptors per setmana, hores de visualització, CTR). Dona-li al Manel un veredicte clar amb els números: **créixer** (passar a Max i afegir versions en anglès o portuguès), **ajustar** (què canviar i un mes més) o **parar**, segons els criteris acordats a `metriques.md`.
 
-## Feina de cada execució setmanal (2 vídeos llargs + 4–6 Shorts)
+## Feina de cada execució setmanal (1–2 vídeos llargs segons crèdits + 4–7 Shorts)
 1. **Temes**: agafa els 2 primers temes pendents de `temas.md` (alterna línies H/C/E). Fes 1 `vidiq_outliers` (es, long, threeMonths, maxSubscribers 100000) per confirmar que el tema encara funciona i per inspirar el títol.
 2. **Guió** → `videos/NNN-slug/video.json` (copia l'estructura de `videos/001-72h-sin-dormir/video.json`):
    - 45–55 línies, **7.900–8.300 caràcters** (la veu fa ≈ 16 caràcters/s, així que surten ≈ 8:05; **el vídeo ha de passar de 8:00** perquè YouTube permeti anuncis a mig vídeo; comprova `total` a `timings.json` i, si no hi arriba, afegeix una frase).
@@ -42,7 +47,7 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
 4. **Prova visual**: `python3 motor/render_video.py videos/NNN --stills t1,t2,…` (un fotograma per escena), fes un full de contactes i **mira'l**: res tallat, res tapant el comptador d'hores de dalt, textos llegibles. Corregeix i repeteix.
 5. **Render**: `nohup python3 motor/render_video.py videos/NNN > videos/NNN/render.log 2>&1 &` (≈ 5 min de render per minut de vídeo; vigila el log). Surt `video.mp4`.
 6. **Miniatura**: `python3 motor/make_thumb.py videos/NNN` → `thumb.jpg`. Mira-la. Per defecte porta el protagonista (`thumb.person: {fatigue, mood}`) a l'esquerra i 2–3 paraules grans a la dreta; sense `person` surt el cervell.
-7. **Shorts** (2–3 per vídeo, 25–55 s, trams que s'entenguin sols): vertical nadiu 1080×1920 amb subtítols paraula a paraula i el protagonista: `python3 motor/render_video.py videos/NNN --short <línia_ini> <línia_fi> "<ganxo>" short1` (prova abans amb `--stills 2,15` al final i mira els fotogrames). `make_short.py` queda obsolet.
+7. **Shorts** (2–3 per vídeo, o 3–4 si aquella setmana només hi ha 1 vídeo, per cobrir un Short cada dia; 25–55 s, trams que s'entenguin sols): vertical nadiu 1080×1920 amb subtítols paraula a paraula i el protagonista: `python3 motor/render_video.py videos/NNN --short <línia_ini> <línia_fi> "<ganxo>" short1` (prova abans amb `--stills 2,15` al final i mira els fotogrames). `make_short.py` queda obsolet.
 8. **Pujar** (només després de superar la Revisió B): `bash motor/publish_media.sh videos/NNN/video.mp4 videos/NNN/thumb.jpg videos/NNN/short1.mp4 …` → URL públiques → `vidiq_video_upload(url=…)` per a cada vídeo (uploadId) i `vidiq_upload_image(image=<url thumb>)` (imageId).
 9. **Esborranys** amb `vidiq_social_post_draft_create` (destinació YOUTUBE, el platformAccountId de dalt, `privacyStatus: "public"`, `categoryId: 27` Educació, `publishAt` programat):
    - Vídeos llargs: dimarts i divendres a les **00:00 UTC** (18:00 Mèxic, 19:00 Colòmbia, 21:00 Argentina: 2–3 h abans del pic d'audiència). Shorts: un cada dia a les **22:00 UTC** (16:00 Mèxic, sortida d'escola/feina).
@@ -97,4 +102,4 @@ Si les skills `social-media-skills:*` surten a la llista, carrega-les amb l'eina
 ## Si alguna cosa falla
 - Si `curl` a assets.vidiq.com falla (403): el domini ja no està permès; avisa el Manel (Configuració → Capacitats → afegir `assets.vidiq.com`).
 - Si vidIQ diu que no hi ha canal connectat: `vidiq_connect_youtube_channel` i passa-li l'enllaç.
-- Si queden pocs crèdits: fes només 1 vídeo llarg aquella setmana i avisa'l.
+- Si queden pocs crèdits: aplica el «Control de crèdits» de dalt i avisa'l. No et quedis mai sense crèdits per a la veu.
