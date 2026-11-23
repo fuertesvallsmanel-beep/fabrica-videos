@@ -11,6 +11,20 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 - Música: el render sintetitza un fons ambiental propi (no gastis crèdits en música).
 - Les URL de `assets.vidiq.com` es poden baixar amb `curl` des d'aquí.
 
+## 0. Revisió de rendiment (cada setmana, ABANS de produir) — ≤ 60 crèdits
+Objectiu: que cada setmana els vídeos nous siguin millors que els anteriors.
+- Eines vidIQ: `vidiq_channel_analytics` / `vidiq_channel_analytics_extended` (visualitzacions, CTR de la miniatura, durada mitjana, % vist, subscriptors guanyats, d'on ve el trànsit), `vidiq_video_stats` per vídeo, `vidiq_channel_performance_trends` per a la tendència. Si alguna dada (p. ex. la retenció segon a segon) no hi és, digues-ho al Manel en una línia i fes servir la que hi hagi.
+- Afegeix una fila per vídeo i per Short a `metriques.md` (data, vistes a 48 h i a 7 dies, CTR, durada mitjana, % vist, subs guanyats).
+- Treu-ne 2–3 conclusions concretes i aplica-les als vídeos d'aquesta setmana: quin tipus de tema (H/C/E) i de títol funciona, on cau la retenció (quina escena o tipus d'escena), si les miniatures amb número o amb pregunta funcionen més, si els Shorts porten subscriptors. Cada 2–3 setmanes prova **una sola** variable nova (estil de miniatura, ganxo inicial, durada, un tipus d'escena nou, paleta de color) i compara-la amb la resta, per saber què ho ha causat.
+- Explica-ho al Manel al missatge de la setmana en 3–4 línies: què ha funcionat, què canviem i per què.
+
+## 0b. Exploració de nínxols (el primer dissabte de cada mes) — ≤ 60 crèdits
+- `vidiq_keyword_research` (mode `rising`, castellà) i `vidiq_outliers` (castellà, últims 3 mesos, canals < 100.000 subs) per trobar temes en creixement amb poca competència dins del cos humà i el cervell, i 1–2 àmbits nous propers on el motor d'animació encaixaria.
+- Afegeix els millors temes a `temas.md` i escriu a `exploracio.md` (data, idea, dades, recomanació). Explica-ho al Manel en 3 línies.
+
+## 0c. Avaluació dels 2 mesos (dissabte 23 de gener de 2027)
+Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, subscriptors per setmana, hores de visualització, CTR). Dona-li al Manel un veredicte clar amb els números: **créixer** (passar a Max i afegir versions en anglès o portuguès), **ajustar** (què canviar i un mes més) o **parar**, segons els criteris acordats a `metriques.md`.
+
 ## Feina de cada execució setmanal (2 vídeos llargs + 4–6 Shorts)
 1. **Temes**: agafa els 2 primers temes pendents de `temas.md` (alterna línies H/C/E). Fes 1 `vidiq_outliers` (es, long, threeMonths, maxSubscribers 100000) per confirmar que el tema encara funciona i per inspirar el títol.
 2. **Guió** → `videos/NNN-slug/video.json` (copia l'estructura de `videos/001-72h-sin-dormir/video.json`):
