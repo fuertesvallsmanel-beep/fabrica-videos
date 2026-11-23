@@ -1,0 +1,9 @@
+# Fitxers grans o intermedis: no es guarden a main (els vídeos finals van a la branca "media")
+videos/*/silent.mp4
+videos/*/bed.wav
+videos/*/voz.mp3
+videos/*/*.mp4
+videos/*/still_*.png
+videos/*/render.log
+videos/*/*.ass
+demo/*.mp4

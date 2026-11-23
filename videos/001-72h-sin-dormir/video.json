@@ -1,0 +1,433 @@
+{
+ "id": "001-72h-sin-dormir",
+ "title": "¿Qué le pasa a tu cuerpo y a tu cerebro si no duermes 72 horas? (Hora a hora)",
+ "short_title": "72 HORAS SIN DORMIR",
+ "accent": "#FB7185",
+ "lines": [
+  {
+   "text": "En diciembre de 1963, un estudiante de diecisiete años llamado Randy Gardner decidió no dormir. Aguantó once días seguidos: más de doscientas sesenta horas despierto.",
+   "scene": {
+    "type": "counter",
+    "value": 264,
+    "label": "HORAS SIN DORMIR",
+    "pill": "RÉCORD · 1963",
+    "sub": "Randy Gardner, 17 años"
+   }
+  },
+  {
+   "text": "Hoy vamos a ver qué le pasa a tu cuerpo y a tu cerebro si lo intentas durante solo setenta y dos horas. Hora a hora, y con lo que dice la ciencia de verdad.",
+   "scene": {
+    "type": "title",
+    "kicker": "HORA A HORA",
+    "title": "72 HORAS\nSIN DORMIR",
+    "sub": "Lo que dice la ciencia de verdad"
+   }
+  },
+  {
+   "text": "Pero antes, una pregunta: ¿por qué necesitamos dormir?",
+   "scene": {
+    "type": "question",
+    "text": "¿Por qué necesitamos\ndormir?"
+   }
+  },
+  {
+   "text": "Mientras estás despierto, tus neuronas consumen energía y van dejando un residuo químico: la adenosina. Cuanta más adenosina se acumula, más presión de sueño sientes.",
+   "scene": {
+    "type": "brain",
+    "mode": "adenosine",
+    "label": "ADENOSINA",
+    "sub": "Se acumula cada hora que pasas despierto"
+   }
+  },
+  {
+   "text": "Por eso el café funciona: la cafeína se encaja en los receptores de la adenosina, los bloquea y engaña a tu cerebro. Pero la adenosina sigue ahí, esperando.",
+   "scene": {
+    "type": "receptor"
+   }
+  },
+  {
+   "text": "Además, tienes un reloj interno en el hipotálamo, el núcleo supraquiasmático, que marca un ciclo de unas veinticuatro horas guiado por la luz. La presión de sueño y ese reloj deciden juntos cuándo tienes sueño.",
+   "scene": {
+    "type": "brain",
+    "mode": "scn",
+    "label": "NÚCLEO SUPRAQUIASMÁTICO",
+    "sub": "Tu reloj biológico de unas 24 horas"
+   }
+  },
+  {
+   "text": "Y cuando duermes, el cerebro hace limpieza. En experimentos con ratones, el espacio entre las neuronas aumenta un sesenta por ciento durante el sueño, y el líquido cefalorraquídeo arrastra los desechos mucho más rápido.",
+   "scene": {
+    "type": "brain",
+    "mode": "flow",
+    "label": "SISTEMA GLINFÁTICO",
+    "sub": "+60 % de espacio entre neuronas al dormir",
+    "source": "Xie et al., Science (2013) · ratones"
+   }
+  },
+  {
+   "text": "Ahora sí. Te despiertas a las siete de la mañana, y empieza el reloj.",
+   "scene": {
+    "type": "clock",
+    "hour": 0,
+    "time": "07:00",
+    "text": "Empieza el reloj"
+   }
+  },
+  {
+   "text": "Hora dieciséis. Son las once de la noche. Todo parece normal, pero tu cerebro ya funciona con el freno de mano puesto.",
+   "scene": {
+    "type": "gauge",
+    "hour": 16,
+    "time": "23:00",
+    "label": "RENDIMIENTO MENTAL",
+    "from": 100,
+    "to": 88
+   }
+  },
+  {
+   "text": "Hora diecisiete. Medianoche. Varios estudios compararon a personas sin dormir con personas que habían bebido alcohol. A las diecisiete horas despierto, rindes como alguien con medio gramo de alcohol por litro de sangre.",
+   "scene": {
+    "type": "bars",
+    "hour": 17,
+    "time": "00:00",
+    "title": "RINDES COMO CON…",
+    "items": [
+     {
+      "label": "17 h despierto",
+      "value": 0.5,
+      "unit": " g/L",
+      "color": "cyan"
+     }
+    ],
+    "max": 1.2,
+    "limit": {
+     "value": 0.5,
+     "label": "Límite al volante (muchos países)"
+    },
+    "source": "Dawson & Reid, Nature (1997); Williamson & Feyer (2000)"
+   }
+  },
+  {
+   "text": "Hora veintiuno. Las cuatro de la madrugada. Tu reloj biológico toca fondo: es el momento del día en que más cuesta mantenerse despierto.",
+   "scene": {
+    "type": "wave",
+    "hour": 21,
+    "time": "04:00",
+    "label": "RELOJ BIOLÓGICO",
+    "sub": "El punto más bajo de alerta"
+   }
+  },
+  {
+   "text": "Hora veinticuatro. Un día entero sin dormir. El equivalente sube a un gramo de alcohol por litro: el doble del límite para conducir en muchos países.",
+   "scene": {
+    "type": "bars",
+    "hour": 24,
+    "time": "07:00",
+    "title": "RINDES COMO CON…",
+    "items": [
+     {
+      "label": "17 h despierto",
+      "value": 0.5,
+      "unit": " g/L",
+      "color": "cyan"
+     },
+     {
+      "label": "24 h despierto",
+      "value": 1.0,
+      "unit": " g/L",
+      "color": "red"
+     }
+    ],
+    "max": 1.2,
+    "limit": {
+     "value": 0.5,
+     "label": "Límite al volante"
+    },
+    "source": "Dawson & Reid, Nature (1997)"
+   }
+  },
+  {
+   "text": "Y aparecen los microsueños: tu cerebro se apaga unos segundos, sin que te des cuenta. A veces, con los ojos abiertos.",
+   "scene": {
+    "type": "flicker",
+    "hour": 24,
+    "label": "MICROSUEÑO",
+    "sub": "Apagones de unos segundos"
+   }
+  },
+  {
+   "text": "Si vas manejando a cien kilómetros por hora, tres segundos son más de ochenta metros a ciegas.",
+   "scene": {
+    "type": "road",
+    "hour": 24,
+    "speed": 100,
+    "seconds": 3
+   }
+  },
+  {
+   "text": "Curiosamente, hacia las nueve de la mañana te sientes un poco mejor. No es que te hayas recuperado: es tu reloj biológico, que vuelve a mandarte señales de alerta porque es de día.",
+   "scene": {
+    "type": "wave",
+    "hour": 26,
+    "time": "09:00",
+    "label": "«SEGUNDO AIRE»",
+    "sub": "El reloj biológico te despierta por la mañana",
+    "rise": true
+   }
+  },
+  {
+   "text": "Tu cuerpo también lo nota. Sube la grelina, la hormona que te da hambre, y baja la leptina, la que te dice que ya estás lleno.",
+   "scene": {
+    "type": "body",
+    "hour": 28,
+    "time": "11:00",
+    "up": "GRELINA",
+    "upSub": "hambre",
+    "down": "LEPTINA",
+    "downSub": "saciedad"
+   }
+  },
+  {
+   "text": "En un estudio, solo dos noches durmiendo cuatro horas bastaron para subir la grelina un veintiocho por ciento y bajar la leptina un dieciocho. Por eso, cuando no duermes, se te antojan tanto los dulces.",
+   "scene": {
+    "type": "stats",
+    "hour": 28,
+    "items": [
+     {
+      "value": 28,
+      "prefix": "+",
+      "suffix": " %",
+      "label": "Grelina (hambre)",
+      "color": "red"
+     },
+     {
+      "value": 18,
+      "prefix": "−",
+      "suffix": " %",
+      "label": "Leptina (saciedad)",
+      "color": "cyan"
+     }
+    ],
+    "sub": "Tras 2 noches durmiendo 4 horas",
+    "source": "Spiegel et al., Ann Intern Med (2004)"
+   }
+  },
+  {
+   "text": "Y tu cuerpo procesa peor el azúcar. En otro estudio, después de seis noches durmiendo cuatro horas, voluntarios jóvenes y sanos manejaban la glucosa notablemente peor que cuando descansaban bien.",
+   "scene": {
+    "type": "body",
+    "hour": 30,
+    "time": "13:00",
+    "up": "GLUCOSA",
+    "upSub": "tarda más en bajar",
+    "down": "INSULINA",
+    "downSub": "funciona peor",
+    "source": "Spiegel, Leproult & Van Cauter, The Lancet (1999)"
+   }
+  },
+  {
+   "text": "Hora treinta y cinco. Las seis de la tarde del segundo día. Ahora mira lo que pasa en tu cerebro emocional.",
+   "scene": {
+    "type": "clock",
+    "hour": 35,
+    "time": "18:00",
+    "text": "Tu cerebro emocional"
+   }
+  },
+  {
+   "text": "La amígdala, el centro de alarma del cerebro, reacciona un sesenta por ciento más ante imágenes negativas. Y la corteza prefrontal, la parte que normalmente la calma, pierde la conexión con ella.",
+   "scene": {
+    "type": "amygdala",
+    "hour": 35,
+    "value": 60,
+    "source": "Yoo et al., Current Biology (2007)"
+   }
+  },
+  {
+   "text": "Resultado: todo te irrita, te enojas por cualquier cosa y tomas peores decisiones.",
+   "scene": {
+    "type": "list",
+    "hour": 35,
+    "items": [
+     "Irritabilidad",
+     "Impulsividad",
+     "Peores decisiones"
+    ],
+    "color": "red"
+   }
+  },
+  {
+   "text": "Tu sistema inmune también sufre. En un experimento, una sola noche durmiendo a medias bastó para que la actividad de las células asesinas naturales, las que atacan virus y células tumorales, bajara cerca de un treinta por ciento.",
+   "scene": {
+    "type": "cells",
+    "hour": 40,
+    "time": "23:00",
+    "from": 100,
+    "to": 72,
+    "label": "ACTIVIDAD DE LAS CÉLULAS NK",
+    "source": "Irwin et al., FASEB J (1996)"
+   }
+  },
+  {
+   "text": "Hora cuarenta y ocho. Dos días sin dormir. Los microsueños son constantes y pueden aparecer en mitad de una frase.",
+   "scene": {
+    "type": "flicker",
+    "hour": 48,
+    "time": "07:00",
+    "label": "48 HORAS",
+    "sub": "Microsueños constantes",
+    "intense": true
+   }
+  },
+  {
+   "text": "Algunas zonas de tu cerebro empiezan a dormirse por su cuenta mientras el resto sigue despierto. Los científicos lo llaman sueño local.",
+   "scene": {
+    "type": "brain",
+    "hour": 48,
+    "mode": "patches",
+    "label": "SUEÑO LOCAL",
+    "sub": "Zonas que se «apagan» por su cuenta",
+    "source": "Vyazovskiy et al., Nature (2011)"
+   }
+  },
+  {
+   "text": "La memoria de trabajo falla: olvidas lo que ibas a decir y te cuesta seguir una conversación.",
+   "scene": {
+    "type": "memory",
+    "hour": 50
+   }
+  },
+  {
+   "text": "Hora setenta y dos. Tres días. Ahora la mente empieza a fallar de verdad.",
+   "scene": {
+    "type": "clock",
+    "hour": 72,
+    "time": "07:00",
+    "text": "Tres días despierto",
+    "danger": true
+   }
+  },
+  {
+   "text": "Según una gran revisión científica, con el paso de las horas sin dormir aparecen distorsiones visuales, después alucinaciones, y más allá de las setenta y dos horas los síntomas se parecen cada vez más a una psicosis.",
+   "scene": {
+    "type": "steps",
+    "hour": 72,
+    "items": [
+     {
+      "t": "24–48 h",
+      "x": "Distorsiones visuales"
+     },
+     {
+      "t": "48–72 h",
+      "x": "Alucinaciones"
+     },
+     {
+      "t": "+72 h",
+      "x": "Síntomas parecidos a una psicosis"
+     }
+    ],
+    "source": "Waters et al., Frontiers in Psychiatry (2018)"
+   }
+  },
+  {
+   "text": "Paredes que parecen moverse, sombras que se convierten en personas, la sensación de que alguien te observa.",
+   "scene": {
+    "type": "distort",
+    "hour": 72
+   }
+  },
+  {
+   "text": "Randy Gardner, nuestro estudiante, llegó a creer que era un famoso jugador de fútbol americano.",
+   "scene": {
+    "type": "quote",
+    "hour": 72,
+    "text": "Llegó a creer que era un famoso jugador de fútbol americano",
+    "author": "Caso de Randy Gardner",
+    "source": "Ross, Archives of Neurology (1965)"
+   }
+  },
+  {
+   "text": "Y ahora, la buena noticia.",
+   "scene": {
+    "type": "title",
+    "kicker": "",
+    "title": "La buena\nnoticia",
+    "sub": "",
+    "calm": true
+   }
+  },
+  {
+   "text": "Cuando por fin duermes, tu cerebro no recupera hora por hora todo lo perdido. Prioriza: dispara el sueño profundo y el sueño REM.",
+   "scene": {
+    "type": "hypnogram"
+   }
+  },
+  {
+   "text": "Gardner, después de once días, durmió unas catorce horas seguidas, y en pocos días estaba recuperado.",
+   "scene": {
+    "type": "counter",
+    "value": 14,
+    "label": "HORAS DURMIENDO",
+    "pill": "LA RECUPERACIÓN",
+    "sub": "Tras 11 días despierto",
+    "calm": true
+   }
+  },
+  {
+   "text": "Para la mayoría de funciones bastan una o dos noches de buen sueño. Pero cuidado: si la falta de sueño se vuelve crónica, el daño se acumula.",
+   "scene": {
+    "type": "list",
+    "items": [
+     "1–2 noches: recuperación de la mayoría de funciones",
+     "Falta de sueño crónica: el daño se acumula"
+    ],
+    "color": "cyan",
+    "calm": true
+   }
+  },
+  {
+   "text": "Por eso los expertos recomiendan que un adulto duerma al menos siete horas cada noche.",
+   "scene": {
+    "type": "counter",
+    "value": 7,
+    "label": "HORAS O MÁS CADA NOCHE",
+    "pill": "RECOMENDACIÓN",
+    "sub": "Adultos · AASM y Sleep Research Society (2015)",
+    "calm": true
+   }
+  },
+  {
+   "text": "Así que la próxima vez que pienses en pasar la noche en vela, recuerda lo que pasa dentro de ti. Y si quieres ver qué le pasa a tu cuerpo en otras situaciones límite, suscríbete. Esta noche, duerme.",
+   "scene": {
+    "type": "endcard",
+    "text": "Esta noche, duerme."
+   }
+  }
+ ],
+ "sources": [
+  "Ross JJ. Neurological findings after prolonged sleep deprivation. Archives of Neurology. 1965;12:399–403.",
+  "Xie L, et al. Sleep drives metabolite clearance from the adult brain. Science. 2013;342:373–377.",
+  "Dawson D, Reid K. Fatigue, alcohol and performance impairment. Nature. 1997;388:235.",
+  "Williamson AM, Feyer AM. Moderate sleep deprivation produces impairments in cognitive and motor performance equivalent to legally prescribed levels of alcohol intoxication. Occup Environ Med. 2000;57:649–655.",
+  "Spiegel K, et al. Brief communication: sleep curtailment in healthy young men is associated with decreased leptin levels, elevated ghrelin levels, and increased hunger and appetite. Ann Intern Med. 2004;141:846–850.",
+  "Spiegel K, Leproult R, Van Cauter E. Impact of sleep debt on metabolic and endocrine function. The Lancet. 1999;354:1435–1439.",
+  "Yoo SS, et al. The human emotional brain without sleep — a prefrontal amygdala disconnect. Current Biology. 2007;17:R877–R878.",
+  "Irwin M, et al. Partial night sleep deprivation reduces natural killer and cellular immune responses in humans. FASEB J. 1996;10:643–653.",
+  "Vyazovskiy VV, et al. Local sleep in awake rats. Nature. 2011;472:443–447.",
+  "Waters F, et al. Severe sleep deprivation causes hallucinations and a gradual progression toward psychosis with increasing time awake. Front Psychiatry. 2018;9:303.",
+  "Watson NF, et al. Recommended amount of sleep for a healthy adult (AASM/SRS). Sleep. 2015;38:843–844."
+ ],
+ "thumb": {
+  "l1acc": "72",
+  "l1": " H",
+  "l2": "SIN DORMIR",
+  "tag": "Tu cerebro, hora a hora",
+  "acc": "#FB7185",
+  "hot": [
+   214,
+   306
+  ],
+  "s1": 230,
+  "s2": 100
+ }
+}
