@@ -38,12 +38,12 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
    - **Protagonista** (`persona`: `hour` o `fatigue` 0–1, `mood` ok|tired|angry|sleep|happy, `label`, `sub`, `color`): posa'l 3–5 cops per vídeo en els moments clau (inici, punt de gir, clímax, recuperació). El cap del comptador d'hores també és la seva cara.
    - **Ritme**: un canvi visual cada 3–4 s com a màxim. Si una línia dura més de 8 s, parteix-la en dues línies amb escenes diferents. El motor ja fa moviments de càmera i un zoom a mitja escena. **Si un tema necessita un òrgan o gràfic nou (cor, fetge, pulmons, ronyó, estómac, mapa…), afegeix un tipus d'escena nou i reutilitzable a `lib.js`** amb el mateix estil (fons fosc, línies brillants, colors de la paleta `C`).
    - Afegeix `title` (≤ 100 caràcters, amb ganxo), `short_title` i `thumb` (vegeu el 001).
-3. **Veu**: `vidiq_voiceover_generate` amb `scriptLines` (màxim 50 línies per crida: si n'hi ha més, fes dues crides tallant on la suma de caràcters de cada meitat quedi just per sota d'un múltiple de 1.000 —es cobra per cada 1.000 arrodonit a l'alça—, uneix els MP3 amb 0,5 s de silenci entre mig i 1,5 s al final, i suma l'offset als `starts` de la segona meitat) → desa `timings.json` (`audioUrl`, `total`, `starts` = startSeconds de cada línia) → `curl -o videos/NNN/voz.mp3 <audioUrl>`.
+3. **Veu** (només després de superar la Revisió A): `vidiq_voiceover_generate` amb `scriptLines` (màxim 50 línies per crida: si n'hi ha més, fes dues crides tallant on la suma de caràcters de cada meitat quedi just per sota d'un múltiple de 1.000 —es cobra per cada 1.000 arrodonit a l'alça—, uneix els MP3 amb 0,5 s de silenci entre mig i 1,5 s al final, i suma l'offset als `starts` de la segona meitat) → desa `timings.json` (`audioUrl`, `total`, `starts` = startSeconds de cada línia) → `curl -o videos/NNN/voz.mp3 <audioUrl>`.
 4. **Prova visual**: `python3 motor/render_video.py videos/NNN --stills t1,t2,…` (un fotograma per escena), fes un full de contactes i **mira'l**: res tallat, res tapant el comptador d'hores de dalt, textos llegibles. Corregeix i repeteix.
 5. **Render**: `nohup python3 motor/render_video.py videos/NNN > videos/NNN/render.log 2>&1 &` (≈ 5 min de render per minut de vídeo; vigila el log). Surt `video.mp4`.
 6. **Miniatura**: `python3 motor/make_thumb.py videos/NNN` → `thumb.jpg`. Mira-la. Per defecte porta el protagonista (`thumb.person: {fatigue, mood}`) a l'esquerra i 2–3 paraules grans a la dreta; sense `person` surt el cervell.
 7. **Shorts** (2–3 per vídeo, 25–55 s, trams que s'entenguin sols): vertical nadiu 1080×1920 amb subtítols paraula a paraula i el protagonista: `python3 motor/render_video.py videos/NNN --short <línia_ini> <línia_fi> "<ganxo>" short1` (prova abans amb `--stills 2,15` al final i mira els fotogrames). `make_short.py` queda obsolet.
-8. **Pujar**: `bash motor/publish_media.sh videos/NNN/video.mp4 videos/NNN/thumb.jpg videos/NNN/short1.mp4 …` → URL públiques → `vidiq_video_upload(url=…)` per a cada vídeo (uploadId) i `vidiq_upload_image(image=<url thumb>)` (imageId).
+8. **Pujar** (només després de superar la Revisió B): `bash motor/publish_media.sh videos/NNN/video.mp4 videos/NNN/thumb.jpg videos/NNN/short1.mp4 …` → URL públiques → `vidiq_video_upload(url=…)` per a cada vídeo (uploadId) i `vidiq_upload_image(image=<url thumb>)` (imageId).
 9. **Esborranys** amb `vidiq_social_post_draft_create` (destinació YOUTUBE, el platformAccountId de dalt, `privacyStatus: "public"`, `categoryId: 27` Educació, `publishAt` programat):
    - Vídeos llargs: dimarts i divendres a les **00:00 UTC** (18:00 Mèxic, 19:00 Colòmbia, 21:00 Argentina: 2–3 h abans del pic d'audiència). Shorts: un cada dia a les **22:00 UTC** (16:00 Mèxic, sortida d'escola/feina).
    - Descripció: 2–3 frases de ganxo + capítols (`00:00 …`, a partir de `timings.json`; el primer ha de ser 00:00 i mínim 3) + «Fuentes:» amb la llista + «Contenido divulgativo; no sustituye el consejo médico.» + 3 hashtags.
@@ -55,6 +55,30 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
      - Text: 1–2 frases amb la dada i la font + «Video completo en YouTube: Cuerpo al Límite.» + 4–5 hashtags.
 10. **Avisar el Manel** (SendUserMessage + PushNotification): llista curta en català dels vídeos i Shorts amb dies i hores, la miniatura, i la pregunta «Responc "OK" per programar-ho tot?». **No publiquis res fins que ell digui OK** (vidIQ ho exigeix). Quan digui OK: `vidiq_social_post_publish` per a cada esborrany amb la seva `revision`.
 11. **Desar**: commit a `main` de `video.json`, `timings.json`, `thumb.jpg`, canvis del motor, `temas.md` (marca fets) i una línia a `registre.md` (data, títols, crèdits gastats). Els `.mp4` no van a main.
+
+## Control de qualitat (OBLIGATORI — «fàbrica tot quality»)
+Cap vídeo no passa al pas següent fins que superi la revisió. Revisa, millora i torna a revisar fins que no trobis res a millorar (màxim 3 voltes per revisió). Les correccions de guió es fan **abans** de la veu (la veu costa crèdits); les visuals són gratis, així que corregeix-les sempre.
+
+**Revisió A — guió (entre els passos 2 i 3).** Llança un agent separat (eina Agent) que no hagi vist com s'ha escrit el guió, passa-li `video.json` i aquesta llista, i demana-li una nota de 0 a 10 per punt i els canvis concrets. No passis a la veu fins que cada punt tingui ≥ 8.
+1. Ganxo: els primers 15 s fan impossible no continuar? Hi ha una imatge concreta i una pregunta oberta?
+2. Promesa: es promet alguna cosa al principi que es compleix al final?
+3. Ritme: cap línia de més de 8 s sense canvi d'escena; cap tram de més de 40 s sense un «gir» (dada sorprenent, pregunta, mite).
+4. Rigor: cada xifra té font a `sources`, la font diu exactament això, els estudis en animals estan marcats com a tals, res de consells mèdics personals. Si hi ha dubte, es treu la xifra.
+5. Claredat: s'entén sense saber medicina? Cap terme tècnic sense explicar.
+6. Llengua: espanyol llatí neutre, sense errors, frases curtes per a veu.
+7. Originalitat: no repeteix estructura ni frases dels vídeos anteriors del canal.
+8. Títol i miniatura: generen curiositat sense enganyar? El títol (≤ 60 caràcters visibles) i la miniatura (≤ 4 paraules) es complementen, no es repeteixen.
+9. Durada: ≥ 7.900 caràcters (vídeo > 8:00).
+
+**Revisió B — vídeo acabat (després del pas 6, abans de pujar).** Treu un fotograma cada 4 s del `video.mp4` (full de contactes) i dels Shorts, i mira'ls tots. Comprova:
+- res tallat, cap text sobreposat ni fora de pantalla, res tapant el comptador d'hores;
+- cap escena buida o «morta» més de 4 s; el protagonista surt on toca;
+- àudio: veu clara, música ≈ 16 dB per sota (`ebur128`), sonoritat final ≈ −14 LUFS, cap tall ni silenci estrany;
+- Shorts: el ganxo s'entén sense el vídeo llarg, subtítols sense paraules enganxades, durada 25–55 s;
+- miniatura llegible a mida mòbil (redueix-la a 320×180 i mira-la).
+Si alguna cosa falla: corregeix (guió visual, `lib.js`, escena) i torna a renderitzar el tros o el vídeo.
+
+**Millora contínua.** Cada error que trobis i corregeixis, afegeix-lo en una línia a `qualitat.md` (data, error, solució) i, si és d'una causa repetible, corregeix-ne la causa al motor o a aquestes instruccions perquè no torni a passar. Al missatge setmanal al Manel, inclou una línia: «Revisió: X millores aplicades (les principals: …)».
 
 ## Plugin «Social Media Skills» (instal·lat el 23/11/2026)
 Si les skills `social-media-skills:*` surten a la llista, carrega-les amb l'eina Skill **just abans** del pas on toquen (no totes de cop) i aplica-ho als vídeos. Si no hi són, continua igual. Les seves parts sobre WoopSocial no ens afecten: publiquem amb vidIQ.
