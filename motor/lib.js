@@ -118,6 +118,7 @@
     return { el, render(lt) { enter(p, lt, 0, 20); n.textContent = Math.round(sc.value * eo(prog(lt, .2, 1.8))); n.style.transform = `scale(${.9 + .1 * eo(prog(lt, .2, .6))})`; enter(l, lt, .6); enter(s, lt, 1.0); } };
   };
 
+  const fitW = (node, max, base) => { if (node.__fit) return; node.__fit = 1; let fs = base; const w = () => Math.max(...[...node.querySelectorAll('div')].map(d => d.scrollWidth), node.scrollWidth); while (w() > max && fs > base * .55) { fs -= 4; node.style.fontSize = fs + 'px'; } };
   S.title = (sc) => {
     const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center');
     const c = sc.calm ? C.cyan : C.red;
@@ -127,7 +128,7 @@
     const t = el.children[1];
     (sc.title || '').split('\n').forEach((ln, i) => { const d = E('div', 'overflow:hidden'); const s = E('div', '', ln); d.appendChild(s); t.appendChild(d); });
     const bar = E('div', `width:0;height:10px;border-radius:5px;margin:34px auto 0;background:linear-gradient(90deg,${C.cyan},${c})`); el.appendChild(bar);
-    return { el, render(lt) { enter(el.children[0], lt, 0, 16); [...t.children].forEach((d, i) => { const a = eo(prog(lt, .15 + i * .18, .7)); d.firstChild.style.transform = `translateY(${(1 - a) * 110}%)`; }); enter(el.children[2], lt, .8); bar.style.width = 420 * eio(prog(lt, .6, 1)) + 'px'; } };
+    return { el, render(lt) { fitW(t, 1700, 150); enter(el.children[0], lt, 0, 16); [...t.children].forEach((d, i) => { const a = eo(prog(lt, .15 + i * .18, .7)); d.firstChild.style.transform = `translateY(${(1 - a) * 110}%)`; }); enter(el.children[2], lt, .8); bar.style.width = 420 * eio(prog(lt, .6, 1)) + 'px'; } };
   };
 
   S.question = (sc) => {
