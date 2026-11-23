@@ -27,7 +27,7 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 7. **Shorts** (2–3 per vídeo, 25–55 s, trams que s'entenguin sols): `python3 motor/make_short.py videos/NNN <línia_ini> <línia_fi> "<ganxo>" short1`.
 8. **Pujar**: `bash motor/publish_media.sh videos/NNN/video.mp4 videos/NNN/thumb.jpg videos/NNN/short1.mp4 …` → URL públiques → `vidiq_video_upload(url=…)` per a cada vídeo (uploadId) i `vidiq_upload_image(image=<url thumb>)` (imageId).
 9. **Esborranys** amb `vidiq_social_post_draft_create` (destinació YOUTUBE, el platformAccountId de dalt, `privacyStatus: "public"`, `categoryId: 27` Educació, `publishAt` programat):
-   - Vídeos llargs: dimarts i divendres a les **01:00 UTC** (19:00 a Mèxic). Shorts: un cada dia a les **18:00 UTC**.
+   - Vídeos llargs: dimarts i divendres a les **00:00 UTC** (18:00 Mèxic, 19:00 Colòmbia, 21:00 Argentina: 2–3 h abans del pic d'audiència). Shorts: un cada dia a les **22:00 UTC** (16:00 Mèxic, sortida d'escola/feina).
    - Descripció: 2–3 frases de ganxo + capítols (`00:00 …`, a partir de `timings.json`; el primer ha de ser 00:00 i mínim 3) + «Fuentes:» amb la llista + «Contenido divulgativo; no sustituye el consejo médico.» + 3 hashtags.
    - Tags: 10–15 en castellà. Miniatura: `thumbnailImageId`.
 10. **Avisar el Manel** (SendUserMessage + PushNotification): llista curta en català dels vídeos i Shorts amb dies i hores, la miniatura, i la pregunta «Responc "OK" per programar-ho tot?». **No publiquis res fins que ell digui OK** (vidIQ ho exigeix). Quan digui OK: `vidiq_social_post_publish` per a cada esborrany amb la seva `revision`.
