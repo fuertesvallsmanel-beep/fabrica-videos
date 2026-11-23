@@ -44,6 +44,10 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
    - Vídeos llargs: dimarts i divendres a les **00:00 UTC** (18:00 Mèxic, 19:00 Colòmbia, 21:00 Argentina: 2–3 h abans del pic d'audiència). Shorts: un cada dia a les **22:00 UTC** (16:00 Mèxic, sortida d'escola/feina).
    - Descripció: 2–3 frases de ganxo + capítols (`00:00 …`, a partir de `timings.json`; el primer ha de ser 00:00 i mínim 3) + «Fuentes:» amb la llista + «Contenido divulgativo; no sustituye el consejo médico.» + 3 hashtags.
    - Tags: 10–15 en castellà. Miniatura: `thumbnailImageId`.
+   - **Cada Short també a Instagram i TikTok**, en un esborrany a part (mateix `uploadId`, mateix `publishAt` que a YouTube) amb dues destinacions:
+     - INSTAGRAM `platformAccountId: "40152129084402422"` (@cuerpoallimite_)
+     - TIKTOK `platformAccountId: "_000JHie2bTBaugdZ0FUGo0FqsRC32tg5395"` amb `privacyLevel: "PUBLIC_TO_EVERYONE"`, `allowComment: true`, `musicUsageConfirmed: true`, `isAiGenerated: true` (opcions triades pel Manel el 23/11/2026; la veu és d'IA).
+     - Text: 1–2 frases amb la dada i la font + «Video completo en YouTube: Cuerpo al Límite.» + 4–5 hashtags.
 10. **Avisar el Manel** (SendUserMessage + PushNotification): llista curta en català dels vídeos i Shorts amb dies i hores, la miniatura, i la pregunta «Responc "OK" per programar-ho tot?». **No publiquis res fins que ell digui OK** (vidIQ ho exigeix). Quan digui OK: `vidiq_social_post_publish` per a cada esborrany amb la seva `revision`.
 11. **Desar**: commit a `main` de `video.json`, `timings.json`, `thumb.jpg`, canvis del motor, `temas.md` (marca fets) i una línia a `registre.md` (data, títols, crèdits gastats). Els `.mp4` no van a main.
 
