@@ -1,23 +1,23 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><style>
 html,body{margin:0;width:2560px;height:1440px;overflow:hidden;background:radial-gradient(1400px 700px at 50% 50%,#231c5c 0%,#0d0f2a 55%,#05070f 100%);font-family:'Inter Display',sans-serif}
-#safe{position:absolute;left:507px;top:508px;width:1546px;height:423px;display:flex;align-items:center;gap:56px}
+#safe{position:absolute;left:507px;top:508px;width:1546px;height:423px;display:flex;align-items:center;justify-content:center;gap:50px;box-sizing:border-box;padding:0 40px}
 .t{color:#fff;font-weight:900;font-size:124px;letter-spacing:-3px;line-height:1}
 .t span{color:#FB7185}
 .s{color:#CBD5E1;font-weight:700;font-size:37px;margin-top:18px;white-space:nowrap}
 .p{display:inline-block;margin-top:24px;padding:10px 24px;border-radius:999px;background:rgba(103,232,249,.14);color:#67E8F9;font-weight:800;font-size:30px;letter-spacing:2px}
 </style></head><body>
 <canvas id="cv" width="2560" height="1440" style="position:absolute;inset:0"></canvas>
-<svg width="2560" height="1440" style="position:absolute;inset:0"><defs><linearGradient id="e" x1="0" x2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0"/><stop offset=".25" stop-color="#22D3EE"/><stop offset=".55" stop-color="#FB7185"/><stop offset=".85" stop-color="#F97316"/><stop offset="1" stop-color="#F97316" stop-opacity="0"/></linearGradient><filter id="g" x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<path d="M0,1040 L700,1040 L760,980 L820,1110 L900,880 L980,1170 L1050,1000 L1100,1040 L2560,1040" fill="none" stroke="url(#e)" stroke-width="10" stroke-linejoin="round" filter="url(#g)" opacity=".55"/></svg>
+<svg width="2560" height="1440" style="position:absolute;inset:0"><defs><linearGradient id="e" x1="0" x2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0"/><stop offset=".25" stop-color="#22D3EE"/><stop offset=".55" stop-color="#FB7185"/><stop offset=".85" stop-color="#F97316"/><stop offset="1" stop-color="#F97316" stop-opacity="0"/></linearGradient><linearGradient id="eL" x1="0" x2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0"/><stop offset="1" stop-color="#22D3EE"/></linearGradient><linearGradient id="eR" x1="0" x2="1"><stop offset="0" stop-color="#F97316"/><stop offset="1" stop-color="#FB7185" stop-opacity="0"/></linearGradient><linearGradient id="band" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6366F1" stop-opacity="0"/><stop offset=".5" stop-color="#6366F1" stop-opacity=".10"/><stop offset="1" stop-color="#6366F1" stop-opacity="0"/></linearGradient><filter id="g" x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="0" y="508" width="2560" height="423" fill="url(#band)"/><path d="M0,720 L140,720 L175,680 L210,770 L255,610 L300,820 L340,700 L365,720 L470,720" fill="none" stroke="url(#eL)" stroke-width="9" stroke-linejoin="round" filter="url(#g)"/><path d="M2090,720 L2195,720 L2220,700 L2260,820 L2305,610 L2350,770 L2385,680 L2420,720 L2560,720" fill="none" stroke="url(#eR)" stroke-width="9" stroke-linejoin="round" filter="url(#g)"/><circle cx="470" cy="720" r="9" fill="#22D3EE" filter="url(#g)"/><circle cx="2090" cy="720" r="9" fill="#F97316" filter="url(#g)"/></svg>
 <div id="safe">
- <img src="cuerpo_al_limite_perfil.png" style="width:360px;height:360px;border-radius:50%;box-shadow:0 0 80px #6366F199;flex:none">
+ <img src="cuerpo_al_limite_perfil.png" style="width:320px;height:320px;border-radius:50%;box-shadow:0 0 80px #6366F199;flex:none">
  <div><div class="t">Cuerpo al <span>Límite</span></div>
  <div class="s">Lo que le pasa a tu cuerpo y a tu cerebro, explicado con ciencia</div>
  <div class="p">NUEVOS VIDEOS · MARTES Y VIERNES</div></div>
 </div>
 <script>
 const c=document.getElementById('cv').getContext('2d');let s=7;const r=()=>(s=s*16807%2147483647)/2147483647;
-const P=[...Array(160)].map(()=>[r()*2560,r()*1440,1+r()*2.5]);
+const P=[...Array(110)].map(()=>[r()*2560,r()*1440,1+r()*2.5]).concat([...Array(90)].map(()=>[r()*2560,520+r()*400,1+r()*2.5]));
 for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i][0]-P[j][0],P[i][1]-P[j][1]);if(d<190){c.strokeStyle=`rgba(129,140,248,${(1-d/190)*.18})`;c.beginPath();c.moveTo(P[i][0],P[i][1]);c.lineTo(P[j][0],P[j][1]);c.stroke();}}
 P.forEach(p=>{c.fillStyle='rgba(165,180,252,.5)';c.beginPath();c.arc(p[0],p[1],p[2],0,7);c.fill();});
 </script></body></html>
