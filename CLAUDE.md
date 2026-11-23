@@ -8,7 +8,7 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 - Canal YouTube: «Cuerpo al límite» · platformAccountId `UCBW01NZn4nRgxc_-gKPTY2Q`
 - vidIQ: pla Boost (2.000 crèdits/mes, es renoven el dia 23). **Pressupost: ≤ 900 crèdits per setmana.**
 - Veu: vidIQ `vidiq_voiceover_generate`, voiceId **`EK54is7sa3aPFLD9BwCC`** (Francisco, llatí neutre). Sempre amb `scriptLines` (una línia = una escena).
-- Música: `marca/musica_fondo.mp3` (generada amb vidIQ el 23/11/2026), en bucle i amb *ducking* automàtic sota la veu. No en generis més; si el fitxer falta, el render sintetitza un fons propi.
+- Música: `marca/musica_fondo.mp3` (generada amb vidIQ el 23/11/2026), en bucle i amb *ducking* automàtic sota la veu (≈ 16 dB per sota de la veu mentre parla; no la pugis). No en generis més; si el fitxer falta, el render sintetitza un fons propi.
 - Efectes de so: el render els posa sols segons el tipus d'escena (whoosh als canvis, tic-tac a `clock`, blips als comptadors, batecs a `amygdala`, cop al zoom de mitja escena).
 - Les URL de `assets.vidiq.com` es poden baixar amb `curl` des d'aquí.
 
@@ -29,7 +29,8 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
 ## Feina de cada execució setmanal (2 vídeos llargs + 4–6 Shorts)
 1. **Temes**: agafa els 2 primers temes pendents de `temas.md` (alterna línies H/C/E). Fes 1 `vidiq_outliers` (es, long, threeMonths, maxSubscribers 100000) per confirmar que el tema encara funciona i per inspirar el títol.
 2. **Guió** → `videos/NNN-slug/video.json` (copia l'estructura de `videos/001-72h-sin-dormir/video.json`):
-   - 35–45 línies, **6.000–7.000 caràcters** (≈ 8 minuts; a partir de 8 min YouTube permet anuncis a mig vídeo).
+   - 45–55 línies, **7.900–8.300 caràcters** (la veu fa ≈ 16 caràcters/s, així que surten ≈ 8:05; **el vídeo ha de passar de 8:00** perquè YouTube permeti anuncis a mig vídeo; comprova `total` a `timings.json` i, si no hi arriba, afegeix una frase).
+   - Ganxo: la primera escena és el protagonista en una situació concreta (p. ex. `persona` amb `big: "04:00"`), i a la línia 3–4 promet una sorpresa per al final (un mite, una dada) i compleix-la.
    - Estructura: ganxo amb una dada o història real (0–15 s) → promesa («hora a hora», «lo que dice la ciencia de verdad») → explicació → clímax → part positiva / què fer → tancament «suscríbete».
    - **Rigor**: cada dada numèrica ha de venir d'una font real (revista revisada per experts o organisme oficial) i anar a `sources`. Si no estàs segur d'una xifra, no la posis. Diferencia estudis en animals. Res de consells mèdics personalitzats ni de mites (l'angle del canal és desmuntar mites).
    - Espanyol llatí neutre: «manejar» (no «conducir un coche»), «enojarse», «se te antoja», sense «vale» ni «vosotros».
@@ -37,16 +38,17 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
    - **Protagonista** (`persona`: `hour` o `fatigue` 0–1, `mood` ok|tired|angry|sleep|happy, `label`, `sub`, `color`): posa'l 3–5 cops per vídeo en els moments clau (inici, punt de gir, clímax, recuperació). El cap del comptador d'hores també és la seva cara.
    - **Ritme**: un canvi visual cada 3–4 s com a màxim. Si una línia dura més de 8 s, parteix-la en dues línies amb escenes diferents. El motor ja fa moviments de càmera i un zoom a mitja escena. **Si un tema necessita un òrgan o gràfic nou (cor, fetge, pulmons, ronyó, estómac, mapa…), afegeix un tipus d'escena nou i reutilitzable a `lib.js`** amb el mateix estil (fons fosc, línies brillants, colors de la paleta `C`).
    - Afegeix `title` (≤ 100 caràcters, amb ganxo), `short_title` i `thumb` (vegeu el 001).
-3. **Veu**: `vidiq_voiceover_generate` amb `scriptLines` → desa `timings.json` (`audioUrl`, `total`, `starts` = startSeconds de cada línia) → `curl -o videos/NNN/voz.mp3 <audioUrl>`.
+3. **Veu**: `vidiq_voiceover_generate` amb `scriptLines` (màxim 50 línies per crida: si n'hi ha més, fes dues crides tallant on la suma de caràcters de cada meitat quedi just per sota d'un múltiple de 1.000 —es cobra per cada 1.000 arrodonit a l'alça—, uneix els MP3 amb 0,5 s de silenci entre mig i 1,5 s al final, i suma l'offset als `starts` de la segona meitat) → desa `timings.json` (`audioUrl`, `total`, `starts` = startSeconds de cada línia) → `curl -o videos/NNN/voz.mp3 <audioUrl>`.
 4. **Prova visual**: `python3 motor/render_video.py videos/NNN --stills t1,t2,…` (un fotograma per escena), fes un full de contactes i **mira'l**: res tallat, res tapant el comptador d'hores de dalt, textos llegibles. Corregeix i repeteix.
 5. **Render**: `nohup python3 motor/render_video.py videos/NNN > videos/NNN/render.log 2>&1 &` (≈ 5 min de render per minut de vídeo; vigila el log). Surt `video.mp4`.
-6. **Miniatura**: `python3 motor/make_thumb.py videos/NNN` → `thumb.jpg`. Mira-la.
+6. **Miniatura**: `python3 motor/make_thumb.py videos/NNN` → `thumb.jpg`. Mira-la. Per defecte porta el protagonista (`thumb.person: {fatigue, mood}`) a l'esquerra i 2–3 paraules grans a la dreta; sense `person` surt el cervell.
 7. **Shorts** (2–3 per vídeo, 25–55 s, trams que s'entenguin sols): vertical nadiu 1080×1920 amb subtítols paraula a paraula i el protagonista: `python3 motor/render_video.py videos/NNN --short <línia_ini> <línia_fi> "<ganxo>" short1` (prova abans amb `--stills 2,15` al final i mira els fotogrames). `make_short.py` queda obsolet.
 8. **Pujar**: `bash motor/publish_media.sh videos/NNN/video.mp4 videos/NNN/thumb.jpg videos/NNN/short1.mp4 …` → URL públiques → `vidiq_video_upload(url=…)` per a cada vídeo (uploadId) i `vidiq_upload_image(image=<url thumb>)` (imageId).
 9. **Esborranys** amb `vidiq_social_post_draft_create` (destinació YOUTUBE, el platformAccountId de dalt, `privacyStatus: "public"`, `categoryId: 27` Educació, `publishAt` programat):
    - Vídeos llargs: dimarts i divendres a les **00:00 UTC** (18:00 Mèxic, 19:00 Colòmbia, 21:00 Argentina: 2–3 h abans del pic d'audiència). Shorts: un cada dia a les **22:00 UTC** (16:00 Mèxic, sortida d'escola/feina).
    - Descripció: 2–3 frases de ganxo + capítols (`00:00 …`, a partir de `timings.json`; el primer ha de ser 00:00 i mínim 3) + «Fuentes:» amb la llista + «Contenido divulgativo; no sustituye el consejo médico.» + 3 hashtags.
    - Tags: 10–15 en castellà. Miniatura: `thumbnailImageId`.
+   - Si canvies el vídeo d'un esborrany amb `vidiq_social_post_draft_update`, a YouTube es perd el `publishAt`: torna'l a enviar i comprova `scheduledFor` abans d'ensenyar-ho al Manel.
    - **Cada Short també a Instagram i TikTok**, en un esborrany a part (mateix `uploadId`, mateix `publishAt` que a YouTube) amb dues destinacions:
      - INSTAGRAM `platformAccountId: "40152129084402422"` (@cuerpoallimite_)
      - TIKTOK `platformAccountId: "_000JHie2bTBaugdZ0FUGo0FqsRC32tg5395"` amb `privacyLevel: "PUBLIC_TO_EVERYONE"`, `allowComment: true`, `musicUsageConfirmed: true`, `isAiGenerated: true` (opcions triades pel Manel el 23/11/2026; la veu és d'IA).

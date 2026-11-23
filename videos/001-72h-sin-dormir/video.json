@@ -5,6 +5,18 @@
  "accent": "#FB7185",
  "lines": [
   {
+   "text": "Son las cuatro de la madrugada. Llevas veintiuna horas despierto, te arden los ojos y tu cerebro ya no funciona igual. ¿Hasta dónde podrías aguantar?",
+   "scene": {
+    "type": "persona",
+    "hour": 21,
+    "fatigue": 0.62,
+    "mood": "tired",
+    "big": "04:00",
+    "label": "HORA 21",
+    "sub": "Llevas toda la noche despierto"
+   }
+  },
+  {
    "text": "En diciembre de 1963, un estudiante de diecisiete años llamado Randy Gardner decidió no dormir. Aguantó once días seguidos: más de doscientas sesenta horas despierto.",
    "scene": {
     "type": "counter",
@@ -21,6 +33,13 @@
     "kicker": "HORA A HORA",
     "title": "72 HORAS\nSIN DORMIR",
     "sub": "Lo que dice la ciencia de verdad"
+   }
+  },
+  {
+   "text": "Y quédate hasta el final, porque te voy a contar el mito sobre el sueño que más gente se cree, y que quizá te está afectando ahora mismo.",
+   "scene": {
+    "type": "question",
+    "text": "¿Cuál es el mito\nmás peligroso?"
    }
   },
   {
@@ -62,6 +81,23 @@
     "label": "SISTEMA GLINFÁTICO",
     "sub": "+60 % de espacio entre neuronas al dormir",
     "source": "Xie et al., Science (2013) · ratones"
+   }
+  },
+  {
+   "text": "Y esto importa. En personas sanas, una sola noche sin dormir aumentó cerca de un cinco por ciento el beta-amiloide en el hipocampo, una proteína relacionada con el alzhéimer. Eso no significa que una noche en vela cause la enfermedad, pero muestra que dormir también es mantenimiento.",
+   "scene": {
+    "type": "stats",
+    "items": [
+     {
+      "value": 5,
+      "prefix": "+",
+      "suffix": " %",
+      "label": "Beta-amiloide en el hipocampo",
+      "color": "red"
+     }
+    ],
+    "sub": "Tras una sola noche sin dormir (personas sanas)",
+    "source": "Shokri-Kojori et al., PNAS (2018)"
    }
   },
   {
@@ -119,7 +155,7 @@
    }
   },
   {
-   "text": "Hora veinticuatro. Un día entero sin dormir. El equivalente sube a un gramo de alcohol por litro: el doble del límite para conducir en muchos países.",
+   "text": "Hora veinticuatro. Un día entero sin dormir. El equivalente sube a un gramo de alcohol por litro: el doble del límite para manejar en muchos países.",
    "scene": {
     "type": "bars",
     "hour": 24,
@@ -163,6 +199,23 @@
     "hour": 24,
     "speed": 100,
     "seconds": 3
+   }
+  },
+  {
+   "text": "Y no es teoría. Un análisis de la Fundación AAA para la Seguridad Vial calculó que, en Estados Unidos, alrededor de uno de cada cinco choques mortales involucra a un conductor con sueño.",
+   "scene": {
+    "type": "stats",
+    "hour": 24,
+    "items": [
+     {
+      "value": 21,
+      "suffix": " %",
+      "label": "de los choques mortales",
+      "color": "red"
+     }
+    ],
+    "sub": "involucran a un conductor somnoliento (EE. UU., 2009–2013)",
+    "source": "Tefft, AAA Foundation for Traffic Safety (2014)"
    }
   },
   {
@@ -224,6 +277,20 @@
     "down": "INSULINA",
     "downSub": "funciona peor",
     "source": "Spiegel, Leproult & Van Cauter, The Lancet (1999)"
+   }
+  },
+  {
+   "text": "Y si esto se repite noche tras noche, los expertos lo relacionan con más riesgo de obesidad, diabetes tipo dos y presión arterial alta.",
+   "scene": {
+    "type": "list",
+    "hour": 30,
+    "color": "red",
+    "items": [
+     "Obesidad",
+     "Diabetes tipo 2",
+     "Presión arterial alta"
+    ],
+    "source": "Watson et al., Sleep (2015)"
    }
   },
   {
@@ -295,6 +362,17 @@
    }
   },
   {
+   "text": "Tus reacciones se vuelven más lentas y cometes más errores. Y lo curioso es que tú sigues creyendo que lo estás haciendo bien.",
+   "scene": {
+    "type": "persona",
+    "hour": 50,
+    "fatigue": 0.95,
+    "mood": "tired",
+    "label": "HORA 50",
+    "sub": "Rindes peor…\ny no te das cuenta"
+   }
+  },
+  {
    "text": "Hora setenta y dos. Tres días. Ahora la mente empieza a fallar de verdad.",
    "scene": {
     "type": "clock",
@@ -344,6 +422,65 @@
    }
   },
   {
+   "text": "Hoy, el libro Guinness de los récords ya no acepta intentos de este tipo, por el riesgo que suponen. Y seguro te estás preguntando: ¿se puede morir por no dormir?",
+   "scene": {
+    "type": "question",
+    "text": "¿Se puede morir\npor no dormir?"
+   }
+  },
+  {
+   "text": "En experimentos de los años ochenta, las ratas a las que se impedía dormir por completo murieron en un plazo de entre once y treinta y dos días. Ojo: es un estudio en animales, y nunca se ha hecho en personas, por razones obvias.",
+   "scene": {
+    "type": "counter",
+    "value": 32,
+    "label": "DÍAS COMO MÁXIMO",
+    "pill": "ESTUDIO EN RATAS",
+    "sub": "Murieron entre los días 11 y 32",
+    "source": "Rechtschaffen et al., Sleep (1989)"
+   }
+  },
+  {
+   "text": "En humanos existe una enfermedad rarísima, el insomnio familiar letal, en la que el cerebro pierde la capacidad de dormir. Pero es una enfermedad por priones que daña el tálamo: la falta de sueño es solo una parte del problema.",
+   "scene": {
+    "type": "title",
+    "kicker": "MUY RARA",
+    "title": "INSOMNIO\nFAMILIAR LETAL",
+    "sub": "Una enfermedad por priones que daña el tálamo",
+    "source": "Lugaresi et al., NEJM (1986)"
+   }
+  },
+  {
+   "text": "Y ahora sí, el mito que te prometí. El más peligroso de todos: «yo ya me acostumbré a dormir poco».",
+   "scene": {
+    "type": "title",
+    "kicker": "MITO",
+    "title": "«ME ACOSTUMBRÉ\nA DORMIR POCO»",
+    "sub": "Lo que dice la ciencia de verdad"
+   }
+  },
+  {
+   "text": "En un experimento, personas que durmieron seis horas cada noche durante dos semanas acabaron rindiendo tan mal como si hubieran pasado hasta dos noches seguidas sin dormir. Lo peor: ellas sentían que solo estaban un poco cansadas.",
+   "scene": {
+    "type": "list",
+    "color": "red",
+    "items": [
+     "Rendimiento: como hasta 2 noches sin dormir",
+     "Sensación: «solo un poco de sueño»"
+    ],
+    "source": "Van Dongen et al., Sleep (2003)"
+   }
+  },
+  {
+   "text": "¿Y recuperar el sueño el fin de semana? Un estudio de dos mil diecinueve encontró que dormir de más el sábado y el domingo no evitó que el cuerpo procesara peor el azúcar durante la semana.",
+   "scene": {
+    "type": "title",
+    "kicker": "OTRO MITO",
+    "title": "«LO RECUPERO EL\nFIN DE SEMANA»",
+    "sub": "No compensa del todo",
+    "source": "Depner et al., Current Biology (2019)"
+   }
+  },
+  {
    "text": "Y ahora, la buena noticia.",
    "scene": {
     "type": "title",
@@ -360,7 +497,16 @@
    }
   },
   {
-   "text": "Gardner, después de once días, durmió unas catorce horas seguidas, y en pocos días estaba recuperado.",
+   "text": "El sueño profundo ayuda a reparar el cuerpo y a limpiar el cerebro, y el sueño REM ordena las emociones y los recuerdos.",
+   "scene": {
+    "type": "brain",
+    "mode": "flow",
+    "label": "SUEÑO PROFUNDO Y REM",
+    "sub": "Reparar, limpiar y ordenar"
+   }
+  },
+  {
+   "text": "Gardner, después de once días, durmió unas catorce horas seguidas, y en pocos días estaba recuperado. Eso sí: estaba supervisado por médicos, y no es algo que debas intentar.",
    "scene": {
     "type": "counter",
     "value": 14,
@@ -394,7 +540,53 @@
    }
   },
   {
-   "text": "Así que la próxima vez que pienses en pasar la noche en vela, recuerda lo que pasa dentro de ti. Y si quieres ver qué le pasa a tu cuerpo en otras situaciones límite, suscríbete. Esta noche, duerme.",
+   "text": "Y si eres adolescente, necesitas todavía más: entre ocho y diez horas, según la Academia Estadounidense de Medicina del Sueño.",
+   "scene": {
+    "type": "title",
+    "kicker": "ADOLESCENTES",
+    "title": "8 A 10\nHORAS",
+    "sub": "Academia Estadounidense de Medicina del Sueño",
+    "calm": true,
+    "source": "Paruthi et al., J Clin Sleep Med (2016)"
+   }
+  },
+  {
+   "text": "Algunos trucos que sí tienen respaldo. La cafeína tomada incluso seis horas antes de acostarte puede quitarte más de una hora de sueño.",
+   "scene": {
+    "type": "counter",
+    "value": 6,
+    "label": "HORAS ANTES DE DORMIR",
+    "pill": "CAFEÍNA",
+    "sub": "Aún puede quitarte más de una hora de sueño",
+    "calm": true,
+    "source": "Drake et al., J Clin Sleep Med (2013)"
+   }
+  },
+  {
+   "text": "Si una noche dormiste mal, una siesta corta ayuda. En un estudio de la NASA, pilotos que durmieron unos veintiséis minutos mejoraron su rendimiento un treinta y cuatro por ciento.",
+   "scene": {
+    "type": "counter",
+    "value": 26,
+    "label": "MINUTOS DE SIESTA",
+    "pill": "ESTUDIO DE LA NASA",
+    "sub": "+34 % de rendimiento en pilotos",
+    "calm": true,
+    "source": "Rosekind et al., NASA TM-108839 (1994)"
+   }
+  },
+  {
+   "text": "Y lo más sencillo: acostarte y levantarte a la misma hora, y buscar luz de día por la mañana, que es lo que pone en hora tu reloj interno.",
+   "scene": {
+    "type": "list",
+    "color": "cyan",
+    "items": [
+     "Mismo horario todos los días",
+     "Luz de día por la mañana"
+    ]
+   }
+  },
+  {
+   "text": "Así que la próxima vez que pienses en pasar la noche en vela, recuerda todo lo que pasa dentro de ti. Si este video te sirvió, compártelo con alguien que duerme muy poco. Y si quieres ver qué le pasa a tu cuerpo en otras situaciones límite, suscríbete. Esta noche, duerme.",
    "scene": {
     "type": "endcard",
     "text": "Esta noche, duerme."
@@ -412,7 +604,16 @@
   "Irwin M, et al. Partial night sleep deprivation reduces natural killer and cellular immune responses in humans. FASEB J. 1996;10:643–653.",
   "Vyazovskiy VV, et al. Local sleep in awake rats. Nature. 2011;472:443–447.",
   "Waters F, et al. Severe sleep deprivation causes hallucinations and a gradual progression toward psychosis with increasing time awake. Front Psychiatry. 2018;9:303.",
-  "Watson NF, et al. Recommended amount of sleep for a healthy adult (AASM/SRS). Sleep. 2015;38:843–844."
+  "Watson NF, et al. Recommended amount of sleep for a healthy adult (AASM/SRS). Sleep. 2015;38:843–844.",
+  "Shokri-Kojori E, et al. β-Amyloid accumulation in the human brain after one night of sleep deprivation. PNAS. 2018;115:4483–4488.",
+  "Tefft BC. Prevalence of motor vehicle crashes involving drowsy drivers, United States, 2009–2013. AAA Foundation for Traffic Safety, 2014.",
+  "Rechtschaffen A, et al. Sleep deprivation in the rat: X. Integration and discussion of the findings. Sleep. 1989;12:68–87.",
+  "Lugaresi E, et al. Fatal familial insomnia and dysautonomia with selective degeneration of thalamic nuclei. N Engl J Med. 1986;315:997–1003.",
+  "Van Dongen HPA, et al. The cumulative cost of additional wakefulness. Sleep. 2003;26:117–126.",
+  "Depner CM, et al. Ad libitum weekend recovery sleep fails to prevent metabolic dysregulation during a repeating pattern of insufficient sleep and weekend recovery sleep. Current Biology. 2019;29:957–967.",
+  "Paruthi S, et al. Recommended amount of sleep for pediatric populations (AASM). J Clin Sleep Med. 2016;12:785–786.",
+  "Drake C, et al. Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. J Clin Sleep Med. 2013;9:1195–1200.",
+  "Rosekind MR, et al. Crew factors in flight operations IX: Effects of planned cockpit rest on crew performance and alertness in long-haul operations. NASA Technical Memorandum 108839, 1994."
  ],
  "thumb": {
   "l1acc": "72",
@@ -425,6 +626,10 @@
    306
   ],
   "s1": 230,
-  "s2": 100
+  "s2": 100,
+  "person": {
+   "fatigue": 0.95,
+   "mood": "tired"
+  }
  }
 }

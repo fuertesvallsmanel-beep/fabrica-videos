@@ -433,7 +433,9 @@
     const hold = E('div', 'position:absolute;left:250px;top:230px'); hold.innerHTML = personSVG(500); el.appendChild(hold);
     const c = col(sc.color || (sc.mood === 'angry' ? 'red' : (sc.mood === 'happy' || sc.mood === 'sleep') ? 'cyan' : 'violet'));
     const hd = header(el, sc.label, sc.sub, c, 1000, 420, 800);
-    return { el, render(lt) { const a = eo(prog(lt, 0, .6)); hold.style.opacity = a; hold.style.transform = `translateY(${(1 - a) * 40}px)`; personRender(hold.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.mood || 'ok'); hd(lt); } };
+    const big = sc.big ? E('div', `position:absolute;left:1000px;top:600px;color:#fff;font-size:220px;font-weight:900;letter-spacing:-6px;line-height:1;text-shadow:0 0 50px ${c}88;font-variant-numeric:tabular-nums`, sc.big) : null;
+    if (big) el.appendChild(big);
+    return { el, render(lt) { const a = eo(prog(lt, 0, .6)); hold.style.opacity = a; if (big) { enter(big, lt, .5, 30); big.style.opacity = (+big.style.opacity || 0) * (Math.floor(lt * 2) % 2 ? .55 : 1); } hold.style.transform = `translateY(${(1 - a) * 40}px)`; personRender(hold.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.mood || 'ok'); hd(lt); } };
   };
 
   S.endcard = (sc) => {
@@ -510,7 +512,7 @@
       const hk = document.querySelector('#vtop .hk'); if (hk) { const a = eo(prog(t, T0, .6)); hk.style.transform = `scale(${.85 + .15 * back(prog(t, T0, .6))})`; hk.style.opacity = a; }
       const W2 = window.__words; let k = W2.findIndex(w => t >= w.t0 && t < w.t1); if (k < 0) k = W2.findIndex(w => w.t0 > t) - 1;
       if (k >= 0) { const st = Math.floor(k / 5) * 5; const chunk = W2.slice(st, st + 5).filter(w => w.line === W2[k].line);
-        document.getElementById('vcap').innerHTML = '<div>' + chunk.map(w => `<span style="display:inline-block;margin:0 .14em;${w === W2[k] ? `color:${C.yellow};transform:scale(1.08)` : ''}">${w.w}</span>`).join('') + '</div>'; }
+        document.getElementById('vcap').innerHTML = '<div>' + chunk.map(w => `<span style="display:inline-block;margin:0 .17em;${w === W2[k] ? `color:${C.yellow};text-shadow:0 0 24px ${C.yellow}88` : ''}">${w.w}</span>`).join('') + '</div>'; }
       if (t > T1 - 2.6) document.getElementById('vcap').innerHTML = `<div style="color:${C.cyan}">Video completo en el canal ▶</div>`;
     }
   }
@@ -529,5 +531,5 @@
     for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) { const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y); if (d < 150) { cx.strokeStyle = `rgba(129,140,248,${(1 - d / 150) * .13})`; cx.beginPath(); cx.moveTo(pts[i].x, pts[i].y); cx.lineTo(pts[j].x, pts[j].y); cx.stroke(); } }
     pts.forEach(p => { cx.fillStyle = `rgba(165,180,252,${.3 + .2 * Math.sin(t * 2 + p.ph)})`; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.28); cx.fill(); });
   }
-  window.Motor = { build, render, S };
+  window.Motor = { build, render, S, personSVG, personRender };
 })();

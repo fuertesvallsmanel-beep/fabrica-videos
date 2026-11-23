@@ -84,7 +84,7 @@ def mix(vdir, V, starts, total, t_off, video_in, out):
     wavfile.write(str(vdir / 'music.wav'), SR, (np.stack([mus, mus], 1) * 32767 * .9).clip(-32767, 32767).astype(np.int16))
     # la música baixa sola quan parla la veu (sidechain)
     fc = ('[1:a]aresample=44100,asplit=2[v1][v2];'
-          '[3:a]volume=0.5[mu];[mu][v1]sidechaincompress=threshold=0.02:ratio=8:attack=20:release=400[duck];'
+          '[3:a]volume=0.24[mu];[mu][v1]sidechaincompress=threshold=0.015:ratio=10:attack=15:release=500[duck];'
           '[2:a]volume=1.0[fx];[v2][duck][fx]amix=inputs=3:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[a]')
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(video_in), '-ss', f'{t_off:.3f}', '-t', f'{total:.3f}', '-i', str(vdir / 'voz.mp3'),
                     '-i', str(vdir / 'sfx.wav'), '-i', str(vdir / 'music.wav'), '-filter_complex', fc,
