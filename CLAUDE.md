@@ -56,6 +56,15 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
 10. **Avisar el Manel** (SendUserMessage + PushNotification): llista curta en català dels vídeos i Shorts amb dies i hores, la miniatura, i la pregunta «Responc "OK" per programar-ho tot?». **No publiquis res fins que ell digui OK** (vidIQ ho exigeix). Quan digui OK: `vidiq_social_post_publish` per a cada esborrany amb la seva `revision`.
 11. **Desar**: commit a `main` de `video.json`, `timings.json`, `thumb.jpg`, canvis del motor, `temas.md` (marca fets) i una línia a `registre.md` (data, títols, crèdits gastats). Els `.mp4` no van a main.
 
+## Plugin «Social Media Skills» (instal·lat el 23/11/2026)
+Si les skills `social-media-skills:*` surten a la llista, carrega-les amb l'eina Skill **just abans** del pas on toquen (no totes de cop) i aplica-ho als vídeos. Si no hi són, continua igual. Les seves parts sobre WoopSocial no ens afecten: publiquem amb vidIQ.
+- Pas 0 (revisió): `analytics-and-reporting` per llegir les dades i `experimentation-and-ab-testing` per triar i avaluar la variable de la setmana.
+- Pas 0b (nínxols): `viral-reverse-engineering` sobre 1–2 outliers de vidIQ (estructura, ganxo, ritme; mai copiar contingut).
+- Pas 2 (guió): `youtube-long-form` i `hook-writer` (primers 30 s i títol); `content-research-and-sourcing` per verificar cada xifra abans de la veu.
+- Pas 6 (miniatura): `thumbnail-design`.
+- Pas 7 (Shorts): `youtube-shorts` per triar trams i ganxos.
+- Pas 9 (metadades): `youtube-publishing-and-metadata` (títol, descripció, capítols, tags).
+
 ## Normes de YouTube que cal respectar
 - Res de contingut repetitiu o de plantilla: cada vídeo amb guió, escenes i miniatura propis.
 - Res de contingut angoixant o manipulador; res d'avatars d'IA que facin de metge.
