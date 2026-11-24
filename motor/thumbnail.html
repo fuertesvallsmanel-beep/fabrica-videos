@@ -2,8 +2,8 @@
 <html><head><meta charset="utf-8"><style>
 html,body{margin:0;width:1280px;height:720px;overflow:hidden;font-family:'Inter Display',sans-serif;background:radial-gradient(900px 600px at 30% 55%,#2a1f6e 0%,#0b0d26 60%,#04050c 100%)}
 #brain{position:absolute;left:-40px;top:120px}
-#t{position:absolute;right:50px;top:70px;width:640px;text-align:right}
-.big{font-weight:900;color:#fff;line-height:.9;letter-spacing:-4px;text-shadow:0 8px 30px rgba(0,0,0,.6)}
+#t{position:absolute;right:50px;top:60px;width:700px;text-align:right}
+.big{font-family:'Anton',sans-serif;font-weight:400;color:#fff;line-height:.92;letter-spacing:0;text-shadow:0 8px 30px rgba(0,0,0,.6)}
 .acc{color:var(--acc)}
 .tag{display:inline-block;margin-top:26px;padding:12px 26px;border-radius:14px;background:var(--acc);color:#0b0d26;font-weight:900;font-size:40px}
 </style></head><body>
@@ -13,7 +13,7 @@ html,body{margin:0;width:1280px;height:720px;overflow:hidden;font-family:'Inter 
 // window.THUMB = {l1, l1acc, l2, tag, acc}
 function make(T){
   document.body.style.setProperty('--acc', T.acc||'#FB7185');
-  document.getElementById('t').innerHTML = `<div class="big" style="font-size:${T.s1||210}px"><span class="acc">${T.l1acc||''}</span>${T.l1||''}</div><div class="big" style="font-size:${T.s2||92}px;margin-top:12px">${T.l2||''}</div>${T.tag?`<div class="tag">${T.tag}</div>`:''}`;
+  document.getElementById('t').innerHTML = `<div class="big" style="font-size:${T.s1||270}px"><span class="acc">${T.l1acc||''}</span>${T.l1||''}</div><div class="big" style="font-size:${T.s2||118}px;margin-top:12px">${T.l2||''}</div>${T.tag?`<div class="tag">${T.tag}</div>`:''}`;
   const P={cer:'M84,252 C66,170 118,96 210,70 C290,44 392,46 460,86 C540,132 572,212 548,280 C534,318 500,334 458,330 C430,352 396,358 368,348 C344,372 300,380 270,366 C236,380 190,376 162,350 C120,340 92,300 84,252 Z',cb:'M418,318 C468,318 512,344 506,384 C500,420 452,436 408,424 C376,416 362,392 372,366 C380,342 396,320 418,318 Z',bs:'M332,350 C340,392 344,424 338,466 L372,466 C378,430 382,398 384,360 Z',g:'M168,286 C220,270 262,262 300,246 C330,234 360,226 392,224 M318,58 C306,96 322,126 304,160 C292,186 304,212 296,240 M120,200 C150,170 140,140 176,124 C206,112 200,90 236,84 M396,90 C388,130 414,150 406,184 M450,116 C440,150 470,170 466,204'};
   if(T.person){const b=document.getElementById('brain');b.style.cssText='position:absolute;left:40px;top:70px';
     b.innerHTML=`<div style="position:absolute;left:60px;top:120px;width:480px;height:480px;border-radius:50%;background:radial-gradient(${T.acc||'#FB7185'}55,transparent 70%)"></div>`+Motor.personSVG(600);

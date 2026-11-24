@@ -33,7 +33,7 @@ Compara les setmanes 1–4 amb les 5–8 a `metriques.md` (vistes per vídeo, su
 
 ## Feina de cada execució setmanal (1–2 vídeos llargs segons crèdits + 4–7 Shorts)
 1. **Temes**: agafa els 2 primers temes pendents de `temas.md` (alterna línies H/C/E). Fes 1 `vidiq_outliers` (es, long, threeMonths, maxSubscribers 100000) per confirmar que el tema encara funciona i per inspirar el títol.
-2. **Guió** → `videos/NNN-slug/video.json` (copia l'estructura de `videos/001-72h-sin-dormir/video.json`):
+2. **Guió** → `videos/NNN-slug/video.json` (abans de triar escenes, llegeix `motor/DISSENY.md`) (copia l'estructura de `videos/001-72h-sin-dormir/video.json`):
    - 45–55 línies, **7.900–8.300 caràcters** (la veu fa ≈ 16 caràcters/s, així que surten ≈ 8:05; **el vídeo ha de passar de 8:00** perquè YouTube permeti anuncis a mig vídeo; comprova `total` a `timings.json` i, si no hi arriba, afegeix una frase).
    - Ganxo: la primera escena és el protagonista en una situació concreta (p. ex. `persona` amb `big: "04:00"`), i a la línia 3–4 promet una sorpresa per al final (un mite, una dada) i compleix-la.
    - Estructura: ganxo amb una dada o història real (0–15 s) → promesa («hora a hora», «lo que dice la ciencia de verdad») → explicació → clímax → part positiva / què fer → tancament «suscríbete».
@@ -76,6 +76,8 @@ Cap vídeo no passa al pas següent fins que superi la revisió. Revisa, millora
 8. Títol i miniatura: generen curiositat sense enganyar? El títol (≤ 60 caràcters visibles) i la miniatura (≤ 4 paraules) es complementen, no es repeteixen.
 9. Durada: ≥ 7.900 caràcters (vídeo > 8:00).
 
+**Revisió de disseny — director d'art (dins la Revisió B).** Llança un agent separat (eina Agent) que no hagi fet el vídeo. Dona-li el full de contactes (un fotograma cada 4 s), la miniatura a 1280×720 i a 320×180, i `motor/DISSENY.md`; demana-li que carregui les skills `anthropic-skills:frontend-design` i `anthropic-skills:video-making` si hi són, i que puntuï de 0 a 10: llegibilitat al mòbil, jerarquia (un element protagonista per escena), ús de l'espai, coherència de color amb el significat, tipografia, i miniatura. Tot el que tingui < 8 es corregeix (al vídeo o al motor, perquè no torni a passar) abans de pujar.
+
 **Revisió B — vídeo acabat (després del pas 6, abans de pujar).** Treu un fotograma cada 4 s del `video.mp4` (full de contactes) i dels Shorts, i mira'ls tots. Comprova:
 - res tallat, cap text sobreposat ni fora de pantalla, res tapant el comptador d'hores;
 - cap escena buida o «morta» més de 4 s; el protagonista surt on toca;
@@ -92,6 +94,7 @@ Si les skills `social-media-skills:*` surten a la llista, carrega-les amb l'eina
 - Pas 0b (nínxols): `viral-reverse-engineering` sobre 1–2 outliers de vidIQ (estructura, ganxo, ritme; mai copiar contingut).
 - Pas 2 (guió): `youtube-long-form` i `hook-writer` (primers 30 s i títol); `content-research-and-sourcing` per verificar cada xifra abans de la veu.
 - Pas 6 (miniatura): `thumbnail-design`.
+- Escenes noves o canvis al motor: `anthropic-skills:frontend-design`, `anthropic-skills:video-making` i `dataviz` (per a gràfics de dades).
 - Pas 7 (Shorts): `youtube-shorts` per triar trams i ganxos.
 - Pas 9 (metadades): `youtube-publishing-and-metadata` (títol, descripció, capítols, tags).
 

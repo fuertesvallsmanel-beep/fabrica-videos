@@ -8,3 +8,4 @@ Cada error trobat a les revisions: data · vídeo · error · solució · causa 
 | 2026-11-23 | 001 | Vídeo de 5 min (sense anuncis a mig vídeo) | Guió allargat a 7.900 caràcters | Sí (CLAUDE.md: 7.900–8.300) |
 | 2026-11-23 | 001 | Títol «YA ME ACOSTUMBRÉ» tocava les vores | Text més curt | Sí (lib.js: el títol s'encongeix sol si passa de 1.700 px) |
 | 2026-11-23 | 001 | Esborranys de YouTube perdien l'hora en canviar el vídeo | Tornar a enviar publishAt | Sí (CLAUDE.md pas 9) |
+| 2026-11-24 | 001 | Textos petits per al mòbil, MAJÚSCULES espaiades, títol sobre la línia de temps, tipografia genèrica, elements petits | Revisió de disseny: Anton per als números i titulars, mínims de mida, etiquetes en minúscula (`lab()`), escenes més grans, miniatura amb el text més gran | Sí (lib.js, thumbnail.html, motor/DISSENY.md) |
