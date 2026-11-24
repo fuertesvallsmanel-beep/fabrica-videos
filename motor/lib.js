@@ -9,7 +9,7 @@
   const back = x => { x = clamp(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
   const lerp = (a, b, x) => a + (b - a) * x;
   const C = { cyan: '#67E8F9', blue: '#38BDF8', red: '#FB7185', orange: '#F97316', violet: '#A78BFA', indigo: '#818CF8', yellow: '#FDE047', green: '#4ADE80', text: '#FFFFFF', muted: '#94A3B8', soft: '#CBD5E1' };
-  const col = c => C[c] || c || C.cyan;
+  const col = c => C[c] || (typeof c === 'string' && c[0] === '#' ? c : C.cyan);
   function E(tag, css, html) { const e = document.createElement(tag); if (css) e.style.cssText = css; if (html != null) e.innerHTML = html; return e; }
   function rnd(s) { return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
   const nl = s => (s || '').replace(/\n/g, '<br>');
@@ -427,6 +427,35 @@
       <div style="position:absolute;left:200px;top:820px;display:flex;gap:60px;font-size:38px;font-weight:800"><span style="color:${C.blue}">■ Sueño profundo ↑</span><span style="color:${C.violet}">■ Sueño REM ↑</span></div>`;
     const svg = el.firstChild;
     return { el, render(lt) { svg.querySelectorAll('.sg').forEach((r, i) => { const k = eo(prog(lt, .3 + i * .1, .3)); r.setAttribute('opacity', k); }); enter(el.children[1], lt, 0, 16); enter(el.children[2], lt, 2, 20); } };
+  };
+
+
+  // ---------- òrgans: il·lustracions Servier Medical Art (CC BY 3.0) a motor/organs/ ----------
+  // sc.src (nom sense .svg), sc.label, sc.sub, sc.color, sc.pulse (batec), sc.pins [{x,y,text}] (x,y en % de la imatge),
+  // comparació: sc.src2 + sc.l1 / sc.l2 (dues imatges una al costat de l'altra, amb títol sc.label a dalt)
+  const ORG = n => `organs/${n}.svg`;
+  S.organ = (sc) => {
+    const el = E('div', 'position:absolute;inset:0');
+    const c = col(sc.color || 'red');
+    const box = (n, x, y, s) => { const b = E('div', `position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s}px;display:flex;align-items:center;justify-content:center`);
+      b.innerHTML = `<div style="position:absolute;inset:8%;border-radius:50%;background:radial-gradient(${c}33,transparent 70%)"></div><img src="${ORG(n)}" style="position:relative;max-width:88%;max-height:88%;filter:drop-shadow(0 0 22px ${c}66) saturate(1.1)">`;
+      el.appendChild(b); return b; };
+    if (sc.src2) {
+      const t = E('div', `position:absolute;left:0;right:0;top:180px;text-align:center;color:${c};font-size:34px;font-weight:800;letter-spacing:4px`, sc.label || ''); el.appendChild(t);
+      const a = box(sc.src, 260, 250, 620), b = box(sc.src2, 1040, 250, 620);
+      const mk = (txt, x, col2) => { const d = E('div', `position:absolute;left:${x}px;width:620px;top:880px;text-align:center;color:${col2};font-size:46px;font-weight:800`, txt || ''); el.appendChild(d); return d; };
+      const la = mk(sc.l1, 260, C.cyan), lb = mk(sc.l2, 1040, c);
+      const vs = E('div', `position:absolute;left:910px;top:520px;width:100px;text-align:center;color:${C.soft};font-size:48px;font-weight:900`, 'vs'); el.appendChild(vs);
+      return { el, render(lt) { enter(t, lt, 0, 16); [a, b].forEach((x, i) => { const p = eo(prog(lt, .2 + i * .35, .7)); x.style.opacity = p; x.style.transform = `scale(${.85 + .15 * p})`; }); enter(la, lt, .6); enter(lb, lt, .95); enter(vs, lt, .5); } };
+    }
+    const a = box(sc.src, 170, 190, 760);
+    const hd = header(el, sc.label, sc.sub, c, 1020, 400, 780);
+    const pins = (sc.pins || []).map((p, i) => { const d = E('div', `position:absolute;left:${170 + 760 * p.x / 100}px;top:${190 + 760 * p.y / 100}px`);
+      d.innerHTML = `<div style="position:absolute;left:-11px;top:-11px;width:22px;height:22px;border-radius:50%;background:${c};box-shadow:0 0 18px ${c}"></div><div style="position:absolute;left:26px;top:-22px;white-space:nowrap;color:#fff;font-size:32px;font-weight:800;background:#0B1020cc;padding:4px 14px;border-radius:10px;border:2px solid ${c}">${p.text}</div>`;
+      el.appendChild(d); return d; });
+    return { el, render(lt) { const p = eo(prog(lt, 0, .7)); a.style.opacity = p;
+      const beat = sc.pulse ? 1 + .045 * Math.max(0, Math.sin(lt * 2 * Math.PI * 1.2)) ** 6 : 1; a.style.transform = `scale(${(.88 + .12 * p) * beat})`;
+      pins.forEach((d, i) => enter(d, lt, 1 + i * .5, 14)); hd(lt); } };
   };
 
   S.persona = (sc) => {

@@ -111,6 +111,7 @@ def main():
         errs = []; pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
         pg.goto((ROOT / 'engine.html').as_uri()); pg.wait_for_timeout(300)
         pg.evaluate('V => { window.VIDEO = V; Motor.build(V); }', V)
+        pg.wait_for_function('[...document.images].every(i => i.complete)', timeout=20000)
         if stills:
             for s in stills:
                 tt = (short[0] + s) if short else s
