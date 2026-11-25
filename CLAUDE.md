@@ -19,6 +19,15 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 - Efectes de so: el render els posa sols segons l'escena (les transicions no porten so; tic-tac a `clock`, blips als comptadors, batecs a `amygdala` i al cor de l'escàner, segells; ambients propis de cada situació: motor i carretera al cotxe, voral al microsomni, grills o ocells i vibració del mòbil al llit, teclat a l'escriptori; raig, bip i zoom a l'escàner). Per a un lloc nou, afegeix-ne el so a `sfx()` de l'escena i a `sfx_track` de `render_video.py`. El render en limita el volum sol (≥ 10 dB per sota de la veu, informe a `so.json`).
 - Les URL de `assets.vidiq.com` es poden baixar amb `curl` des d'aquí.
 
+## Protocol del dissabte (resum; el detall és a les seccions de sota)
+1. Crèdits (`vidiq_balance`) → quants vídeos toquen. 2. Revisió de rendiment (secció 0) i, el primer dissabte del mes, exploració (0b).
+3. Temes de `temas.md` → guió `video.json` amb **≥ 3 escenes noves pròpies del tema**, plans de 5–7 s, 7.500–8.000 caràcters.
+4. **Porta A**: agent revisor del guió, tots els punts ≥ 8 (abans de gastar crèdits de veu).
+5. Escenes noves al motor (GSAP a `fx.js` / llocs a `escenas.js`) → `qa.py` a 0 problemes → fotogrames de prova i full de contactes mirat.
+6. Veu → render (pauses de 0,5 s automàtiques) → `so.json` ≥ 9,5 dB → miniatura → Shorts.
+7. **Porta B**: director d'art (agent separat) ≥ 8 a tot + revisió B (fotogrames cada 4 s, àudio, Shorts, miniatura a 320×180). El que falla es corregeix al motor, no només al vídeo, i s'apunta a `qualitat.md`.
+8. Pujar → esborranys programats → missatge al Manel i esperar el seu «OK» → publicar → commit.
+
 ## 0. Revisió de rendiment (cada setmana, ABANS de produir) — ≤ 60 crèdits
 Objectiu: que cada setmana els vídeos nous siguin millors que els anteriors.
 - Eines vidIQ: `vidiq_channel_analytics` / `vidiq_channel_analytics_extended` (visualitzacions, CTR de la miniatura, durada mitjana, % vist, subscriptors guanyats, d'on ve el trànsit), `vidiq_video_stats` per vídeo, `vidiq_channel_performance_trends` per a la tendència. Si alguna dada (p. ex. la retenció segon a segon) no hi és, digues-ho al Manel en una línia i fes servir la que hi hagi.

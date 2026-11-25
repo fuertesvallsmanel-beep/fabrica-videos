@@ -34,12 +34,13 @@
   <text x="0" y="22" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="75%" font-size="34" fill="${INK}">TITO</text></g>
 
  <g class="props"><g class="wheel" opacity="0"><circle cx="200" cy="530" r="112" fill="none" stroke="#0B0F4A" stroke-width="24"/><path d="M200,530 L94,512 M200,530 L306,512 M200,530 L200,640" stroke="#0B0F4A" stroke-width="18"/><circle cx="200" cy="530" r="30" fill="#2433C4"/><circle cx="200" cy="530" r="10" fill="#FFD60A"/></g>
-  <g class="mug" opacity="0"><rect x="228" y="442" width="64" height="74" rx="10" fill="#EEF1FF"/><path d="M292,458 C318,458 318,500 292,500" stroke="#EEF1FF" stroke-width="10" fill="none"/><rect x="228" y="442" width="64" height="12" rx="5" fill="#C7D0FF"/><rect x="236" y="470" width="48" height="16" rx="4" fill="#FF3B6B"/></g></g>
+  </g>
  <g class="arms" opacity="0">
   <path class="aLs" fill="none" stroke="${SD}" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/><path class="aL" fill="none" stroke="${SK}" stroke-width="41" stroke-linecap="round" stroke-linejoin="round"/><path class="sL" fill="none" stroke="${TEE}" stroke-width="64" stroke-linecap="round"/>
   <path class="aRs" fill="none" stroke="${SD}" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/><path class="aR" fill="none" stroke="${SK}" stroke-width="41" stroke-linecap="round" stroke-linejoin="round"/><path class="sR" fill="none" stroke="${TEE}" stroke-width="64" stroke-linecap="round"/>
   <g class="hL"><circle r="26" fill="${SK}"/><ellipse cx="14" cy="-12" rx="9" ry="12" fill="${SK}"/><path d="M-12,8 Q0,16 12,8" stroke="${SD}" stroke-width="3" fill="none"/></g>
   <g class="hR"><circle r="26" fill="${SK}"/><ellipse cx="-14" cy="-12" rx="9" ry="12" fill="${SK}"/><path d="M-12,8 Q0,16 12,8" stroke="${SD}" stroke-width="3" fill="none"/></g>
+  <g class="mug" opacity="0"><path d="M-30,-22 C-48,-22 -48,14 -30,14" stroke="#EEF1FF" stroke-width="10" fill="none"/><rect x="-30" y="-40" width="60" height="72" rx="10" fill="#EEF1FF"/><rect x="-30" y="-40" width="60" height="12" rx="5" fill="#C7D0FF"/><rect x="-22" y="-8" width="44" height="14" rx="4" fill="#FF3B6B"/><circle cx="-34" cy="0" r="14" fill="${SK}"/></g>
  </g>
  <g class="scan" opacity="0" data-head="${head ? 1 : 0}">${head ? '' : `
   <circle cx="${sx}" cy="${sy}" r="${sr + 22}" fill="url(#${u}g)"/>
@@ -130,22 +131,22 @@
     const P = {
       wheel: { L: [[110, 448], [58, 560], [118, 486]], R: [[290, 448], [342, 560], [282, 486]] },
       type: { L: [[110, 448], [62, 548], [148, 566]], R: [[290, 448], [338, 548], [252, 566]] },
-      mug: { L: null, R: [[290, 448], [336, 586], [252, 494]] },
+      mug: { L: null, R: [[290, 448], [340, 580], [262, 500]] },
       wave: { L: null, R: [[290, 448], [372, 380], [356, 270]] },
       point: { L: null, R: [[290, 448], [360, 470], [420, 430]] } }[pose];
     A.setAttribute('opacity', P ? 1 : 0); q('wheel').setAttribute('opacity', pose === 'wheel' ? 1 : 0); q('mug').setAttribute('opacity', pose === 'mug' ? 1 : 0);
     if (P) ['L', 'R'].forEach(k => {
       const a = P[k], vis = !!a; ['a' + k + 's', 'a' + k, 's' + k, 'h' + k].forEach(c => q(c).setAttribute('opacity', vis ? 1 : 0)); if (!vis) return;
       let [S0, E0, W0] = a.map(p => p.slice());
-      if (pose === 'type') { W0[1] += Math.abs(Math.sin(t * 14 + (k === 'L' ? 0 : 1.7))) * -8; }
+      if (pose === 'type') { W0[1] += Math.sin(t * 6 + (k === 'L' ? 0 : 2)) * 2.5; }
       if (pose === 'wave') { const w = Math.sin(t * 7) * 26; W0[0] += w; }
       if (pose === 'wheel') { const st = Math.sin(t * .8) * 4; W0[1] += st * (k === 'L' ? 1 : -1); }
-      if (pose === 'mug') { const sip = Math.max(0, Math.sin(t * .9)) ** 6; W0 = [lerp(252, 236, sip), lerp(494, 330, sip)]; }
+      if (pose === 'mug') { const u = (t % 6.5) / 6.5, sip = u < .55 ? 0 : Math.sin((u - .55) / .45 * Math.PI) ** 2; E0 = [lerp(340, 352, sip), lerp(580, 470, sip)]; W0 = [lerp(262, 266, sip), lerp(500, 336, sip)]; q('mug').dataset.sip = sip; }
       const sl = [lerp(S0[0], E0[0], .38), lerp(S0[1], E0[1], .38)];
       const d1 = `M${S0[0]},${S0[1]} L${E0[0]},${E0[1]} L${W0[0]},${W0[1]}`;
       q('a' + k + 's').setAttribute('d', d1); q('a' + k).setAttribute('d', d1); q('s' + k).setAttribute('d', `M${S0[0]},${S0[1]} L${sl[0]},${sl[1]}`);
       q('h' + k).setAttribute('transform', `translate(${W0[0]} ${W0[1]})`);
-      if (pose === 'mug' && k === 'R') q('mug').setAttribute('transform', `translate(${W0[0] - 252} ${W0[1] - 494})`);
+      if (pose === 'mug' && k === 'R') q('mug').setAttribute('transform', `translate(${W0[0] - 26} ${W0[1] - 8}) rotate(${-28 * (+q('mug').dataset.sip || 0)})`);
     });
     if (P) q('badge').setAttribute('opacity', 0);
     // finestra del pit (modo escáner)

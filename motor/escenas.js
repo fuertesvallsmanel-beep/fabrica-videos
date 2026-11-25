@@ -139,9 +139,9 @@
       <rect x="462" y="200" width="796" height="980" rx="28" fill="#2433C4"/><rect x="484" y="246" width="752" height="934" rx="16" fill="#EEF1FF"/>
       <rect x="446" y="192" width="828" height="62" rx="22" fill="#5B7BFF"/><rect x="460" y="198" width="800" height="14" rx="7" fill="#8FA8FF"/>
       <rect x="606" y="262" width="508" height="214" rx="70" fill="#D3DAFF"/><rect x="600" y="256" width="508" height="206" rx="70" fill="#fff"/><path d="M640,300 C700,280 760,292 790,312 M1060,296 C1010,282 960,290 930,306" stroke="#E4E8FF" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <rect x="1290" y="290" width="250" height="280" rx="18" fill="#1E2BB0"/><rect x="1302" y="300" width="226" height="256" rx="12" fill="#2B3BC8"/>
+      <g class="alarm"><rect x="1290" y="290" width="250" height="280" rx="18" fill="#1E2BB0"/><rect x="1302" y="300" width="226" height="256" rx="12" fill="#2B3BC8"/>
       <circle cx="1362" cy="370" r="62" fill="#EEF1FF"/><circle cx="1362" cy="370" r="40" fill="none" stroke="#C7D0FF" stroke-width="6"/><circle cx="1362" cy="370" r="10" fill="#C7D0FF"/>
-      <rect x="1314" y="446" width="200" height="88" rx="16" fill="${INK}"/><text class="clk" x="1414" y="508" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="60" fill="#FF3B6B">${sc.time || ''}</text>
+      <rect x="1314" y="446" width="200" height="88" rx="16" fill="${INK}"/><text class="clk" x="1414" y="508" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="60" fill="#FF3B6B">${sc.time || ''}</text></g>
       <g class="ph2" opacity="${sleep ? 1 : 0}"><rect x="1446" y="318" width="64" height="112" rx="13" fill="${INK}"/><rect class="scr2" x="1452" y="328" width="52" height="92" rx="8" fill="#3EF0FF" opacity="0"/><circle class="gl2" cx="1478" cy="374" r="120" fill="#3EF0FF" opacity="0"/></g></svg>`;
     el.appendChild(bg);
     const TW = 440, s = TW / 400, TL = 860 - TW / 2, TT = 165;
@@ -164,7 +164,7 @@
       <path d="M262,140 C420,480 560,800 700,1080" stroke="#0B0F4A" stroke-width="26" opacity=".1" fill="none"/><path d="M0,620 C300,590 520,570 760,560" stroke="#0B0F4A" stroke-width="22" opacity=".1" fill="none"/></svg>`;
     el.appendChild(fg);
     const bl = fg.querySelector('.bl'), mn = fg.querySelector('.moon'), clk = bg.querySelector('.clk'), scr2 = bg.querySelector('.scr2'), gl2 = bg.querySelector('.gl2'), ph2 = bg.querySelector('.ph2');
-    const ck = bg.querySelector('.clk').parentNode, st = sticker(el, { label: sc.label, sub: sc.sub }, 1290, 640, 500, false), buzz = lt => { const u = (lt - 1.6) % 3.4; return lt > 1.6 && u < 1.3 ? 1 - u / 1.3 : 0; };
+    const ck = bg.querySelector('.alarm'), st = sticker(el, { label: sc.label, sub: sc.sub }, 1290, 640, 500, false), buzz = lt => { const u = (lt - 1.6) % 3.4; return lt > 1.6 && u < 1.3 ? 1 - u / 1.3 : 0; };
     return { el, render(lt) {
       bl.setAttribute('transform', `translate(0 ${(Math.sin(lt * 1.6) * 3).toFixed(2)})`);
       mn.setAttribute('opacity', ((dia ? .2 : .08) + .025 * Math.sin(lt * .7)).toFixed(3));

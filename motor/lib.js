@@ -197,9 +197,9 @@
   // bars: dany en rosa, neutre en blanc suau, recuperació en cian (només si sc.calm); la xifra més alta en groc
   S.bars = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
-    const box = E('div', 'position:absolute;left:200px;right:200px;top:240px;bottom:110px;display:flex;flex-direction:column;justify-content:center'); el.appendChild(box);
-    box.innerHTML = `<div style="color:${C.soft};font-size:50px;font-weight:800;margin-bottom:${sc.limit ? 96 : 44}px">${lab(sc.title) || ''}</div>`;
-    const top = Math.max(...sc.items.map(i => i.value)), W1 = 1520;
+    const box = E('div', `position:absolute;left:200px;right:${sc.tito ? 400 : 200}px;top:240px;bottom:110px;display:flex;flex-direction:column;justify-content:center`); el.appendChild(box); // amb el Tito petit a la dreta, deixa-li lloc
+    box.innerHTML = `<div style="color:${C.soft};font-size:50px;font-weight:800;margin-bottom:${sc.limit ? 96 : 44}px"><span>${lab(sc.title) || ''}</span></div>`;
+    const top = Math.max(...sc.items.map(i => i.value)), W1 = sc.tito ? 1320 : 1520;
     const fillC = it => /red|pink|orange/.test(it.color || '') || /^#FF/.test(it.color || '') ? C.pink : sc.calm && /cyan|mint|green/.test(it.color || '') ? C.cyan : 'rgba(211,218,255,.7)';
     const rows = sc.items.map((it, i) => { const r = E('div', `position:relative;margin-bottom:${i < sc.items.length - 1 ? 48 : 0}px`);
       const vc = it.value === top ? C.yellow : C.soft;
@@ -211,6 +211,7 @@
     if (sc.limit) { chip = E('div', `position:absolute;transform:translateX(-50%);background:#fff;color:${C.ink};font-size:36px;font-weight:800;padding:6px 20px 10px;border-radius:12px;white-space:nowrap;opacity:0`, lab(sc.limit.label).replace(/\s*\(.*\)/, '')); rows[0].r.appendChild(chip); chip.style.left = W1 * sc.limit.value / sc.max + 'px'; chip.style.top = '-170px'; }
     return { el, render(lt) {
       enter(box.children[0], lt, 0, 16);
+      if (chip && !chip.__fx) { chip.__fx = 1; const tw = box.children[0].firstChild.offsetWidth, cw = chip.offsetWidth; chip.style.left = Math.max(W1 * sc.limit.value / sc.max, tw + cw / 2 + 40) + 'px'; } // la fitxa no trepitja mai el títol
       rows.forEach(({ r, it }, i) => { const st = .3 + i * (rows.length > 1 && i === rows.length - 1 ? .9 : .5); enter(r, lt, st - .25, 20, .35); const k = (sc._prev || []).includes(it.label) ? 1 : eo(prog(lt, st, sc._prev ? .8 : 1.3)); r.querySelector('.f').style.width = 100 * k * it.value / sc.max + '%'; r.querySelector('.v').textContent = (it.value * k).toFixed(1).replace('.', ',') + (it.unit || '');
         const shp = ((lt - st - 1.3) * .5 + i * .3) % 1.6; r.querySelector('.sh').style.left = (lt > st + 1.3 ? -200 + shp * 1100 : -400) + 'px'; });
       const lk = sc._prev ? 1 : prog(lt, 1.6, .4); box.querySelectorAll('.lm').forEach(m => m.style.opacity = lk > 0 ? 1 : 0); if (chip) { chip.style.opacity = lk > 0 ? 1 : 0; chip.style.transform = `translateX(-50%) scale(${lk >= 1 ? 1 : .7 + .3 * back(lk)})`; }
