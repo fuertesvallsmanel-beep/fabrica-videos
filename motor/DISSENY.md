@@ -7,19 +7,38 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
 ### Elements fixos (tots els vídeos)
 1. **Escena `experimento`** a la línia 2–3: fitxa del voluntari + segell «Experimento Nº 00X» (amb so de segell). Numeració correlativa (001 = 72 h sin dormir).
 2. **Medidor «Límite»** a dalt (HUD automàtic): barra de cian → groc → rosa amb marques. Es configura amb `video.json → hud: {max, unit, marks, title}` (per defecte hores 0–72). Quan s'acaba la part de risc, passa sol a l'estat **«Recuperación»** (cian) i baixa a 0.
-3. **Modo escáner (rayos X)**: `persona` amb `scan: "<òrgan>"` obre la finestra al lloc real del cos: el cap es torna transparent i es veu el cervell; el cor surt al pit a l'esquerra del Tito; els pulmons, al centre del pit; el fetge, l'estómac i el pàncrees, a la panxa.
+3. **Modo escáner**: escena **`escaner`** (`organ`, `label`, `sub`, `pins`, `bpm`, `mood`): el Tito entra a la cabina, un raig cian el recorre de dalt a baix amb el percentatge, la finestra s'obre al lloc real del cos (cervell al cap, cor i pulmons al pit, fetge/estómac/ronyó a la panxa), la càmera hi entra i acaba en un disc gran amb l'òrgan bategant o respirant, etiquetes (`pins` en % del disc) i adhesiu. Fes-la servir 1–2 cops per vídeo. Per a una mirada ràpida sense zoom, `persona` amb `scan: "<òrgan>"`.
 4. **Escena `veredicto`**: frase popular + segell **Mito / Ciencia / A medias**. Una per vídeo, com a mínim.
-5. **Escenes `situacion`**: el Tito al cotxe (amb microsomni), al llit o a l'escriptori, mentre el narrador ho explica. Moviment continu (carretera, fanals, vapor del cafè, rellotge, respiració). Afegeix llocs nous quan calgui.
-6. **Final `endcard`**: el Tito content + «¿Qué le hacemos a Tito la próxima?» + «Escríbelo en los comentarios» + botó Suscríbete. (Si poses `text` propi, el subtítol passa a «Un experimento nuevo cada semana».)
+5. **Escenes `situacion`** (`motor/escenas.js`): el Tito fent el que diu el narrador, sempre amb el cos i les mans coherents amb el pla.
+   - `coche`: vista frontal, el Tito al volant darrere el parabrisa (no de perfil), carretera en perspectiva amb arbres, cases, fanals, lluna i ciutat; so de motor i carretera. `microsueno: true` = cap que cau, el cotxe es desvia, banda sonora del voral i ensurt. `plano`: per defecte obert → s'apropa al parabrisa; `"cerca"` = ja a prop (per a un segon pla seguit); `"abierto"` = sense zoom.
+   - `cama`: vista zenital, el Tito estirat amb coixí, mans sobre la manta, despertador amb l'hora (`time`). De nit, mòbil a la mà i llum blava a la cara (`movil: false` per treure'l), grills; `mood: "sleep"` = dorm i el mòbil vibra a la tauleta. De dia (`time` 06–18 o `dia: true`) llum càlida i ocells; `alarma: true` = el despertador sona i tremola.
+   - `escritorio`: finestra amb ciutat i finestres que s'encenen, cortines, prestatge, rellotge que avança des de `time`, llum, llaunes (`latas` 0–6, per defecte segons el cansament), tassa amb vapor; `pose`: `type` (tecleja, so de teclat) o `mug` (beu).
+   - L'adhesiu blanc (hora + `label` + `sub`) entra a cop amb rebot. Lloc nou: afegeix `LUG.<nom>` a `escenas.js` amb el mateix esquema (`el`, `render`, `sfx`).
+6. **Plans i transicions**: pensa en plans, no en diapositives.
+   - Una línia llarga es pot partir en dos plans sense tocar la veu: `scene.then = {…escena, at: segons}` (p. ex. situació 4 s → gràfic). Fes-ho sempre que una línia passi de 8 s.
+   - Transicions automàtiques: **cortineta de marca** (banda estreta inclinada 12°: cobalt 230 px + groc 50 + rosa 140, creua la pantalla en 0,3 s; darrere ja hi ha el pla nou, que arrenca 0,3 s avançat perquè no es vegi buit; whoosh) quan canvia el lloc o el tipus de pla gran; **tall sec amb empenta** (zoom 1,07 → 1 i cop curt) entre plans del mateix món. Mai fosos encadenats ni pantalles senceres d'un color. Es pot forçar amb `tr: "swipe" | "cut"`.
+   - **Adhesius** (hora + etiqueta + frase) fixos a pantalla, fora del moviment de càmera, dins la caixa x 1290–1790 / y 600–940; entren opacs amb un cop d'escala (0,55 → 1,08 → 1).
+   - **Cap pla mort**: si un pla passa de 4 s sense res nou, li cal un segon temps (`then`, o el que porta l'escena: `stats` amb % passa sol a una graella de 100; `wave` porta el cap del Tito que recorre la corba; les barres tenen reflex). El render avisa dels plans de més de 8 s.
+7. **Òrgans dibuixats** (`motor/organs.js`): cervell, cor, pulmons, fetge sa i amb cirrosi, estómac i ronyó, en l'estil pla del Tito (sense contorns realistes). `organ`, `escaner` i el `scan` del Tito els fan servir sols; les il·lustracions de Servier queden només per als òrgans que no hi són (llavors cal el crèdit a la descripció).
+8. **Final `endcard`**: el Tito content + «¿Qué le hacemos a Tito la próxima?» + «Escríbelo en los comentarios» + botó Suscríbete. (Si poses `text` propi, el subtítol passa a «Un experimento nuevo cada semana».)
 
 ## El Tito (`motor/tito.js`)
 - Dibuix estilitzat ben fet (no ninot, no realista): cabell castany amb tupè, samarreta rosa, **cordó groc gruixut** i targeta «VOLUNTARIO / TITO» (el seu tret propi).
 - `persona`: `hour` o `fatigue` (0–1), `mood`: ok | tired | angry | happy | shock | sleep, `label`, `sub`, `big` (xifra en groc), `scan`.
+- Té braços i mans quan cal (`Tito.render(…, {pose})`: `wheel` volant, `type` teclat, `mug` tassa, `wave` saluda, `point` assenyala). Les escenes de situació ja els fan servir.
 - Surt 4–6 cops per vídeo: inici, punt de gir, clímax, veredicte, recuperació i final. Respira, parpelleja, badalla si està cansat, sua a partir de f > 0,55.
 
 ## Ritme visual
 - Sempre ha de passar alguna cosa: màxim 2 escenes seguides sense el Tito, sense situació o sense un número que es mogui.
 - Una de cada tres escenes de dades porta el Tito petit reaccionant (`tito: "shock"`).
+
+## Escenes de dades (mateix món que les il·lustrades)
+- Graella de plànol de fons (60 px), contingut centrat entre y 240 i 980, res enganxat a dalt.
+- La xifra protagonista sempre en groc des del primer fotograma (comptador, % del rellotge, estadística, la barra més alta). Barres de dany en rosa, neutres en blanc suau (#D3DAFF 70 %), cian només per a recuperació (`calm`). El rellotge de rendiment va de rosa (malament) a cian (bé), sense verd.
+- Línia de límit blanca discontínua de 4 px dins les barres, amb etiqueta en fitxa blanca a sobre; mai creua text.
+- El Tito petit reaccionant (`tito`) surt a baix a la dreta (250 px); la font, a baix a l'esquerra en una pastilla fosca.
+- Decorat de les il·lustracions en tons tranquils (finestres i llums crema #FFE9A8, teulades rosa/cobalt, arbres cobalt): el groc queda per a la dada clau.
+- El medidor de dalt porta una pastilla fosca al darrere perquè es llegeixi sobre qualsevol pla.
 
 ## Color (cada color vol dir una cosa)
 | Token | Hex | Significat |

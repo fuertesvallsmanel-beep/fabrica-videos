@@ -5,7 +5,9 @@
   python3 motor/render_video.py videos/<id> --stills 5,40,120            # fotogrames de prova (horitzontal)
   python3 motor/render_video.py videos/<id> --short 9 13 "Ganxo" short1  # Short vertical de les línies 9–13 → short1.mp4
   python3 motor/render_video.py videos/<id> --short 9 13 "Ganxo" short1 --stills 3,10   # proves del Short
+  python3 motor/render_video.py videos/<id> --seg 10 17 tros                       # tros horitzontal de les línies 10–17 → tros.mp4
   Opcions: --range 50 62 (només aquest tros, amb so → clip.mp4) · --workers N (render en paral·lel; per defecte, un per nucli fins a 4)
+           --audio (refà només el so sobre el silent.mp4 que ja hi ha)
 Necessita: videos/<id>/video.json, timings.json, voz.mp3 (i marca/musica_fondo.mp3 si existeix)
 """
 import json, os, re, subprocess, sys, pathlib, tempfile
@@ -36,36 +38,103 @@ def synth_pad(total):
     return pad * np.clip(t / 3, 0, 1) * np.clip((total - t) / 3, 0, 1)
 
 
-def sfx_track(total, V, starts, t_off=0.0):
-    """Efectes segons el tipus d'escena: whoosh als canvis, tic-tac als rellotges, blips als comptadors,
-    batecs a l'amígdala, cop suau al zoom de mitja escena."""
+def sfx_track(total, SH, t_off=0.0):
+    """Efectes per pla (SH ve del motor: tipus, t0, t1, transició i esdeveniments de l'escena):
+    cortineta = whoosh, tall = cop curt, rellotges, comptadors, batecs, segells i ambients propis de cada lloc
+    (motor del cotxe, grills, teclat, escàner, cor…)."""
+    from scipy.signal import butter, lfilter
     n = int(SR * total); out = np.zeros(n); rng = np.random.default_rng(2)
     def put(at, sig, g=1.0):
-        i0 = int((at - t_off) * SR)
-        if i0 < 0 or i0 >= n: return
-        e = min(len(sig), n - i0); out[i0:i0 + e] += sig[:e] * g
+        i0 = int(round((at - t_off) * SR)); s0 = 0
+        if i0 < 0: s0, i0 = -i0, 0
+        if i0 >= n or s0 >= len(sig): return
+        e = min(len(sig) - s0, n - i0); out[i0:i0 + e] += sig[s0:s0 + e] * g
     def tone(f0, f1, dur, decay):
         tt = np.arange(int(dur * SR)) / SR; f = np.linspace(f0, f1, len(tt))
         return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * decay)
-    m = int(.55 * SR); nz = rng.standard_normal(m)
-    whoosh = np.convolve(nz, np.ones(40) / 40, 'same') * np.sin(np.linspace(0, np.pi, m)) ** 2 * .35
+    def filt(x, lo=None, hi=None, order=2):
+        if lo and hi: b, a = butter(order, [lo / (SR / 2), hi / (SR / 2)], 'band')
+        elif lo: b, a = butter(order, lo / (SR / 2), 'high')
+        else: b, a = butter(order, hi / (SR / 2), 'low')
+        return lfilter(b, a, x)
+    def fade(x, fi=.3, fo=.3):
+        m = len(x); e = np.ones(m); a, b = min(int(fi * SR), m), min(int(fo * SR), m)
+        if a: e[:a] *= np.linspace(0, 1, a)
+        if b: e[-b:] *= np.linspace(1, 0, b)
+        return x * e
+    def noise(d): return rng.standard_normal(max(1, int(d * SR)))
+    m = int(.55 * SR)
+    whoosh = filt(noise(.55), 300, 5000) * np.sin(np.linspace(0, np.pi, m)) ** 2 * .3
+    cutk = filt(noise(.16), 1500, 9000) * np.exp(-np.arange(int(.16 * SR)) / SR * 30) * .12; cutk[:int(.14 * SR)] += tone(140, 70, .14, 22) * .16
     tick = tone(2400, 2200, .04, 90) * .25
     blip = lambda k: tone(500 + 90 * k, 700 + 90 * k, .07, 40) * .12
     beat = tone(70, 45, .18, 18) * .5
     thump = tone(110, 60, .25, 14) * .18
     stamp = tone(90, 40, .35, 11) * .55
-    sn = int(.12 * SR); stamp_hi = rng.standard_normal(sn) * np.exp(-np.arange(sn) / SR * 40) * .18
-    # sons de les escenes GSAP (cada escena diu quan passa cada cosa: o.sfx)
+    stamp_hi = filt(noise(.12), 800, None) * np.exp(-np.arange(int(.12 * SR)) / SR * 40) * .25
+    def car(d):
+        t = np.arange(int(d * SR)) / SR; f0 = 36 + 2.5 * np.sin(2 * np.pi * .13 * t); ph = 2 * np.pi * np.cumsum(f0) / SR
+        eng = sum(np.sin(h * ph) / h for h in range(1, 8)) * (1 + .25 * np.sin(ph * .5))
+        eng = filt(eng, None, 400) * .05; road = filt(noise(d), 40, 380) * .065
+        sw = np.zeros(len(t))
+        for x in np.arange(.6, d, 1.2):
+            i0 = int(x * SR); s = filt(noise(.5), 400, 3000) * np.sin(np.linspace(0, np.pi, int(.5 * SR))) ** 3 * .035
+            e = min(len(s), len(sw) - i0); sw[i0:i0 + e] += s[:e] if e > 0 else 0
+        return fade(eng + road + sw, .25, .25)
+    def rumble():
+        d = .75; t = np.arange(int(d * SR)) / SR; pul = (np.sin(2 * np.pi * 26 * t) > 0) * 1.0
+        x = filt(noise(d), 30, 260) * pul * .45 + np.sin(2 * np.pi * 62 * t) * pul * .18
+        return x * np.minimum(1, t / .04) * np.minimum(1, (d - t) / .15)
+    def night(d):
+        t = np.arange(int(d * SR)) / SR; x = filt(noise(d), None, 300) * .008
+        for f, per, off in ((4300, .95, .1), (4720, 1.3, .55)):
+            u = (t + off) % per; gate = ((u < .27) & ((u * 30) % 1 < .55)) * 1.0
+            x += np.sin(2 * np.pi * f * t) * filt(gate, None, 300) * .02
+        return fade(x, .3, .3)
+    def birds(d):
+        t = np.arange(int(d * SR)) / SR; x = filt(noise(d), None, 400) * .006
+        for c in np.arange(.4, d - .4, .9):
+            if rng.random() < .65:
+                dd = .14; tt = np.arange(int(dd * SR)) / SR; f = 2600 + 900 * np.sin(np.pi * tt / dd) + rng.random() * 600
+                s = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * tt / dd) ** 2 * .03; i0 = int(c * SR); e = min(len(s), len(x) - i0); x[i0:i0 + e] += s[:e]
+        return fade(x, .3, .3)
+    def buzz():
+        d = .32; t = np.arange(int(d * SR)) / SR; s = np.sign(np.sin(2 * np.pi * 165 * t)) * .5 + np.sin(2 * np.pi * 330 * t) * .3
+        s = filt(s, None, 900) * np.minimum(1, t / .02) * np.minimum(1, (d - t) / .03) * .16
+        return np.concatenate([s, np.zeros(int(.14 * SR)), s])
+    def alarm(d):
+        t = np.arange(int(d * SR)) / SR; on = ((t % .5) < .32) & (((t % .5) * 8) % 1 < .6)
+        return np.sin(2 * np.pi * 2350 * t) * filt(on * 1.0, None, 400) * .085
+    def typing(d):
+        x = np.zeros(int(d * SR)); c = 0.0
+        while c < d - .05:
+            k = filt(noise(.012), 1800, 7000) * np.exp(-np.arange(int(.012 * SR)) / SR * 400) * (.05 + .05 * rng.random())
+            i0 = int(c * SR); e = min(len(k), len(x) - i0); x[i0:i0 + e] += k[:e]
+            c += rng.exponential(.085) + .03 + (.45 if rng.random() < .06 else 0)
+        return x
+    def scan(d):
+        t = np.arange(int(d * SR)) / SR; f = np.linspace(240, 900, len(t)); ph = 2 * np.pi * np.cumsum(f) / SR
+        s = (np.sin(ph) + .35 * np.sin(2 * ph)) * (.6 + .4 * np.sin(2 * np.pi * 14 * t)) * .05 + filt(noise(d), 2500, None) * .012
+        return fade(s, .08, .12)
+    beep = np.concatenate([tone(1320, 1320, .09, 4) * .11, np.zeros(int(.04 * SR)), tone(1760, 1760, .14, 6) * .11])
+    def zoom(d):
+        t = np.arange(int(d * SR)) / SR; s = filt(noise(d), 300, 4000) * (t / d) ** 2 * .22 + np.sin(2 * np.pi * np.cumsum(np.linspace(180, 900, len(t))) / SR) * (t / d) ** 2 * .05
+        return np.concatenate([s, thump * 1.6])
+    lub, dub = tone(62, 44, .14, 22) * .55, tone(78, 56, .11, 28) * .38
+    def breath(d, o, a):
+        t = np.arange(int(d * SR)) / SR; lt = t + (a - o); env = np.abs(np.cos(1.7 * lt)) ** 2
+        return fade(filt(noise(d), 400, 1800) * env * .035, .2, .3)
+    # sons de les escenes GSAP de fx.js (cada escena diu quan passa cada cosa: o.sfx)
     click = np.pad(tone(1800, 900, .05, 70) * .22, (0, int(.03 * SR))) + tone(300, 180, .08, 40) * .25
     m2 = int(.4 * SR); w2 = np.convolve(rng.standard_normal(m2), np.ones(25) / 25, 'same') * np.sin(np.linspace(0, np.pi, m2)) ** 2 * .22
     KIND = {'whoosh': w2, 'click': click, 'stamp': stamp * .9, 'pop': tone(600, 1100, .06, 50) * .14, 'tick': tick * .8, 'thump': thump, 'blip': blip(3)}
     for kind, at in SCENE_SFX:
         if kind in KIND: put(at, KIND[kind])
         if kind == 'stamp': put(at, stamp_hi, .8)
-    ends = starts[1:] + [V['total']]
-    for i, ln in enumerate(V['lines']):
-        a, b = starts[i], ends[i]; typ = ln['scene']['type']
-        if i: put(a - .25, whoosh)
+    for i, s in enumerate(SH):
+        t0, b, typ = s['t0'], s['t1'], s['type']; a = s.get('ta', t0)  # a = rellotge intern de l'escena (amb pre-roll)
+        if s['tr'] == 'swipe': put(t0 - .3, whoosh)
+        elif s['tr'] == 'cut': put(t0 - .01, cutk)
         if typ == 'clock':
             for k in range(8): put(a + .1 + k * .18, tick)
         if typ in COUNTERS:
@@ -76,6 +145,25 @@ def sfx_track(total, V, starts, t_off=0.0):
         if typ == 'experimento': put(a + .75, stamp); put(a + .78, stamp_hi)
         if typ == 'veredicto': put(a + 1.3, stamp); put(a + 1.33, stamp_hi)
         if b - a > 6.5: put(a + (b - a) * .52, thump)
+        for e in s.get('ev') or []:
+            k, t, d = e['k'], e['t'], max(.1, e.get('d', .5))
+            if k == 'car': put(t, car(d + .3))
+            elif k == 'rumble': put(t, rumble())
+            elif k == 'night': put(t, night(d + .3))
+            elif k == 'birds': put(t, birds(d + .3))
+            elif k == 'buzz': put(t, buzz())
+            elif k == 'alarm': put(t, alarm(d))
+            elif k == 'typing': put(t, typing(d))
+            elif k == 'scan': put(t, scan(d))
+            elif k == 'beep': put(t, beep)
+            elif k == 'zoom': put(t, zoom(d))
+            elif k == 'heart':
+                bpm = e.get('bpm', 1.25); o = a; j = int(np.ceil((t - o) * bpm - .25))
+                while o + (j + .25) / bpm < t + d - .2: x = o + (j + .25) / bpm - .03; put(x, lub); put(x + .2, dub); j += 1
+            elif k == 'breath': put(t, breath(d, a, t))
+            elif k == 'fill':
+                nn = e.get('n', 12)
+                for q in range(nn): put(t + q * d / nn, blip(q % 10), .8)
     return out
 
 
@@ -111,8 +199,8 @@ def limit_sfx(bed, vdir, t_off, total):
     return bed * g
 
 
-def mix(vdir, V, starts, total, t_off, video_in, out):
-    bed = sfx_track(total, V, starts, t_off)
+def mix(vdir, SH, total, t_off, video_in, out):
+    bed = sfx_track(total, SH, t_off)
     bed = limit_sfx(bed, vdir, t_off, total)
     wavfile.write(str(vdir / 'sfx.wav'), SR, (np.stack([bed, bed], 1) * 32767).clip(-32767, 32767).astype(np.int16))
     mus = music_track(total, t_off)
@@ -178,7 +266,11 @@ def main():
     for ln, b in zip(V['lines'], voice_beats(vdir, T['starts'], T['total'])): ln['scene']['_beats'] = b
     stills = [float(x) for x in args[args.index('--stills') + 1].split(',')] if '--stills' in args else None
     workers = int(args[args.index('--workers') + 1]) if '--workers' in args else max(1, min(4, os.cpu_count() or 1))
-    short = None
+    short = None; seg = None
+    if '--seg' in args:  # tros horitzontal: --seg <línia_ini> <línia_fi> <nom>
+        k = args.index('--seg'); a, b, name = int(args[k + 1]), int(args[k + 2]), args[k + 3]
+        st = T['starts'] + [T['total']]; t0, t1 = st[a], min(st[b + 1] + .4, T['total'] + 1.0)
+        V.update(segStart=t0, segEnd=t1); seg = (t0, t1, name)
     if '--short' in args:
         k = args.index('--short'); a, b, hook, name = int(args[k + 1]), int(args[k + 2]), args[k + 3], args[k + 4]
         st = T['starts'] + [T['total']]
@@ -194,15 +286,22 @@ def main():
             br.close()
             if errs: print('ERRORS:', errs[:5])
             return
-        # quan passa cada cosa a les escenes GSAP (per als efectes de so)
-        SCENE_SFX[:] = [tuple(x) for x in pg.evaluate("""() => window.__scenes.flatMap(s => { if (s.plan) s.plan(s.t1 - s.t0);
-            return (s.sfx || []).map(([k, t]) => [k, t + s.t0]); })""")]
+        # efectes de so de cada pla: escenes GSAP (o.sfx = [[tipus, segon local]]) i escenes de lloc/escàner (o.sfx(a, b) → esdeveniments)
+        SCENE_SFX[:] = [tuple(x) for x in pg.evaluate("""() => window.__scenes.flatMap(s => { const pre = s.pre || 0; if (s.plan) s.plan(s.t1 - s.t0 + pre);
+            return Array.isArray(s.sfx) ? s.sfx.map(([k, t]) => [k, t + s.t0 - pre]) : []; })""")]
+        SH = pg.evaluate("window.__scenes.map(s => ({type: s.sc.type, t0: s.t0, t1: s.t1, ta: s.t0 - (s.pre || 0), tr: s.tr, ev: typeof s.sfx === 'function' ? s.sfx(s.t0 - (s.pre || 0), s.t1) : []}))")
+        for s in SH:  # avís: plans llargs sense segon temps
+            if s['t1'] - s['t0'] > 8 and s['type'] not in ('situacion', 'escaner', 'stats', 'endcard', 'encaje'): print(f"  AVÍS: pla de {s['t1'] - s['t0']:.1f} s ({s['type']} a {s['t0']:.1f} s): parteix-lo amb scene.then")
         br.close()
-    t0, t1 = (short[0], short[1]) if short else (0.0, V['total'])
+    cut = short or seg
+    t0, t1 = (cut[0], cut[1]) if cut else (0.0, V['total'])
     rng_ = None
     if '--range' in args:   # tros de prova amb so: --range 50 62 → clip.mp4
         k = args.index('--range'); t0, t1 = float(args[k + 1]), float(args[k + 2]); rng_ = 'clip'
     silent = vdir / ('silent_short.mp4' if short else 'silent.mp4')
+    out = vdir / (f'{cut[2]}.mp4' if cut else (f'{rng_}.mp4' if rng_ else 'video.mp4'))
+    if '--audio' in args and silent.exists():  # només refà el so (el vídeo mut ja hi és)
+        mix(vdir, SH, t1 - t0, t0, silent, out); print('OK', out); return
     times = frame_times(t0, t1); N = len(times); n = max(1, min(workers, N // 60 or 1))
     bounds = [N * k // n for k in range(n + 1)]
     with tempfile.TemporaryDirectory() as td:
@@ -215,8 +314,7 @@ def main():
         (pathlib.Path(td) / 'list.txt').write_text(''.join(f"file '{x}'\n" for x in parts))
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(pathlib.Path(td) / 'list.txt'), '-c', 'copy', str(silent)], check=True)
     if errs: print('ERRORS JS:', errs[:5])
-    out = vdir / (f'{short[2]}.mp4' if short else (f'{rng_}.mp4' if rng_ else 'video.mp4'))
-    mix(vdir, V, T['starts'], t1 - t0, t0, silent, out)
+    mix(vdir, SH, t1 - t0, t0, silent, out)
     print('OK', out)
 
 

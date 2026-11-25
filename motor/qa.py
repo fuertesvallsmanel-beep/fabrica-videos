@@ -24,7 +24,7 @@ CHECK = r"""(t) => {
   const op = e => { let o = 1; for (let x = e; x && x.nodeType === 1; x = x.parentNode) { const cs = getComputedStyle(x); if (cs.display === 'none' || cs.visibility === 'hidden') return 0; o *= +cs.opacity; } return o; };
   const own = e => [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
   const items = [];
-  document.querySelectorAll('#stage *, #vtop *, #vcap *').forEach(e => {
+  document.querySelectorAll('#stage *, #ovl *, #vtop *, #vcap *').forEach(e => {
     const txt = own(e); if (!txt || op(e) < .6 || !/[\p{L}\p{N}]/u.test(txt)) return;   // ignora cometes i símbols decoratius
     if (e.closest('svg.tito') || e.closest('#vchar')) return;          // la targeta del Tito és part del dibuix
     let r;

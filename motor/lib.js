@@ -73,9 +73,9 @@
 
   S.counter = (sc) => {
     const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center');
-    const c = sc.calm ? C.cyan : (sc.color ? col(sc.color) : C.red);
+    const c = sc.calm ? C.cyan : (sc.color ? col(sc.color) : C.red), cn = sc.calm ? C.cyan : C.yellow;
     el.innerHTML = `<div class="p" style="padding:12px 30px;border-radius:999px;background:${c}22;color:${c};font-weight:800;font-size:36px;letter-spacing:.2px">${lab(sc.pill) || ''}</div>
-      <div class="n" style="font-size:302px;${FD};line-height:1;letter-spacing:-8px;margin-top:20px;color:${c};${SHD}">0</div>
+      <div class="n" style="font-size:302px;${FD};line-height:1;letter-spacing:-8px;margin-top:20px;color:${cn};${SHD}">0</div>
       <div class="l" style="color:#fff;font-size:72px;${FD};margin-top:6px">${sc.label || ''}</div>
       <div class="s" style="color:${C.soft};font-size:38px;font-weight:600;margin-top:18px">${sc.sub || ''}</div>`;
     const [p, n, l, s] = el.children;
@@ -176,58 +176,75 @@
 
   S.gauge = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
-    el.innerHTML = `<svg width="1000" height="600" viewBox="0 0 1000 600" style="position:absolute;left:460px;top:270px">
-      <defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#FF3B6B"/><stop offset=".5" stop-color="#FFD60A"/><stop offset="1" stop-color="#4DF0A0"/></linearGradient></defs>
-      <path d="M100,500 A400,400 0 0 1 900,500" fill="none" stroke="#0E1680" stroke-width="56" stroke-linecap="round"/>
-      <path class="arc" d="M100,500 A400,400 0 0 1 900,500" fill="none" stroke="url(#gg)" stroke-width="56" stroke-linecap="round"/>
-      <line class="nd" x1="500" y1="500" x2="500" y2="150" stroke="#fff" stroke-width="12" stroke-linecap="round"/><circle cx="500" cy="500" r="26" fill="#fff"/></svg>
-      <div style="position:absolute;top:200px;width:100%;text-align:center;color:${C.soft};font-size:36px;font-weight:800;letter-spacing:.5px">${sc.label}</div>
-      <div class="v" style="position:absolute;top:820px;width:100%;text-align:center;color:#fff;font-size:121px;${FD}">100 %</div>`;
+    el.innerHTML = `<svg width="1000" height="600" viewBox="0 0 1000 600" style="position:absolute;left:460px;top:300px">
+      <defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#FF3B6B"/><stop offset=".5" stop-color="#FFD60A"/><stop offset="1" stop-color="#3EF0FF"/></linearGradient></defs>
+      <path d="M100,500 A400,400 0 0 1 900,500" fill="none" stroke="rgba(7,11,69,.38)" stroke-width="64" stroke-linecap="round"/>
+      <path class="arc" d="M100,500 A400,400 0 0 1 900,500" fill="none" stroke="url(#gg)" stroke-width="64" stroke-linecap="round"/>
+      <line class="nd" x1="500" y1="500" x2="500" y2="150" stroke="#fff" stroke-width="14" stroke-linecap="round"/><circle cx="500" cy="500" r="30" fill="#fff"/></svg>
+      <div style="position:absolute;top:236px;width:100%;text-align:center;color:${C.soft};font-size:46px;font-weight:800">${lab(sc.label) || ''}</div>
+      <div class="v" style="position:absolute;top:830px;width:100%;text-align:center;color:${C.yellow};font-size:140px;${FD};line-height:1;${SHD}">100 %</div>`;
     const svg = el.firstChild; const arc = svg.querySelector('.arc'); let L = 0;
     return { el, render(lt) {
       if (!L) { L = arc.getTotalLength(); arc.style.strokeDasharray = L; }
       const v = lerp(sc.from, sc.to, eio(prog(lt, 1, 2.2))) + (lt > 3.2 ? Math.sin(lt * 9) * .6 : 0);
       arc.style.strokeDashoffset = L * (1 - v / 100);
       svg.querySelector('.nd').setAttribute('transform', `rotate(${-90 + 180 * v / 100} 500 500)`);
-      el.querySelector('.v').textContent = Math.round(v) + ' %'; el.querySelector('.v').style.color = v < 92 ? C.yellow : '#fff';
+      el.querySelector('.v').textContent = Math.round(v) + ' %';
       svg.style.opacity = eo(prog(lt, 0, .5)); enter(el.children[1], lt, .1, 16);
     } };
   };
 
+  // bars: dany en rosa, neutre en blanc suau, recuperació en cian (només si sc.calm); la xifra més alta en groc
   S.bars = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
-    const box = E('div', 'position:absolute;left:200px;top:300px;width:1520px'); el.appendChild(box);
-    box.innerHTML = `<div style="color:${C.soft};font-size:46px;font-weight:800;letter-spacing:.2px;margin-bottom:50px">${lab(sc.title) || ''}</div>`;
-    const rows = sc.items.map(it => { const r = E('div', 'margin-bottom:46px'); const c = col(it.color); r.innerHTML = `<div style="display:flex;justify-content:space-between;color:#fff;font-size:50px;font-weight:700;margin-bottom:16px"><span>${it.label}</span><span class="v" style="color:${c};font-weight:900">0</span></div><div style="position:relative;height:84px;border-radius:42px;background:rgba(148,163,184,.12)"><div class="f" style="height:84px;width:0;border-radius:42px;background:linear-gradient(90deg,${c}99,${c});box-shadow:0 0 30px ${c}66"></div></div>`; box.appendChild(r); return { r, it }; });
-    let lim;
-    if (sc.limit) { lim = E('div', `position:absolute;top:110px;bottom:-20px;width:0;border-left:5px dashed ${C.yellow};left:${1520 * sc.limit.value / sc.max}px`, `<div style="position:absolute;top:-60px;left:-200px;width:400px;text-align:center;color:${C.yellow};font-size:36px;font-weight:800">${sc.limit.label}</div>`); box.appendChild(lim); }
+    const box = E('div', 'position:absolute;left:200px;right:200px;top:240px;bottom:110px;display:flex;flex-direction:column;justify-content:center'); el.appendChild(box);
+    box.innerHTML = `<div style="color:${C.soft};font-size:50px;font-weight:800;margin-bottom:${sc.limit ? 96 : 44}px">${lab(sc.title) || ''}</div>`;
+    const top = Math.max(...sc.items.map(i => i.value)), W1 = 1520;
+    const fillC = it => /red|pink|orange/.test(it.color || '') || /^#FF/.test(it.color || '') ? C.pink : sc.calm && /cyan|mint|green/.test(it.color || '') ? C.cyan : 'rgba(211,218,255,.7)';
+    const rows = sc.items.map((it, i) => { const r = E('div', `position:relative;margin-bottom:${i < sc.items.length - 1 ? 48 : 0}px`);
+      const vc = it.value === top ? C.yellow : C.soft;
+      r.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px"><span style="color:#fff;font-size:56px;font-weight:800">${it.label}</span><span class="v" style="color:${vc};font-size:76px;${FD};line-height:1">0</span></div>
+        <div style="position:relative;height:110px;border-radius:55px;background:rgba(7,11,69,.38)"><div class="f" style="height:110px;width:0;border-radius:55px;background:${fillC(it)};overflow:hidden;position:relative"><div class="sh" style="position:absolute;top:0;bottom:0;width:180px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.28),rgba(255,255,255,0))"></div></div>
+        ${sc.limit ? `<div class="lm" style="position:absolute;top:-12px;bottom:-12px;left:${W1 * sc.limit.value / sc.max}px;border-left:4px dashed #fff;opacity:0"></div>` : ''}</div>`;
+      box.appendChild(r); return { r, it }; });
+    let chip;
+    if (sc.limit) { chip = E('div', `position:absolute;transform:translateX(-50%);background:#fff;color:${C.ink};font-size:36px;font-weight:800;padding:6px 20px 10px;border-radius:12px;white-space:nowrap;opacity:0`, lab(sc.limit.label).replace(/\s*\(.*\)/, '')); rows[0].r.appendChild(chip); chip.style.left = W1 * sc.limit.value / sc.max + 'px'; chip.style.top = '-170px'; }
     return { el, render(lt) {
       enter(box.children[0], lt, 0, 16);
-      rows.forEach(({ r, it }, i) => { const st = .4 + i * (rows.length > 1 && i === rows.length - 1 ? .9 : .5); enter(r, lt, st - .2, 20); const k = eo(prog(lt, st, 1.3)); r.querySelector('.f').style.width = 100 * k * it.value / sc.max + '%'; r.querySelector('.v').textContent = (it.value * k).toFixed(1).replace('.', ',') + (it.unit || ''); });
-      if (lim) lim.style.opacity = eo(prog(lt, 1.6, .5));
+      rows.forEach(({ r, it }, i) => { const st = .4 + i * (rows.length > 1 && i === rows.length - 1 ? .9 : .5); enter(r, lt, st - .2, 20); const k = eo(prog(lt, st, 1.3)); r.querySelector('.f').style.width = 100 * k * it.value / sc.max + '%'; r.querySelector('.v').textContent = (it.value * k).toFixed(1).replace('.', ',') + (it.unit || '');
+        const shp = ((lt - st - 1.3) * .5 + i * .3) % 1.6; r.querySelector('.sh').style.left = (lt > st + 1.3 ? -200 + shp * 1100 : -400) + 'px'; });
+      box.querySelectorAll('.lm').forEach(m => m.style.opacity = eo(prog(lt, 1.6, .5))); if (chip) { chip.style.opacity = eo(prog(lt, 1.6, .4)); chip.style.transform = `translateX(-50%) scale(${.7 + .3 * back(prog(lt, 1.6, .4))})`; }
     } };
   };
 
   S.wave = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
     // corba d'alerta circadiana 07:00 -> 07:00 (+24h), mínim cap a les 04:00
-    const pts = []; for (let i = 0; i <= 96; i++) { const h = 7 + i / 4; const a = Math.cos((h - 16) / 24 * 2 * Math.PI); pts.push([160 + i * 16, 640 - a * 220]); }
+    const X0 = 200, X1 = 1720, CY = 650, AMP = 220;
+    const pts = []; for (let i = 0; i <= 96; i++) { const h = 7 + i / 4; const a = Math.cos((h - 16) / 24 * 2 * Math.PI); pts.push([X0 + i * (X1 - X0) / 96, CY - a * AMP]); }
     const d = 'M' + pts.map(p => p.map(v => v.toFixed(1)).join(',')).join(' L');
     const [hh] = (sc.time || '04:00').split(':').map(Number); const hi = ((hh - 7 + 24) % 24) * 4;
-    const labels = ['07', '13', '19', '01', '07'].map((t, i) => `<text x="${160 + i * 384}" y="940" fill="#6F7CD6" font-size="34" font-weight="700" text-anchor="middle">${t}:00</text>`).join('');
-    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><line x1="160" y1="640" x2="1696" y2="640" stroke="#0E1680" stroke-width="3"/>${labels}
-      <path class="w" d="${d}" fill="none" stroke="url(#wg)" stroke-width="10" stroke-linecap="round"/>
-      <defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="#3EF0FF"/><stop offset="1" stop-color="#B79CFF"/></linearGradient></defs>
-      <circle class="dot" r="22" fill="${sc.rise ? C.yellow : C.red}"/><circle class="ring" r="22" fill="none" stroke="${sc.rise ? C.yellow : C.red}" stroke-width="4"/></svg>
-      <div style="position:absolute;left:160px;top:200px;color:${sc.rise ? C.yellow : C.red};font-size:38px;font-weight:800;letter-spacing:.5px">${sc.label}</div><div style="position:absolute;left:160px;top:255px;color:#fff;font-size:56px;font-weight:800">${sc.sub}</div>`;
-    const svg = el.firstChild, w = svg.querySelector('.w'); let L = 0;
+    const dc = sc.rise ? C.cyan : C.pink;
+    const labels = ['07', '13', '19', '01', '07'].map((t, i) => `<text x="${X0 + i * (X1 - X0) / 4}" y="960" fill="${C.soft}" font-size="40" font-weight="700" text-anchor="middle">${t}:00</text>`).join('');
+    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0;overflow:visible"><line x1="${X0}" y1="${CY}" x2="${X1}" y2="${CY}" stroke="rgba(211,218,255,.25)" stroke-width="3" stroke-dasharray="12 12"/>${labels}
+      <text x="${X0}" y="${CY - AMP - 22}" fill="${C.soft}" font-size="40" font-weight="700">↑ más alerta</text><text x="${X0}" y="${CY + AMP + 36}" fill="${C.soft}" font-size="40" font-weight="700">↓ menos alerta</text>
+      <path class="w" d="${d}" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+      <circle class="ring" r="24" fill="none" stroke="${dc}" stroke-width="5"/><circle class="dot" r="24" fill="${dc}"/>
+      <text class="tl" text-anchor="middle" fill="${C.yellow}" font-family="Brico" font-weight="800" font-stretch="76%" font-size="68" style="paint-order:stroke" stroke="#0A1A8C" stroke-width="10">${sc.time || ''}</text></svg>
+      <div style="position:absolute;left:${X0}px;top:236px;color:${dc};font-size:44px;font-weight:800">${lab(sc.label) || ''}</div><div style="position:absolute;left:${X0}px;top:292px;color:#fff;font-size:60px;font-weight:800">${sc.sub || ''}</div>`;
+    const hd = E('div', `position:absolute;left:0;top:0;width:150px;height:150px;border-radius:50%;overflow:hidden;background:#3B5BFF;border:7px solid #fff;box-shadow:8px 8px 0 rgba(7,11,69,.45);opacity:0`);
+    hd.innerHTML = `<div style="position:absolute;left:-95px;top:-62px">${personSVG(320)}</div>`; el.appendChild(hd);
+    const svg = el.firstChild, w = svg.querySelector('.w'), tl = svg.querySelector('.tl'); let L = 0;
     return { el, render(lt) {
       if (!L) { L = w.getTotalLength(); w.style.strokeDasharray = L; }
       w.style.strokeDashoffset = L * (1 - eio(prog(lt, 0, 1.8)));
-      const k = eio(prog(lt, 1.2, 1.4)); const idx = Math.round(hi * k); const p = pts[idx];
+      const k = eio(prog(lt, 1.2, 1.6)); const idx = Math.round(hi * k); const p = pts[idx];
       const dot = svg.querySelector('.dot'), ring = svg.querySelector('.ring');
       dot.setAttribute('cx', p[0]); dot.setAttribute('cy', p[1]); ring.setAttribute('cx', p[0]); ring.setAttribute('cy', p[1]);
-      const ph = (lt % 1); ring.setAttribute('r', 22 + ph * 40); ring.setAttribute('opacity', lt > 2.6 ? 1 - ph : 0); dot.setAttribute('opacity', eo(prog(lt, 1.2, .3)));
+      const ph = (lt % 1); ring.setAttribute('r', 24 + ph * 44); ring.setAttribute('opacity', lt > 2.8 ? 1 - ph : 0); dot.setAttribute('opacity', eo(prog(lt, 1.2, .3)));
+      hd.style.opacity = eo(prog(lt, 1.2, .3)); hd.style.transform = `translate(${p[0] - 75}px,${p[1] - 200 + Math.sin(lt * 5) * 4}px)`;
+      const fl = idx / 96 > .5 ? 'tired' : 'ok'; personRender(hd.querySelector('svg'), lt, Math.min(1, idx / 96 * 1.4), lt > 2.8 && !sc.rise ? 'tired' : fl, { seed: .3 });
+      tl.setAttribute('x', p[0]); tl.setAttribute('y', p[1] + 96); tl.setAttribute('opacity', eo(prog(lt, 2.8, .4)));
       enter(el.children[1], lt, .2, 16); enter(el.children[2], lt, .4, 20);
     } };
   };
@@ -251,19 +268,26 @@
   };
 
   S.road = (sc) => {
-    const el = E('div', 'position:absolute;inset:0');
+    const el = E('div', 'position:absolute;inset:0;overflow:hidden');
     const meters = Math.round(sc.speed / 3.6 * sc.seconds);
-    let dashes = ''; for (let i = 0; i < 14; i++) dashes += `<rect class="ds" x="${i * 160}" y="620" width="90" height="16" rx="8" fill="#FFFFFF"/>`;
-    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><rect x="0" y="470" width="1920" height="320" fill="#080C3D"/><rect x="0" y="470" width="1920" height="10" fill="#4553C8"/><rect x="0" y="780" width="1920" height="10" fill="#4553C8"/>${dashes}
-      <g class="car"><rect x="-120" y="-55" width="240" height="110" rx="34" fill="#7FB2FF"/><rect x="-30" y="-44" width="80" height="88" rx="16" fill="#0C4A6E"/><rect x="60" y="-42" width="40" height="84" rx="12" fill="#CDE6FF"/><circle cx="125" cy="-34" r="10" fill="#FFF4B3"/><circle cx="125" cy="34" r="10" fill="#FFF4B3"/></g></svg>
-      <div class="cov" style="position:absolute;inset:0;background:#000;opacity:0"></div>
-      <div style="position:absolute;top:240px;width:100%;text-align:center"><div style="color:${C.soft};font-size:36px;font-weight:800;letter-spacing:.5px">${sc.speed} KM/H · ${sc.seconds} SEGUNDOS DE MICROSUEÑO</div><div class="m" style="color:#fff;font-size:171px;${FD};line-height:1.1">0 m</div><div style="color:${C.red};font-size:48px;font-weight:800">recorridos a ciegas</div></div>`;
+    let dashes = ''; for (let i = 0; i < 14; i++) dashes += `<rect class="ds" x="${i * 180}" y="732" width="100" height="16" rx="8" fill="#EEF1FF"/>`;
+    let side = ''; for (let i = 0; i < 12; i++) { const x = i * 200 + (i % 3) * 30; side += i % 3 === 1 ? `<g class="sd" data-x="${x}"><rect x="-70" y="930" width="140" height="120" rx="8" fill="${i % 2 ? '#FF3B6B' : '#4A68FF'}"/><path d="M-70,990 H70" stroke="#0B0F4A" stroke-width="6" opacity=".25"/></g>`
+      : `<g class="sd" data-x="${x}"><circle cx="0" cy="${960 + (i % 2) * 40}" r="58" fill="#1A4FB0"/><circle cx="-14" cy="${948 + (i % 2) * 40}" r="34" fill="#2A63D0"/></g>`; }
+    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><rect x="0" y="580" width="1920" height="320" fill="#0D1470"/><rect x="0" y="580" width="1920" height="12" fill="#C7D0FF"/><rect x="0" y="888" width="1920" height="12" fill="#C7D0FF"/>${dashes}${side}
+      <g class="car"><path d="M150,0 L520,-110 L520,110Z" fill="#FFE9A8" opacity=".22"/>
+        <rect x="-150" y="-76" width="300" height="152" rx="46" fill="#F2F4FF"/><rect x="-150" y="-76" width="300" height="152" rx="46" fill="none" stroke="#C7D0FF" stroke-width="6"/>
+        <path d="M34,-58 C70,-50 84,-30 86,0 C84,30 70,50 34,58 Z" fill="#0C1170"/><path d="M-96,-54 C-120,-40 -124,40 -96,54 L-70,48 L-70,-48Z" fill="#0C1170"/>
+        <rect x="-66" y="-60" width="98" height="120" rx="20" fill="#DCE2FF"/><rect x="-70" y="-90" width="26" height="16" rx="6" fill="#F2F4FF"/><rect x="-70" y="74" width="26" height="16" rx="6" fill="#F2F4FF"/>
+        <rect x="128" y="-62" width="20" height="30" rx="8" fill="#FFE9A8"/><rect x="128" y="32" width="20" height="30" rx="8" fill="#FFE9A8"/><rect x="-150" y="-56" width="12" height="26" rx="4" fill="#FF3B6B"/><rect x="-150" y="30" width="12" height="26" rx="4" fill="#FF3B6B"/></g></svg>
+      <div class="cov" style="position:absolute;left:0;right:0;top:560px;height:540px;background:#05082E;opacity:0"></div>
+      <div style="position:absolute;top:232px;width:100%;text-align:center"><div style="color:${C.soft};font-size:46px;font-weight:800">${sc.title || `A ${sc.speed} km/h, ${sc.seconds} segundos dormido`}</div><div class="m" style="color:${C.yellow};font-size:220px;${FD};line-height:1;margin-top:4px;${SHD}">0 m</div><div style="color:${C.pink};font-size:52px;font-weight:800;margin-top:-6px">recorridos a ciegas</div></div>`;
     const svg = el.firstChild, cov = el.querySelector('.cov'), top = el.children[2];
     return { el, render(lt) {
-      svg.querySelectorAll('.ds').forEach((d, i) => d.setAttribute('x', ((i * 160 - lt * 900) % 2240 + 2240) % 2240 - 160));
-      svg.querySelector('.car').setAttribute('transform', `translate(${lerp(-200, 760, eo(prog(lt, 0, 1.2)))} 630)`);
+      const v = 900; svg.querySelectorAll('.ds').forEach((d, i) => d.setAttribute('x', ((i * 180 - lt * v) % 2520 + 2520) % 2520 - 180));
+      svg.querySelectorAll('.sd').forEach(g => g.setAttribute('transform', `translate(${((+g.dataset.x - lt * v) % 2400 + 2400) % 2400 - 200} 0)`));
+      svg.querySelector('.car').setAttribute('transform', `translate(${lerp(-260, 760, eo(prog(lt, 0, 1.2))).toFixed(1)} ${(740 + Math.sin(lt * 23) * 1.5).toFixed(1)})`);
       const k = prog(lt, 1.4, sc.seconds); top.querySelector('.m').textContent = Math.round(meters * k) + ' m';
-      cov.style.opacity = lt > 1.4 && lt < 1.4 + sc.seconds ? .72 : (lt >= 1.4 + sc.seconds ? .72 * (1 - prog(lt, 1.4 + sc.seconds, .4)) : 0);
+      cov.style.opacity = lt > 1.4 && lt < 1.4 + sc.seconds ? .78 : (lt >= 1.4 + sc.seconds ? .78 * (1 - prog(lt, 1.4 + sc.seconds, .4)) : 0);
       [...top.children].forEach((x, i) => enter(x, lt, .1 + i * .2, 20));
     } };
   };
@@ -286,11 +310,19 @@
   };
 
   S.stats = (sc) => {
-    const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center');
-    const row = E('div', 'display:flex;gap:160px'); el.appendChild(row);
-    const cells = sc.items.map(it => { const c = col(it.color); const d = E('div', 'text-align:center'); d.innerHTML = `<div class="n" style="font-size:${Math.round((sc.items.length === 1 ? 380 : 257)*.9)}px;${FD};color:${c};letter-spacing:-6px;line-height:1;text-shadow:8px 8px 0 #0A1A8C">0</div><div style="color:#fff;font-size:46px;font-weight:800;margin-top:10px">${it.label}</div>`; row.appendChild(d); return { d, it }; });
-    const sub = E('div', `color:${C.soft};font-size:46px;font-weight:600;margin-top:60px`, sc.sub || ''); el.appendChild(sub);
-    return { el, render(lt) { cells.forEach(({ d, it }, i) => { enter(d, lt, .2 + i * .5, 30); d.querySelector('.n').textContent = (it.prefix || '') + Math.round(it.value * eo(prog(lt, .3 + i * .5, 1.4))) + (it.suffix || ''); }); enter(sub, lt, 1.4); } };
+    const el = E('div', 'position:absolute;inset:0');
+    const blk = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;transform-origin:50% 50%'); el.appendChild(blk);
+    const one = sc.items.length === 1, it0 = sc.items[0], pct = one && /%/.test(it0.suffix || '') && it0.value <= 100 && it0.value >= 1;
+    const row = E('div', 'display:flex;gap:160px'); blk.appendChild(row);
+    const cells = sc.items.map(it => { const c = one ? (sc.calm ? C.cyan : C.yellow) : col(it.color); const d = E('div', 'text-align:center'); d.innerHTML = `<div class="n" style="font-size:${one ? 342 : 231}px;${FD};color:${c};letter-spacing:-6px;line-height:1;${SHD}">0</div><div style="color:#fff;font-size:50px;font-weight:800;margin-top:10px">${it.label}</div>`; row.appendChild(d); return { d, it }; });
+    const sub = E('div', `color:${C.soft};font-size:46px;font-weight:600;margin-top:44px;max-width:1180px;text-align:center;line-height:1.2`, (sc.sub || '').replace(/(\d)–(\d)/g, '$1\u2060–\u2060$2').replace(/\((.*?)\)/g, '<span style="white-space:nowrap">($1)</span>')); blk.appendChild(sub);
+    let grid, cap, cs = [];
+    if (pct) { grid = E('div', 'position:absolute;left:1010px;top:300px;width:500px;display:grid;grid-template-columns:repeat(10,44px);gap:6px;opacity:0'); for (let i = 0; i < 100; i++) { const c = E('div', 'width:44px;height:44px;border-radius:10px;background:rgba(211,218,255,.25)'); grid.appendChild(c); cs.push(c); } el.appendChild(grid);
+      cap = E('div', `position:absolute;left:1010px;top:820px;width:500px;text-align:center;color:${C.soft};font-size:44px;font-weight:800;opacity:0`, `${Math.round(it0.value)} de cada 100`); el.appendChild(cap); }
+    return { el, render(lt, d) { cells.forEach(({ d: e, it }, i) => { enter(e, lt, .2 + i * .5, 30); e.querySelector('.n').textContent = (it.prefix || '') + Math.round(it.value * eo(prog(lt, .3 + i * .5, 1.4))) + (it.suffix || ''); }); enter(sub, lt, 1.4);
+      if (pct && d > 5.5) { const T = 3, k = eio(prog(lt, T, .7)); blk.style.transform = `translateX(${-430 * k}px) scale(${1 - .36 * k})`; grid.style.opacity = k; cap.style.opacity = eo(prog(lt, T + 1.6, .4));
+        const n = Math.round(it0.value * prog(lt, T + .5, 1.2)); cs.forEach((c, i) => { c.style.background = i < n ? C.pink : 'rgba(211,218,255,.25)'; c.style.transform = i < n && i >= n - 3 ? 'scale(1.12)' : ''; }); }
+    }, sfx(a, b) { return pct && b - a > 5.5 ? [{ t: a + 3.5, d: 1.2, k: 'fill', n: Math.min(24, Math.round(it0.value)) }] : []; } };
   };
 
   S.amygdala = (sc) => {
@@ -402,7 +434,7 @@
     const el = E('div', 'position:absolute;inset:0');
     const c = col(sc.color || 'red');
     const box = (n, x, y, s) => { const b = E('div', `position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s}px;display:flex;align-items:center;justify-content:center`);
-      b.innerHTML = `<div style="position:absolute;inset:8%;border-radius:50%;background:radial-gradient(${c}33,transparent 70%)"></div><img src="${ORG(n)}" style="position:relative;max-width:88%;max-height:88% saturate(1.1)">`;
+      b.innerHTML = `<div style="position:absolute;inset:8%;border-radius:50%;background:#3B5BFF;opacity:.55"></div>` + (window.OrganArt && OrganArt.has(n) ? `<div style="position:relative;width:86%;height:86%">${OrganArt.svg(n, '100%', '100%')}</div>` : `<img src="${ORG(n)}" style="position:relative;max-width:88%;max-height:88%">`);
       el.appendChild(b); return b; };
     if (sc.src2) {
       const t = E('div', `position:absolute;left:0;right:0;top:180px;text-align:center;color:${c};font-size:38px;font-weight:800;letter-spacing:.5px`, sc.label || ''); el.appendChild(t);
@@ -560,22 +592,39 @@
   const BIG = new Set([]);
   function build(V) {
     const stage = document.getElementById('stage');
-    const scenes = V.lines.map((ln, i) => {
-      const sc = ln.scene; const fn = S[sc.type]; if (!fn) throw new Error('Escena desconeguda: ' + sc.type);
+    // plans: una línia pot tenir dos plans (scene.then = {…escena, at: segons}) sense tocar la veu
+    let ovl = document.getElementById('ovl'); if (!ovl) { ovl = E('div', 'position:absolute;inset:0;pointer-events:none'); ovl.id = 'ovl'; stage.after(ovl); }
+    const shots = [];
+    V.lines.forEach((ln, i) => { const a = V.starts[i], b = i + 1 < V.lines.length ? V.starts[i + 1] : V.total, sc = ln.scene;
+      if (sc.then) { const at = Math.min(b - 1, a + (sc.then.at || (b - a) / 2)); shots.push([sc, a, at, i], [Object.assign({ hour: sc.hour, source: sc.source }, sc.then), at, b, i]); } else shots.push([sc, a, b, i]); });
+    const scenes = shots.map(([sc, t0, t1, li], i) => {
+      const fn = S[sc.type]; if (!fn) throw new Error('Escena desconeguda: ' + sc.type);
       let o = fn(sc);
       if (BIG.has(sc.type)) { const w = E('div', 'position:absolute;inset:0'); o.el.style.transform = 'scale(1.16)'; o.el.style.transformOrigin = '50% 62%'; w.appendChild(o.el); o.el = w; }
-      if (sc.tito && sc.type !== 'persona' && sc.type !== 'situacion') { // el Tito petit reaccionant a la cantonada
-        const cm = E('div', 'position:absolute;left:60px;bottom:-40px;width:300px;height:450px'); cm.innerHTML = personSVG(300); o.el.appendChild(cm);
-        const r0 = o.render; o.render = (lt, d) => { r0(lt, d); const a = back(prog(lt, .4, .6)); cm.style.transform = `translateY(${(1 - a) * 220}px)`;
+      if (DATA.has(sc.type)) o.el.prepend(E('div', 'position:absolute;inset:-80px;background-image:linear-gradient(rgba(150,168,255,.1) 2px,transparent 2px),linear-gradient(90deg,rgba(150,168,255,.1) 2px,transparent 2px);background-size:60px 60px'));
+      if (sc.tito && sc.type !== 'persona' && sc.type !== 'situacion') { // el Tito petit reaccionant a la cantonada dreta
+        const cm = E('div', 'position:absolute;left:1570px;top:715px;width:250px;height:375px'); cm.innerHTML = personSVG(250); o.el.appendChild(cm);
+        const r0 = o.render; o.render = (lt, d) => { r0(lt, d); const a = back(prog(lt, .4, .6)); cm.style.transform = `translateY(${(1 - a) * 260}px)`;
           personRender(cm.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.tito, { seed: i * .37 }); };
       }
       o.disp = o.el.style.display || 'block'; uniq(o.el, 's' + i); o.el.style.display = 'none'; o.el.classList.add('scene'); stage.appendChild(o.el);
-      o.t0 = V.starts[i]; o.t1 = i + 1 < V.lines.length ? V.starts[i + 1] : V.total; o.sc = sc; return o;
+      o.t0 = t0; o.t1 = t1; o.sc = sc; o.line = li;
+      const ov = [...o.el.querySelectorAll('[data-ovl]')]; // adhesius: fixos a pantalla, fora del moviment de càmera
+      if (ov.length) { o.ov = E('div', 'position:absolute;inset:0;display:none;pointer-events:none'); ov.forEach(n => o.ov.appendChild(n)); ovl.appendChild(o.ov); }
+      return o;
     });
+    // transicions: cortineta de marca quan canvia el lloc o el tipus de pla gran; si no, tall sec amb empenta
+    scenes.forEach((s, i) => { if (!i) { s.tr = 'none'; s.pre = 0; return; } const p = scenes[i - 1].sc, c = s.sc;
+      s.tr = c.tr || ((BIGT.has(c.type) || BIGT.has(p.type)) && (c.type !== p.type || c.lugar !== p.lugar) || i % 4 === 0 ? 'swipe' : 'cut');
+      s.pre = s.tr === 'swipe' ? PRE : 0; });
+    scenes.forEach((s, i) => { s.nx = scenes[i + 1] || null; });
+    let sw = document.getElementById('swipe');
+    if (!sw) { sw = E('div', 'position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none'); sw.id = 'swipe';
+      sw.innerHTML = `<div style="position:absolute;top:-210px;height:1500px;width:${BW}px;transform:skewX(-12deg);transform-origin:50% 50%;background:linear-gradient(90deg,#0C1170 0 230px,#FFD60A 230px 280px,#FF3B6B 280px ${BW}px)"></div>`; document.getElementById('vig').before(sw); }
     // HUD «Límite»: barra de progrés amb marques. V.hud = {max, unit, marks, title}; per defecte, hores 0–72
     const HU = Object.assign({ max: 72, unit: 'h', marks: [0, 17, 24, 35, 48, 72], title: V.short_title || '' }, V.hud || {}); HU.title = lab(HU.title); window.__hud = HU;
     const hud = document.getElementById('hud');
-    hud.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:34px;margin-bottom:12px"><span class="ttl" style="color:${C.yellow}">Límite</span><span style="color:#fff;opacity:.85">${HU.title}</span></div>
+    hud.innerHTML = `<div style="position:absolute;left:-50px;top:-14px;width:1700px;height:158px;border-radius:32px;background:rgba(12,17,112,.8);z-index:-1"></div><div style="display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:34px;margin-bottom:12px"><span class="ttl" style="color:${C.yellow}">Límite</span><span style="color:#fff;opacity:.85">${HU.title}</span></div>
       <div style="position:relative;height:26px;border-radius:13px;background:rgba(7,11,69,.38)"><div class="pr" style="position:absolute;left:0;top:0;bottom:0;width:0;border-radius:13px;background:linear-gradient(90deg,${C.cyan},${C.yellow} 55%,${C.pink});background-size:1600px 100%"></div>
       <div class="kn" style="position:absolute;left:0;top:50%;width:44px;height:44px;margin:-22px;border-radius:50%;background:#fff;border:6px solid ${C.pink};box-shadow:4px 4px 0 rgba(7,11,69,.4)"></div></div>` +
       HU.marks.map(h => `<div class="mk" data-h="${h}" style="position:absolute;top:96px;left:${h / HU.max * 1600}px;transform:translateX(-50%);font-weight:700;font-size:30px;white-space:nowrap">${h} ${HU.unit}</div>`).join('');
@@ -591,26 +640,45 @@
       V.lines.forEach((ln, i) => { const ws = ln.text.split(/\s+/); const a = V.starts[i], b = i + 1 < V.lines.length ? V.starts[i + 1] : V.total - 1.2; const tot = ws.reduce((x, w) => x + w.length + 1, 0); let cur = a; ws.forEach(w => { const d = (b - a) * (w.length + 1) / tot; window.__words.push({ w, t0: cur, t1: cur + d, line: i }); cur += d; }); });
     }
   }
+  const BIGT = new Set(['situacion', 'escaner', 'experimento', 'veredicto', 'persona', 'endcard']);
+  // cortineta: banda estreta (cobalt 230 + groc 50 + rosa 140) que creua la pantalla en 0,3 s; darrere hi ha el pla nou, davant el vell
+  const DATA = new Set(['counter', 'stats', 'bars', 'gauge', 'wave', 'road', 'title', 'question', 'list', 'clock', 'hypnogram', 'steps', 'quote', 'cells', 'memory', 'receptor', 'brain', 'amygdala', 'distort', 'flicker', 'body']);
+  const BW = 420, SWD = .3, PRE = .3, TAN = Math.tan(12 * Math.PI / 180);
+  const seamX = (t, T) => lerp(-500, 2420, eio((t - (T - SWD / 2)) / SWD)) + 115; // costura al mig de la franja cobalt
+  function clipFor(t, T, keepLeft, s) { // polígon a coordenades locals de l'escena (desfà la càmera)
+    const X = seamX(t, T), yT = -120, yB = 1200, xT = X + TAN * (540 - yT), xB = X + TAN * (540 - yB);
+    const loc = (x, y) => s ? [960 + (x - s.tx - 960) / s.sc, 540 + (y - s.ty - 540) / s.sc] : [x, y];
+    const P = keepLeft ? [[-400, yT], [xT, yT], [xB, yB], [-400, yB]] : [[xT, yT], [2400, yT], [2400, yB], [xB, yB]];
+    return 'polygon(' + P.map(([x, y]) => loc(x, y)).map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(',') + ')';
+  }
   let prevHour = 0;
   function render(t) {
     const sc = window.__scenes; particles(t);
     let active = null, hourFrom = 0, hourTo = null, hourT0 = 0;
     sc.forEach((s, i) => {
-      const vis = t >= s.t0 - .05 && t < s.t1 + .4;
-      s.el.style.display = vis ? s.disp : 'none';
+      const inW = s.tr === 'swipe' ? SWD / 2 : 0, outW = s.nx && s.nx.tr === 'swipe' ? SWD / 2 : 0;
+      const vis = t >= s.t0 - inW && (t < s.t1 + outW || i === sc.length - 1);
+      s.el.style.display = vis ? s.disp : 'none'; if (s.ov) s.ov.style.display = vis ? 'block' : 'none';
       if (!vis) return;
-      const lt = t - s.t0, d = s.t1 - s.t0;
-      const aIn = eo(prog(t, s.t0, .45)), aOut = 1 - prog(t, s.t1, .4);
-      s.el.style.opacity = Math.min(aIn, aOut);
+      const lt = t - s.t0 + s.pre, d = s.t1 - s.t0 + s.pre;
+      s.el.style.opacity = 1;
+      const aIn = s.tr === 'cut' ? 1 - 4.5 * (1 - eo(prog(lt, 0, .5))) : 1;
       const cam = s.cam || (s.cam = ['in', 'left', 'out', 'right', 'in', 'up'][i % 6]);
       const ck = eio(prog(lt, 0, d + .4)); let sx = 1, tx = 0, ty = 0;
       if (cam === 'in') sx = 1 + .05 * ck; if (cam === 'out') sx = 1.06 - .05 * ck;
       if (cam === 'left') { sx = 1.04; tx = lerp(28, -28, ck); } if (cam === 'right') { sx = 1.04; tx = lerp(-28, 28, ck); } if (cam === 'up') { sx = 1.04; ty = lerp(18, -18, ck); }
       if (d > 6.5) sx *= 1 + .045 * eo(prog(lt, d * .52, .45));
-      s.el.style.transform = `translate(${tx}px,${ty}px) scale(${sx * (1.015 - .015 * aIn)})`;
+      const S2 = sx * (1.015 - .015 * aIn); s.el.style.transform = `translate(${tx}px,${ty}px) scale(${S2})`; // aIn < 1 → empenta d'entrada
+      const cv = { tx, ty, sc: S2 }, cin = inW && t < s.t0 + inW, cout = outW && t >= s.t1 - outW;
+      s.el.style.clipPath = cin ? clipFor(t, s.t0, true, cv) : cout ? clipFor(t, s.t1, false, cv) : 'none';
+      if (s.ov) s.ov.style.clipPath = cin ? clipFor(t, s.t0, true) : cout ? clipFor(t, s.t1, false) : 'none';
       try { s.render(Math.max(0, lt), d); } catch (e) { console.error(e); }
       if (t >= s.t0 && t < s.t1) { active = s; const prev = sc[i - 1]; hourFrom = prev && prev.hour != null ? prev.hour : (s.hour || 0); hourTo = s.hour; hourT0 = s.t0; }
     });
+    // cortineta: banda inclinada amb franges de marca; el tall passa just quan tapa tota la pantalla
+    const swp = document.getElementById('swipe'), band = swp.firstChild; let on = false;
+    sc.forEach(s => { if (s.tr !== 'swipe' || Math.abs(t - s.t0) > SWD / 2) return; on = true; band.style.left = (seamX(t, s.t0) - 115).toFixed(0) + 'px'; });
+    swp.style.display = on ? 'block' : 'none';
     const hud = document.getElementById('hud');
     let hv = hourTo == null ? null : lerp(hourFrom, hourTo, eio(prog(t, hourT0, 1.2)));
     if (hv != null) { window.__lastHV = hv; window.__recT = null; }
@@ -631,6 +699,8 @@
       const f = (hv != null ? hv : (active && active.hour != null ? active.hour : 0)) / (window.__hud ? window.__hud.max : 72);
       const mood = active && (active.sc.calm || active.sc.type === 'endcard') ? 'happy' : active && active.sc.type === 'amygdala' ? 'angry' : 'ok';
       personRender(document.querySelector('#vchar svg'), t, f, mood);
+      const hT = x => !!x && (BIGT.has(x.sc.type) || !!x.sc.tito), hasT = hT(active); // si el Tito ja surt al pla, no en posem un altre a sota
+      const ai = sc.indexOf(active), vc = document.getElementById('vchar'); vc.style.opacity = hasT ? 0 : hT(sc[ai - 1]) ? eo(prog(t, active.t0, .4)) : 1;
       const hk = document.querySelector('#vtop .hk'); if (hk) { const a = eo(prog(t, T0, .6)); hk.style.transform = `scale(${.85 + .15 * back(prog(t, T0, .6))})`; hk.style.opacity = a * (1 - prog(t, T0 + 2.5, .5)); }
       const W2 = window.__words; let k = W2.findIndex(w => t >= w.t0 && t < w.t1); if (k < 0) k = W2.findIndex(w => w.t0 > t) - 1;
       if (k >= 0) { const st = Math.floor(k / 5) * 5; const chunk = W2.slice(st, st + 5).filter(w => w.line === W2[k].line);
@@ -648,5 +718,5 @@
   }
   function particles(t) { blobs('cv', W, H, t); }
   function particles2(t) { blobs('cv2', 1080, 1920, t); }
-  window.Motor = { build, render, S, personSVG, personRender };
+  window.Motor = { build, render, S, personSVG, personRender, h: { E, eo, eio, prog, back, lerp, clamp, rnd, C, col, FD, SHD, header, enter, lab } };
 })();
