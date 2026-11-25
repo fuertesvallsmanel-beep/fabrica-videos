@@ -59,7 +59,7 @@
     return s.split(' ').map((w, i) => ACR.has(w.replace(/[^A-Z.]/g, '')) || /\d/.test(w) ? w : (i === 0 ? w[0] + w.slice(1).toLowerCase() : w.toLowerCase())).join(' '); };
 
   function header(el, label, sub, color, x = 1060, y = 360, w = 760) {
-    const h = E('div', `position:absolute;left:${x}px;top:${y}px;width:${w}px`);
+    w = Math.min(w, 1730 - x); const h = E('div', `position:absolute;left:${x}px;top:${y}px;width:${w}px`);
     h.innerHTML = `<div class="lab" style="color:${color};font-size:40px;font-weight:800;letter-spacing:.2px">${lab(label) || ''}</div><div class="sub" style="color:#FFFFFF;font-size:52px;font-weight:700;line-height:1.18;margin-top:16px">${nl(sub)}</div>`;
     el.appendChild(h);
     return lt => { enter(h.children[0], lt, .3, 20); enter(h.children[1], lt, .6, 24); };
@@ -117,7 +117,7 @@
     const hd = header(el, sc.label, sc.sub, c);
     let meter;
     if (mode === 'adenosine') { meter = E('div', 'position:absolute;left:1060px;top:640px;width:700px;height:40px;border-radius:20px;background:rgba(148,163,184,.14)'); meter.innerHTML = `<div style="height:40px;width:0;border-radius:20px;background:linear-gradient(90deg,#FFC800,#FF8A3D);box-shadow:0 0 30px #FFC80088"></div><div style="color:${C.muted};font-size:36px;font-weight:700;margin-top:16px;letter-spacing:2px">PRESIÓN DE SUEÑO</div>`; el.appendChild(meter); }
-    if (mode === 'scn') { const lab = E('div', `position:absolute;left:140px;top:880px;color:#fff;font-size:42px;font-weight:800`, 'Hipotálamo'); lab.className = 'scnlab'; el.appendChild(lab); }
+    if (mode === 'scn') { const lab = E('div', `position:absolute;left:200px;top:880px;color:#fff;font-size:42px;font-weight:800`, 'Hipotálamo'); lab.className = 'scnlab'; el.appendChild(lab); }
     let ready = false;
     return { el, render(lt, d) {
       if (!ready) { prepDraw(holder); ready = true; }
@@ -211,16 +211,16 @@
     if (sc.limit) { chip = E('div', `position:absolute;transform:translateX(-50%);background:#fff;color:${C.ink};font-size:36px;font-weight:800;padding:6px 20px 10px;border-radius:12px;white-space:nowrap;opacity:0`, lab(sc.limit.label).replace(/\s*\(.*\)/, '')); rows[0].r.appendChild(chip); chip.style.left = W1 * sc.limit.value / sc.max + 'px'; chip.style.top = '-170px'; }
     return { el, render(lt) {
       enter(box.children[0], lt, 0, 16);
-      rows.forEach(({ r, it }, i) => { const st = .4 + i * (rows.length > 1 && i === rows.length - 1 ? .9 : .5); enter(r, lt, st - .2, 20); const k = eo(prog(lt, st, 1.3)); r.querySelector('.f').style.width = 100 * k * it.value / sc.max + '%'; r.querySelector('.v').textContent = (it.value * k).toFixed(1).replace('.', ',') + (it.unit || '');
+      rows.forEach(({ r, it }, i) => { const st = .3 + i * (rows.length > 1 && i === rows.length - 1 ? .9 : .5); enter(r, lt, st - .25, 20, .35); const k = (sc._prev || []).includes(it.label) ? 1 : eo(prog(lt, st, sc._prev ? .8 : 1.3)); r.querySelector('.f').style.width = 100 * k * it.value / sc.max + '%'; r.querySelector('.v').textContent = (it.value * k).toFixed(1).replace('.', ',') + (it.unit || '');
         const shp = ((lt - st - 1.3) * .5 + i * .3) % 1.6; r.querySelector('.sh').style.left = (lt > st + 1.3 ? -200 + shp * 1100 : -400) + 'px'; });
-      box.querySelectorAll('.lm').forEach(m => m.style.opacity = eo(prog(lt, 1.6, .5))); if (chip) { chip.style.opacity = eo(prog(lt, 1.6, .4)); chip.style.transform = `translateX(-50%) scale(${.7 + .3 * back(prog(lt, 1.6, .4))})`; }
+      const lk = sc._prev ? 1 : prog(lt, 1.6, .4); box.querySelectorAll('.lm').forEach(m => m.style.opacity = lk > 0 ? 1 : 0); if (chip) { chip.style.opacity = lk > 0 ? 1 : 0; chip.style.transform = `translateX(-50%) scale(${lk >= 1 ? 1 : .7 + .3 * back(lk)})`; }
     } };
   };
 
   S.wave = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
     // corba d'alerta circadiana 07:00 -> 07:00 (+24h), mínim cap a les 04:00
-    const X0 = 200, X1 = 1720, CY = 650, AMP = 220;
+    const X0 = 250, X1 = 1670, CY = 660, AMP = 215;
     const pts = []; for (let i = 0; i <= 96; i++) { const h = 7 + i / 4; const a = Math.cos((h - 16) / 24 * 2 * Math.PI); pts.push([X0 + i * (X1 - X0) / 96, CY - a * AMP]); }
     const d = 'M' + pts.map(p => p.map(v => v.toFixed(1)).join(',')).join(' L');
     const [hh] = (sc.time || '04:00').split(':').map(Number); const hi = ((hh - 7 + 24) % 24) * 4;
@@ -231,7 +231,7 @@
       <path class="w" d="${d}" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
       <circle class="ring" r="24" fill="none" stroke="${dc}" stroke-width="5"/><circle class="dot" r="24" fill="${dc}"/>
       <text class="tl" text-anchor="middle" fill="${C.yellow}" font-family="Brico" font-weight="800" font-stretch="76%" font-size="68" style="paint-order:stroke" stroke="#0A1A8C" stroke-width="10">${sc.time || ''}</text></svg>
-      <div style="position:absolute;left:${X0}px;top:236px;color:${dc};font-size:44px;font-weight:800">${lab(sc.label) || ''}</div><div style="position:absolute;left:${X0}px;top:292px;color:#fff;font-size:60px;font-weight:800">${sc.sub || ''}</div>`;
+      <div style="position:absolute;left:${X0}px;top:250px;color:${dc};font-size:44px;font-weight:800">${sc.sub ? '' : lab(sc.label) || ''}</div><div style="position:absolute;left:${X0}px;top:${sc.sub ? 260 : 304}px;color:#fff;font-size:58px;font-weight:800">${sc.sub || ''}</div>`;
     const hd = E('div', `position:absolute;left:0;top:0;width:150px;height:150px;border-radius:50%;overflow:hidden;background:#3B5BFF;border:7px solid #fff;box-shadow:8px 8px 0 rgba(7,11,69,.45);opacity:0`);
     hd.innerHTML = `<div style="position:absolute;left:-95px;top:-62px">${personSVG(320)}</div>`; el.appendChild(hd);
     const svg = el.firstChild, w = svg.querySelector('.w'), tl = svg.querySelector('.tl'); let L = 0;
@@ -320,7 +320,7 @@
     if (pct) { grid = E('div', 'position:absolute;left:1010px;top:300px;width:500px;display:grid;grid-template-columns:repeat(10,44px);gap:6px;opacity:0'); for (let i = 0; i < 100; i++) { const c = E('div', 'width:44px;height:44px;border-radius:10px;background:rgba(211,218,255,.25)'); grid.appendChild(c); cs.push(c); } el.appendChild(grid);
       cap = E('div', `position:absolute;left:1010px;top:820px;width:500px;text-align:center;color:${C.soft};font-size:44px;font-weight:800;opacity:0`, `${Math.round(it0.value)} de cada 100`); el.appendChild(cap); }
     return { el, render(lt, d) { cells.forEach(({ d: e, it }, i) => { enter(e, lt, .2 + i * .5, 30); e.querySelector('.n').textContent = (it.prefix || '') + Math.round(it.value * eo(prog(lt, .3 + i * .5, 1.4))) + (it.suffix || ''); }); enter(sub, lt, 1.4);
-      if (pct && d > 5.5) { const T = 3, k = eio(prog(lt, T, .7)); blk.style.transform = `translateX(${-430 * k}px) scale(${1 - .36 * k})`; grid.style.opacity = k; cap.style.opacity = eo(prog(lt, T + 1.6, .4));
+      if (pct && d > 5.5) { const T = 3, k = eio(prog(lt, T, .7)); blk.style.left = lerp(0, 150, k) + 'px'; blk.style.right = lerp(0, 1000, k) + 'px'; cells[0].d.querySelector('.n').style.fontSize = lerp(342, 230, k) + 'px'; grid.style.opacity = k; cap.style.opacity = eo(prog(lt, T + 1.6, .4));
         const n = Math.round(it0.value * prog(lt, T + .5, 1.2)); cs.forEach((c, i) => { c.style.background = i < n ? C.pink : 'rgba(211,218,255,.25)'; c.style.transform = i < n && i >= n - 3 ? 'scale(1.12)' : ''; }); }
     }, sfx(a, b) { return pct && b - a > 5.5 ? [{ t: a + 3.5, d: 1.2, k: 'fill', n: Math.min(24, Math.round(it0.value)) }] : []; } };
   };
@@ -333,7 +333,7 @@
     const holder = E('div', 'position:absolute;left:80px;top:300px'); holder.innerHTML = b.html.replace('url(#BG)', `url(#${b.u}bg)`); el.appendChild(holder);
     const lab1 = E('div', `position:absolute;left:230px;top:880px;color:#fff;font-size:40px;font-weight:800`, `Amígdala <span style="color:${C.red};font-size:36px;letter-spacing:.5px;display:block">Alarma emocional</span>`); el.appendChild(lab1);
     const lab2 = E('div', `position:absolute;left:230px;top:300px;color:#fff;font-size:40px;font-weight:800`, `Corteza prefrontal <span style="color:${C.cyan};font-size:36px;letter-spacing:.5px;display:block">El freno</span>`); el.appendChild(lab2);
-    const panel = E('div', 'position:absolute;left:1090px;top:330px;width:680px'); el.appendChild(panel);
+    const panel = E('div', 'position:absolute;left:1090px;top:330px;width:620px'); el.appendChild(panel);
     panel.innerHTML = `<div style="color:#D3DAFF;font-size:36px;font-weight:800;margin-bottom:34px">Reactividad de la amígdala</div>
       <div style="margin-bottom:30px"><div style="display:flex;justify-content:space-between;color:#FFFFFF;font-size:36px;font-weight:600;margin-bottom:12px"><span>Descansado</span><span class="v1">0</span></div><div style="height:44px;border-radius:22px;background:rgba(148,163,184,.12)"><div class="f1" style="height:44px;width:0;border-radius:22px;background:linear-gradient(90deg,#0EA5E9,#3EF0FF)"></div></div></div>
       <div><div style="display:flex;justify-content:space-between;color:#FFFFFF;font-size:36px;font-weight:600;margin-bottom:12px"><span>35 h sin dormir</span><span class="v2">0</span></div><div style="height:44px;border-radius:22px;background:rgba(148,163,184,.12)"><div class="f2" style="height:44px;width:0;border-radius:22px;background:linear-gradient(90deg,#FF8A3D,#FF3B6B);box-shadow:0 0 30px rgba(255,59,107,.5)"></div></div></div>
@@ -355,7 +355,7 @@
   };
 
   S.list = (sc) => {
-    const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-left:300px;gap:44px');
+    const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-left:260px;padding-right:200px;gap:44px');
     const c = col(sc.color);
     const items = sc.items.map((t, i) => { const d = E('div', 'display:flex;align-items:center;gap:40px'); d.innerHTML = `<div style="width:96px;height:96px;flex:none;border-radius:28px;background:${c}22;border:4px solid ${c};display:flex;align-items:center;justify-content:center;color:${c};font-size:52px;font-weight:900">${i + 1}</div><div style="color:#fff;font-size:${sc.items.length <= 2 ? 84 : sc.items.length === 3 ? 72 : 62}px;font-weight:800;max-width:1350px;line-height:1.15">${t}</div>`; el.appendChild(d); return d; });
     return { el, render(lt, d) { const gap = Math.min(1.1, (d - 1) / items.length); items.forEach((x, i) => { const k = eo(prog(lt, .2 + i * gap, .6)); x.style.opacity = k; x.style.transform = `translateX(${(1 - k) * 80}px)`; x.firstChild.style.transform = `scale(${.6 + .4 * back(prog(lt, .2 + i * gap, .5))})`; }); } };
@@ -415,12 +415,12 @@
     const el = E('div', 'position:absolute;inset:0');
     // fases: 0 vigília, 1 REM, 2 N1, 3 N2, 4 N3 (profund). Nit de recuperació amb rebot de N3 i REM
     const seq = [0, 2, 3, 4, 4, 4, 3, 1, 1, 3, 4, 4, 3, 1, 1, 1, 3, 4, 3, 1, 1, 1, 3, 3, 1, 1, 1, 0];
-    const yOf = s => [300, 480, 420, 560, 700][s];
-    let segs = ''; const x0 = 200, dx = 1520 / seq.length;
+    const yOf = s => [350, 530, 470, 610, 750][s];
+    let segs = ''; const x0 = 420, dx = 1300 / seq.length;
     seq.forEach((s, i) => { const c = s === 4 ? C.blue : s === 1 ? C.violet : '#6F7CD6'; segs += `<rect class="sg" x="${x0 + i * dx}" y="${yOf(s) - 14}" width="${dx + 1}" height="28" rx="6" fill="${c}" opacity="0"/>`; });
-    const lbl = [['Despierto', 300], ['REM', 480], ['Ligero', 560], ['Profundo', 700]].map(([t, y]) => `<text x="${x0 - 30}" y="${y + 10}" fill="#9AA6F0" font-size="34" font-weight="700" text-anchor="end">${t}</text>`).join('');
-    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0">${lbl}${segs}</svg><div style="position:absolute;left:200px;top:220px;color:${C.cyan};font-size:44px;font-weight:800;letter-spacing:.5px">LA NOCHE DE RECUPERACIÓN</div>
-      <div style="position:absolute;left:200px;top:820px;display:flex;gap:60px;font-size:38px;font-weight:800"><span style="color:${C.blue}">■ Sueño profundo ↑</span><span style="color:${C.violet}">■ Sueño REM ↑</span></div>`;
+    const lbl = [['Despierto', 350], ['REM', 530], ['Ligero', 610], ['Profundo', 750]].map(([t, y]) => `<text x="${x0 - 30}" y="${y + 12}" fill="${C.soft}" font-size="40" font-weight="700" text-anchor="end">${t}</text>`).join('');
+    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0">${lbl}${segs}</svg><div style="position:absolute;left:200px;top:258px;color:${C.cyan};font-size:46px;font-weight:800">La noche de recuperación</div>
+      <div style="position:absolute;left:420px;top:850px;display:flex;gap:60px;font-size:40px;font-weight:800"><span style="color:${C.blue}">■ Sueño profundo ↑</span><span style="color:${C.violet}">■ Sueño REM ↑</span></div>`;
     const svg = el.firstChild;
     return { el, render(lt) { svg.querySelectorAll('.sg').forEach((r, i) => { const k = eo(prog(lt, .3 + i * .1, .3)); r.setAttribute('opacity', k); }); enter(el.children[1], lt, 0, 16); enter(el.children[2], lt, 2, 20); } };
   };
@@ -602,9 +602,10 @@
       let o = fn(sc);
       if (BIG.has(sc.type)) { const w = E('div', 'position:absolute;inset:0'); o.el.style.transform = 'scale(1.16)'; o.el.style.transformOrigin = '50% 62%'; w.appendChild(o.el); o.el = w; }
       if (DATA.has(sc.type)) o.el.prepend(E('div', 'position:absolute;inset:-80px;background-image:linear-gradient(rgba(150,168,255,.1) 2px,transparent 2px),linear-gradient(90deg,rgba(150,168,255,.1) 2px,transparent 2px);background-size:60px 60px'));
+      if (sc.type === 'bars' && !sc.tito) { sc.tito = 'tired'; sc._tAuto = 1; } // segon temps de les barres: el Tito reacciona als 3 s
       if (sc.tito && sc.type !== 'persona' && sc.type !== 'situacion') { // el Tito petit reaccionant a la cantonada dreta
-        const cm = E('div', 'position:absolute;left:1570px;top:715px;width:250px;height:375px'); cm.innerHTML = personSVG(250); o.el.appendChild(cm);
-        const r0 = o.render; o.render = (lt, d) => { r0(lt, d); const a = back(prog(lt, .4, .6)); cm.style.transform = `translateY(${(1 - a) * 260}px)`;
+        const cm = E('div', 'position:absolute;left:1570px;top:700px;width:213px;height:320px'); cm.innerHTML = personSVG(213); const dl = sc.type === 'bars' && !sc._tAuto ? 0 : 0; o.el.appendChild(cm);
+        const r0 = o.render; o.render = (lt, d) => { r0(lt, d); const a = back(prog(lt, sc._tAuto ? 3 : .4, .6)); cm.style.transform = `translateY(${(1 - a) * 260}px)`;
           personRender(cm.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.tito, { seed: i * .37 }); };
       }
       o.disp = o.el.style.display || 'block'; uniq(o.el, 's' + i); o.el.style.display = 'none'; o.el.classList.add('scene'); stage.appendChild(o.el);
@@ -616,7 +617,7 @@
     // transicions: cortineta de marca quan canvia el lloc o el tipus de pla gran; si no, tall sec amb empenta
     scenes.forEach((s, i) => { if (!i) { s.tr = 'none'; s.pre = 0; return; } const p = scenes[i - 1].sc, c = s.sc;
       s.tr = c.tr || ((BIGT.has(c.type) || BIGT.has(p.type)) && (c.type !== p.type || c.lugar !== p.lugar) || i % 4 === 0 ? 'swipe' : 'cut');
-      s.pre = s.tr === 'swipe' ? PRE : 0; });
+      s.pre = PRE; if (c.type === 'bars' && p.type === 'bars' && c.title === p.title) c._prev = p.items.map(x => x.label); });
     scenes.forEach((s, i) => { s.nx = scenes[i + 1] || null; });
     let sw = document.getElementById('swipe');
     if (!sw) { sw = E('div', 'position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none'); sw.id = 'swipe';
@@ -643,7 +644,7 @@
   const BIGT = new Set(['situacion', 'escaner', 'experimento', 'veredicto', 'persona', 'endcard']);
   // cortineta: banda estreta (cobalt 230 + groc 50 + rosa 140) que creua la pantalla en 0,3 s; darrere hi ha el pla nou, davant el vell
   const DATA = new Set(['counter', 'stats', 'bars', 'gauge', 'wave', 'road', 'title', 'question', 'list', 'clock', 'hypnogram', 'steps', 'quote', 'cells', 'memory', 'receptor', 'brain', 'amygdala', 'distort', 'flicker', 'body']);
-  const BW = 420, SWD = .3, PRE = .3, TAN = Math.tan(12 * Math.PI / 180);
+  const BW = 420, SWD = .3, PRE = .4, TAN = Math.tan(12 * Math.PI / 180);
   const seamX = (t, T) => lerp(-500, 2420, eio((t - (T - SWD / 2)) / SWD)) + 115; // costura al mig de la franja cobalt
   function clipFor(t, T, keepLeft, s) { // polígon a coordenades locals de l'escena (desfà la càmera)
     const X = seamX(t, T), yT = -120, yB = 1200, xT = X + TAN * (540 - yT), xB = X + TAN * (540 - yB);
@@ -691,7 +692,7 @@
     if (hv != null) { const HU = window.__hud, x = Math.min(1, hv / HU.max) * 1600; hud.querySelector('.pr').style.width = x + 'px'; hud.querySelector('.kn').style.left = x + 'px';
       hud.querySelector('.kn').style.transform = `scale(${1 + .08 * Math.sin(t * 4)})`;
       hud.querySelectorAll('.mk').forEach(m => { const on = hv >= +m.dataset.h - .01; m.style.color = on ? '#FFFFFF' : 'rgba(199,208,255,.55)'; }); }
-    const src = document.getElementById('src'); const st = active && active.sc.source; src.textContent = st ? 'Fuente: ' + st : ''; src.style.opacity = st ? eo(prog(t, active.t0 + 1, .6)) * .9 : 0;
+    const src = document.getElementById('src'); const st = active && active.sc.source; src.textContent = st ? 'Fuente: ' + st : ''; const big = active && (BIGT.has(active.sc.type) && !['escaner','experimento','veredicto'].includes(active.sc.type)); src.style.left = big ? 'auto' : '60px'; src.style.right = big ? '120px' : 'auto'; src.style.opacity = st ? eo(prog(t, active.t0 + 1, .6)) * .9 : 0;
     const V = window.VIDEO, T0 = V.segStart || 0, T1 = V.segEnd || V.total;
     document.getElementById('fade').style.opacity = 1 - eo(prog(t, T0, .35)) + prog(t, T1 - .5, .5);
     if (V.vertical) {

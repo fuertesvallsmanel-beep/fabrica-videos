@@ -4,7 +4,7 @@
   python3 motor/qa.py videos/<id>            # vídeo horitzontal
   python3 motor/qa.py videos/<id> --short 9 13 "Ganxo"   # un Short (mateixes línies que al render)
 
-Mira cada escena al 55 % i al 85 % de la durada (quan les animacions ja s'han assentat) i comprova els textos visibles:
+Mira cada pla (també els segons plans de scene.then) al 55 % i al 85 % de la durada (quan les animacions ja s'han assentat) i comprova els textos visibles:
   · mida mínima (36 px; les fonts de la cantonada poden ser petites)
   · marges (res a menys de 100 px de les vores en horitzontal, 60 px en vertical)
   · que no toquin el medidor «Límite» de dalt (y < 215) quan és visible
@@ -26,7 +26,7 @@ CHECK = r"""(t) => {
   const items = [];
   document.querySelectorAll('#stage *, #ovl *, #vtop *, #vcap *').forEach(e => {
     const txt = own(e); if (!txt || op(e) < .6 || !/[\p{L}\p{N}]/u.test(txt)) return;   // ignora cometes i símbols decoratius
-    if (e.closest('svg.tito') || e.closest('#vchar')) return;          // la targeta del Tito és part del dibuix
+    if (e.closest('svg.tito') || e.closest('#vchar') || e.closest('.deco')) return;   // la targeta del Tito i la matrícula del cotxe són dibuix
     let r;
     if (e instanceof SVGElement) r = e.getBoundingClientRect();
     else { const rg = document.createRange(); const rs = [];                // només on hi ha lletres, no la caixa sencera
@@ -71,12 +71,14 @@ def main():
     probs = []
     with sync_playwright() as p:
         br, pg, errs = rv.open_page(p, V, W, H)
-        for i in lines:
-            d = st[i + 1] - st[i]
+        # cada pla (una línia pot tenir dos plans amb scene.then), al 55 % i al 85 % de la seva durada
+        shots = pg.evaluate("window.__scenes.map(s => [s.t0, s.t1, s.sc.type, s.line])")
+        for t0, t1, typ, i in shots:
+            if i not in lines: continue
             for f in (.55, .85):
-                t = st[i] + d * f
+                t = t0 + (t1 - t0) * f
                 for kind, where, txt in pg.evaluate(CHECK, t):
-                    probs.append((i, round(t, 1), V['lines'][i]['scene']['type'], kind, where, txt))
+                    probs.append((i, round(t, 1), typ, kind, where, txt))
         br.close()
     seen, uniq = set(), []
     for pr in probs:

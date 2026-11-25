@@ -76,11 +76,11 @@
        <path d="M-610,-130 C-612,-110 -608,-80 -596,-66 C-588,-56 -575,-52 -560,-52 L560,-52 C575,-52 588,-56 596,-66 C608,-80 612,-110 610,-130Z" fill="#C7D0FF"/>
        <path d="M-510,-410 L510,-410 L446,-452 L-446,-452Z" fill="#DCE2FF"/><path d="M-560,-344 C-420,-370 420,-370 560,-344" stroke="#C7D0FF" stroke-width="8" fill="none"/>
        <rect x="-240" y="-320" width="480" height="112" rx="36" fill="#2433C4"/><path d="M-206,-290 H206 M-214,-264 H214 M-206,-238 H206" stroke="#1A2499" stroke-width="9" stroke-linecap="round"/>
-       <circle cx="0" cy="-264" r="27" fill="#FF3B6B"/><text x="0" y="-252" text-anchor="middle" font-family="Brico" font-weight="800" font-size="34" fill="#fff">T</text>
+       <circle cx="0" cy="-264" r="27" fill="#FF3B6B"/><text class="deco" x="0" y="-252" text-anchor="middle" font-family="Brico" font-weight="800" font-size="34" fill="#fff">T</text>
        ${hl(1)}${hl(-1)}
        <rect x="-612" y="-196" width="1224" height="44" rx="22" fill="#C7D0FF"/><circle cx="-505" cy="-174" r="14" fill="#FFE9A8"/><circle cx="505" cy="-174" r="14" fill="#FFE9A8"/>
-       <rect x="-96" y="-188" width="192" height="58" rx="10" fill="#fff" stroke="#9FB0FF" stroke-width="4"/><text x="0" y="-144" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="42" fill="${INK}">TITO</text>
-       ${mir(-1)}${mir(1)}
+       <rect x="-96" y="-188" width="192" height="58" rx="10" fill="#fff" stroke="#9FB0FF" stroke-width="4"/><text class="deco" x="0" y="-144" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="42" fill="${INK}">TITO</text>
+       ${mir(-1)}${sc.label || sc.sub ? '' : mir(1)}
        <g clip-path="url(#cws)">
         <rect x="-440" y="-780" width="880" height="340" fill="#0A1060"/><rect x="-440" y="-780" width="880" height="56" fill="#1A2499"/>
         <rect x="-300" y="-616" width="200" height="200" rx="40" fill="#1E2BB0"/><rect x="-266" y="-702" width="132" height="96" rx="30" fill="#2433C4"/><rect x="124" y="-716" width="140" height="100" rx="30" fill="#2433C4"/>
@@ -251,7 +251,7 @@
   S.escaner = (sc) => {
     const el = E('div', 'position:absolute;inset:0;overflow:hidden');
     const organ = sc.organ || sc.scan || 'corazon', head = /cerebro|ojo/.test(organ), f = fatOf(sc);
-    const TW = 460, s = TW / 400, TL = 530, TT = 290, DX = 640, DY = 610, DR = 360;
+    const TW = 460, s = TW / 400, TL = 530, TT = 290, DX = 730, DY = 610, DR = 350;
     const [sx, sy0, sr] = head ? [201, 190, 80] : window.Tito.spot(organ), sy = sy0, lx = sx * s, ly = sy * s;
     let grid = ''; for (let x = 0; x <= W; x += 80) grid += `<path d="M${x},0 V${H}" stroke="#3EF0FF" stroke-width="1.5" opacity=".07"/>`; for (let y = 0; y <= H; y += 80) grid += `<path d="M0,${y} H${W}" stroke="#3EF0FF" stroke-width="1.5" opacity=".07"/>`;
     const bay = E('div', 'position:absolute;inset:0');
@@ -271,7 +271,7 @@
       <svg class="rg" width="${2 * DR + 120}" height="${2 * DR + 120}" style="position:absolute;left:-60px;top:-60px;overflow:visible"><circle cx="${DR + 60}" cy="${DR + 60}" r="${DR + 34}" fill="none" stroke="${C.cyan}" stroke-width="6" stroke-dasharray="26 22" opacity=".7"/></svg>`;
     el.appendChild(disc);
     const pins = (sc.pins || []).map(p => { const e = E('div', `position:absolute;left:${DX - DR + p.x / 100 * 2 * DR}px;top:${DY - DR + p.y / 100 * 2 * DR}px;opacity:0`,
-      `<div style="position:absolute;left:-13px;top:-13px;width:26px;height:26px;border-radius:50%;background:${C.yellow};box-shadow:0 0 0 7px rgba(255,214,10,.3)"></div><div style="position:absolute;left:${p.x > 50 ? 30 : -30}px;top:-30px;${p.x > 50 ? '' : 'transform:translateX(-100%);'}white-space:nowrap;background:#fff;color:${INK};font-size:36px;font-weight:800;padding:4px 18px 8px;border-radius:12px">${p.text}</div>`); el.appendChild(e); return e; });
+      `<div style="position:absolute;left:-13px;top:-13px;width:26px;height:26px;border-radius:50%;background:${C.yellow};box-shadow:0 0 0 7px rgba(255,214,10,.3)"></div><div style="position:absolute;${p.x > 50 || DX - DR + p.x / 100 * 2 * DR - 30 - p.text.length * 21 < 130 ? 'left:30px' : 'right:30px'};top:-30px;white-space:nowrap;background:#fff;color:${INK};font-size:36px;font-weight:800;padding:4px 18px 8px;border-radius:12px">${p.text}</div>`); el.appendChild(e); return e; });
     const st = sticker(el, { label: sc.label, sub: sc.sub }, 1150, 560, 640, false);
     const og = disc.querySelector('.og'), sl = disc.querySelector('.sl'), rg = disc.querySelector('.rg'), pc = read.querySelector('.pc');
     const k = d => clamp(d / 5, .7, 1);
