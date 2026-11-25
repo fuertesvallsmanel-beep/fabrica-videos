@@ -183,7 +183,7 @@ def music_track(total, t_off=0.0):
 def limit_sfx(bed, vdir, t_off, total):
     """Que els efectes no tapin mai la veu: pics ≥ SFX_BELOW_VOICE_DB per sota dels de la veu i,
     on sonen, ≥ 16 dB de mitjana per sota de la veu parlada. Escriu l'informe a so.json."""
-    v = load_audio(vdir / 'voz.mp3')[int(t_off * SR):int((t_off + total) * SR)]
+    v = load_audio(VOICE[0])[int(t_off * SR):int((t_off + total) * SR)]
     db = lambda x: 20 * np.log10(max(float(x), 1e-9))
     fr = lambda x: np.sqrt(np.mean(x[:len(x) // 1024 * 1024].reshape(-1, 1024) ** 2, axis=1)) if len(x) >= 1024 else np.array([0.0])
     vpk = np.percentile(np.abs(v), 99.9) if len(v) else .5; vf = fr(v); vrms = np.sqrt(np.mean(vf[vf > .02] ** 2)) if (vf > .02).any() else .1
@@ -208,15 +208,34 @@ def mix(vdir, SH, total, t_off, video_in, out):
     fc = ('[1:a]aresample=44100,asplit=2[v1][v2];'
           '[3:a]volume=0.24[mu];[mu][v1]sidechaincompress=threshold=0.015:ratio=10:attack=15:release=500[duck];'
           '[2:a]volume=1.0[fx];[v2][duck][fx]amix=inputs=3:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[a]')
-    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(video_in), '-ss', f'{t_off:.3f}', '-t', f'{total:.3f}', '-i', str(vdir / 'voz.mp3'),
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(video_in), '-ss', f'{t_off:.3f}', '-t', f'{total:.3f}', '-i', str(VOICE[0]),
                     '-i', str(vdir / 'sfx.wav'), '-i', str(vdir / 'music.wav'), '-filter_complex', fc,
                     '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', str(out)], check=True)
 
 
 # ---------------- imatge ----------------
+PAUSA = 0.5   # segons de silenci afegits entre línies de la veu (respira; el Manel ho volia menys atapeït)
+VOICE = [None]
+
+
+def paced(vdir, V, T):
+    """Afegeix PAUSA s de silenci abans de cada línia (excepte la primera) i retorna els temps nous.
+    La veu original no es toca: es desa voz_p.wav. video.json pot canviar-ho amb "pausa": 0.3."""
+    gap = float(V.get('pausa', PAUSA)); src = vdir / 'voz.mp3'
+    if gap <= 0: VOICE[0] = src; return T
+    out = vdir / 'voz_p.wav'; a = load_audio(src); st = T['starts']; parts = []; new = []
+    for i, s0 in enumerate(st):
+        i0 = int(s0 * SR); i1 = int(st[i + 1] * SR) if i + 1 < len(st) else len(a)
+        new.append(s0 + gap * i); parts.append(a[i0:i1])
+        if i + 1 < len(st): parts.append(np.zeros(int(gap * SR)))
+    x = np.concatenate(parts); wavfile.write(str(out), SR, (x * 32767).clip(-32767, 32767).astype(np.int16))
+    VOICE[0] = out
+    return dict(T, starts=new, total=T['total'] + gap * (len(st) - 1))
+
+
 def voice_beats(vdir, starts, total):
     """Inici de cada frase dins de cada línia, a partir de les pauses reals de la veu (gratis, sense IA)."""
-    r = subprocess.run(['ffmpeg', '-v', 'info', '-i', str(vdir / 'voz.mp3'), '-af', 'silencedetect=n=-35dB:d=0.12', '-f', 'null', '-'], capture_output=True, text=True)
+    r = subprocess.run(['ffmpeg', '-v', 'info', '-i', str(VOICE[0]), '-af', 'silencedetect=n=-35dB:d=0.12', '-f', 'null', '-'], capture_output=True, text=True)
     ends = [float(x) for x in re.findall(r'silence_end: ([\d.]+)', r.stderr)]
     st = list(starts) + [total]
     return [[round(e - st[i], 3) for e in ends if st[i] + .2 < e < st[i + 1] - .4] for i in range(len(starts))]
@@ -260,7 +279,7 @@ def render_chunk(args):
 def main():
     args = sys.argv[1:]
     vdir = pathlib.Path(args[0]).resolve()
-    V = json.loads((vdir / 'video.json').read_text()); T = json.loads((vdir / 'timings.json').read_text())
+    V = json.loads((vdir / 'video.json').read_text()); T = paced(vdir, V, json.loads((vdir / 'timings.json').read_text()))
     V['starts'] = T['starts']; V['total'] = T['total'] + 1.2
     for ln, b in zip(V['lines'], voice_beats(vdir, T['starts'], T['total'])): ln['scene']['_beats'] = b
     stills = [float(x) for x in args[args.index('--stills') + 1].split(',')] if '--stills' in args else None

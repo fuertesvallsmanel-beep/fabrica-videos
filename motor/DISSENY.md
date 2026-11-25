@@ -15,7 +15,7 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
    - `escritorio`: finestra amb ciutat i finestres que s'encenen, cortines, prestatge, rellotge que avança des de `time`, llum, llaunes (`latas` 0–6, per defecte segons el cansament), tassa amb vapor; `pose`: `type` (tecleja, so de teclat) o `mug` (beu).
    - L'adhesiu blanc (hora + `label` + `sub`) entra a cop amb rebot. Lloc nou: afegeix `LUG.<nom>` a `escenas.js` amb el mateix esquema (`el`, `render`, `sfx`).
 6. **Plans i transicions**: pensa en plans, no en diapositives.
-   - Una línia llarga es pot partir en dos plans sense tocar la veu: `scene.then = {…escena, at: segons}` (p. ex. situació 4 s → gràfic). Fes-ho sempre que una línia passi de 8 s.
+   - Una línia llarga es pot partir en dos plans sense tocar la veu: `scene.then = {…escena, at: segons}` (p. ex. situació 4 s → gràfic). Fes-ho només si una línia passa de 10 s: els plans han de durar 5–7 s perquè el vídeo respiri.
    - Transicions tranquil·les i sense so: **cortineta lenta** (banda inclinada cobalt/groc/rosa que creua en 0,9 s i destapa el pla nou) només quan canvia el lloc o el tipus de pla; si no, **tall net** amb un acostament suau (1,04 → 1 en 0,9 s). Res de cops ràpids ni whooshes (el Manel els troba agobiants). Es pot forçar amb `tr`.
    - **Adhesius** (hora + etiqueta + frase) fixos a pantalla, fora del moviment de càmera, dins la caixa x 1290–1790 / y 600–940; entren opacs amb un cop d'escala (0,55 → 1,08 → 1).
    - **Cap pla mort**: si un pla passa de 4 s sense res nou, li cal un segon temps (`then`, o el que porta l'escena: `stats` amb % passa sol a una graella de 100; `wave` porta el cap del Tito que recorre la corba; les barres tenen reflex). El render avisa dels plans de més de 8 s.

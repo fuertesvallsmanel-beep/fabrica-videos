@@ -61,7 +61,7 @@ CHECK = r"""(t) => {
 def main():
     a = sys.argv[1:]
     vdir = pathlib.Path(a[0]).resolve()
-    V = json.loads((vdir / 'video.json').read_text()); T = json.loads((vdir / 'timings.json').read_text())
+    V = json.loads((vdir / 'video.json').read_text()); T = rv.paced(vdir, V, json.loads((vdir / 'timings.json').read_text()))
     V['starts'] = T['starts']; V['total'] = T['total'] + 1.2
     for ln, b in zip(V['lines'], rv.voice_beats(vdir, T['starts'], T['total'])): ln['scene']['_beats'] = b
     st = T['starts'] + [T['total']]; lines = range(len(V['lines'])); W, H = 1920, 1080
