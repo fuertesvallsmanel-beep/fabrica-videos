@@ -48,6 +48,8 @@ def sfx_track(total, V, starts, t_off=0.0):
     blip = lambda k: tone(500 + 90 * k, 700 + 90 * k, .07, 40) * .12
     beat = tone(70, 45, .18, 18) * .5
     thump = tone(110, 60, .25, 14) * .18
+    stamp = tone(90, 40, .35, 11) * .55
+    sn = int(.12 * SR); stamp_hi = rng.standard_normal(sn) * np.exp(-np.arange(sn) / SR * 40) * .18
     ends = starts[1:] + [V['total']]
     for i, ln in enumerate(V['lines']):
         a, b = starts[i], ends[i]; typ = ln['scene']['type']
@@ -59,6 +61,8 @@ def sfx_track(total, V, starts, t_off=0.0):
         if typ == 'amygdala':
             x = a + 1.3
             while x < b - .3: put(x, beat); put(x + .22, beat, .6); x += .95
+        if typ == 'experimento': put(a + .75, stamp); put(a + .78, stamp_hi)
+        if typ == 'veredicto': put(a + 1.3, stamp); put(a + 1.33, stamp_hi)
         if b - a > 6.5: put(a + (b - a) * .52, thump)
     return out
 
