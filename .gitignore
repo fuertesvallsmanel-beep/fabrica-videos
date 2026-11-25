@@ -7,3 +7,4 @@ videos/*/still_*.png
 videos/*/render.log
 videos/*/*.ass
 demo/*.mp4
+__pycache__/
