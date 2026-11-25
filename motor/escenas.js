@@ -200,8 +200,7 @@
       <path d="M60,226 H640" stroke="#FFD60A" stroke-width="10" stroke-linecap="round"/>
       <g class="cl"><path d="M70,226 L176,226 L170,720 L64,720Z" fill="#FF3B6B"/><path d="M96,232 C92,400 100,560 92,716 M132,232 C140,420 128,560 136,716" stroke="#C81E4F" stroke-width="8" fill="none"/></g>
       <g class="cr"><path d="M524,226 L630,226 L636,720 L530,720Z" fill="#FF3B6B"/><path d="M560,232 C556,400 566,560 558,716 M598,232 C604,420 592,560 600,716" stroke="#C81E4F" stroke-width="8" fill="none"/></g>
-      <g transform="translate(640 300) rotate(-6)"><rect width="84" height="84" fill="#FFE9A8"/><path d="M14,30 H66 M14,48 H56" stroke="${INK}" stroke-width="6" opacity=".35"/></g>
-      <g transform="translate(652 404) rotate(5)"><rect width="78" height="78" fill="#FF8FAB"/><path d="M14,28 H60 M14,46 H50" stroke="${INK}" stroke-width="6" opacity=".35"/></g>
+      
       <circle cx="1130" cy="330" r="86" fill="#EEF1FF" stroke="#4553C8" stroke-width="12"/>${[...Array(12)].map((_, i) => `<path d="M1130,${330 - 70} V${330 - (i % 3 ? 62 : 56)}" stroke="${INK}" stroke-width="${i % 3 ? 4 : 7}" transform="rotate(${i * 30} 1130 330)"/>`).join('')}
       <line class="hh" x1="1130" y1="330" x2="1130" y2="290" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><line class="mh" x1="1130" y1="330" x2="1130" y2="268" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><line class="sh" x1="1130" y1="344" x2="1130" y2="262" stroke="#FF3B6B" stroke-width="3"/><circle cx="1130" cy="330" r="8" fill="#FF3B6B"/>
       <rect x="1352" y="488" width="470" height="24" rx="8" fill="#EEF1FF"/>${books.join('')}
@@ -210,7 +209,7 @@
     const TW = 420, TL = 820 - TW / 2, TT = 166;
     const tito = E('div', `position:absolute;left:${TL}px;top:${TT}px`); tito.innerHTML = M.personSVG(TW); el.appendChild(tito);
     const face = E('div', `position:absolute;left:${TL + 20}px;top:${TT + 40}px;width:380px;height:480px;background:radial-gradient(ellipse at 50% 46%,rgba(62,240,255,.34),rgba(62,240,255,0) 64%);mix-blend-mode:screen`); el.appendChild(face);
-    const n = Math.round(clamp(sc.latas != null ? sc.latas / 6 : f) * 6);
+    const n = Math.round(clamp(sc.latas != null ? sc.latas / 6 : f) * 3);
     let cans = ''; for (let i = 0; i < n; i++) { const c = i % 2 ? '#EEF1FF' : '#FF3B6B';
       cans += i < 3 ? `<g transform="translate(${430 + i * 58} 716)"><rect width="44" height="78" rx="9" fill="${c}"/><rect y="24" width="44" height="22" fill="${INK}" opacity=".85"/><rect x="6" y="4" width="32" height="6" rx="3" fill="#fff" opacity=".6"/></g>`
         : `<g transform="translate(${360 + (i - 3) * 86} 770) rotate(${i % 2 ? 84 : -78})"><rect x="-20" y="-36" width="40" height="64" rx="9" fill="${c}"/><path d="M-20,-4 L20,4" stroke="${INK}" stroke-width="10"/></g>`; }

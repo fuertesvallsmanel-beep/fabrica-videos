@@ -133,8 +133,7 @@ def sfx_track(total, SH, t_off=0.0):
         if kind == 'stamp': put(at, stamp_hi, .8)
     for i, s in enumerate(SH):
         t0, b, typ = s['t0'], s['t1'], s['type']; a = s.get('ta', t0)  # a = rellotge intern de l'escena (amb pre-roll)
-        if s['tr'] == 'swipe': put(t0 - .3, whoosh)
-        elif s['tr'] == 'cut': put(t0 - .01, cutk)
+        # transicions sense so (el Manel no el vol)
         if typ == 'clock':
             for k in range(8): put(a + .1 + k * .18, tick)
         if typ in COUNTERS:

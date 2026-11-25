@@ -271,7 +271,7 @@
     const el = E('div', 'position:absolute;inset:0;overflow:hidden');
     const meters = Math.round(sc.speed / 3.6 * sc.seconds);
     let dashes = ''; for (let i = 0; i < 14; i++) dashes += `<rect class="ds" x="${i * 180}" y="732" width="100" height="16" rx="8" fill="#EEF1FF"/>`;
-    let side = ''; for (let i = 0; i < 12; i++) { const x = i * 200 + (i % 3) * 30; side += i % 3 === 1 ? `<g class="sd" data-x="${x}"><rect x="-70" y="930" width="140" height="120" rx="8" fill="${i % 2 ? '#FF3B6B' : '#4A68FF'}"/><path d="M-70,990 H70" stroke="#0B0F4A" stroke-width="6" opacity=".25"/></g>`
+    let side = ''; for (let i = 0; i < 12; i++) { const x = i * 200 + (i % 3) * 30; side += false ? `<g class="sd" data-x="${x}"><rect x="-70" y="930" width="140" height="120" rx="8" fill="${i % 2 ? '#FF3B6B' : '#4A68FF'}"/><path d="M-70,990 H70" stroke="#0B0F4A" stroke-width="6" opacity=".25"/></g>`
       : `<g class="sd" data-x="${x}"><circle cx="0" cy="${960 + (i % 2) * 40}" r="58" fill="#1A4FB0"/><circle cx="-14" cy="${948 + (i % 2) * 40}" r="34" fill="#2A63D0"/></g>`; }
     el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><rect x="0" y="580" width="1920" height="320" fill="#0D1470"/><rect x="0" y="580" width="1920" height="12" fill="#C7D0FF"/><rect x="0" y="888" width="1920" height="12" fill="#C7D0FF"/>${dashes}${side}
       <g class="car"><path d="M150,0 L520,-110 L520,110Z" fill="#FFE9A8" opacity=".22"/>
@@ -320,7 +320,7 @@
     if (pct) { grid = E('div', 'position:absolute;left:1010px;top:300px;width:500px;display:grid;grid-template-columns:repeat(10,44px);gap:6px;opacity:0'); for (let i = 0; i < 100; i++) { const c = E('div', 'width:44px;height:44px;border-radius:10px;background:rgba(211,218,255,.25)'); grid.appendChild(c); cs.push(c); } el.appendChild(grid);
       cap = E('div', `position:absolute;left:1010px;top:820px;width:500px;text-align:center;color:${C.soft};font-size:44px;font-weight:800;opacity:0`, `${Math.round(it0.value)} de cada 100`); el.appendChild(cap); }
     return { el, render(lt, d) { cells.forEach(({ d: e, it }, i) => { enter(e, lt, .2 + i * .5, 30); e.querySelector('.n').textContent = (it.prefix || '') + Math.round(it.value * eo(prog(lt, .3 + i * .5, 1.4))) + (it.suffix || ''); }); enter(sub, lt, 1.4);
-      if (pct && d > 5.5) { const T = 3, k = eio(prog(lt, T, .7)); blk.style.left = lerp(0, 150, k) + 'px'; blk.style.right = lerp(0, 1000, k) + 'px'; cells[0].d.querySelector('.n').style.fontSize = lerp(342, 230, k) + 'px'; grid.style.opacity = k; cap.style.opacity = eo(prog(lt, T + 1.6, .4));
+      if (pct && d > 5.5) { const T = 3, k = eio(prog(lt, T, .7)); blk.style.left = lerp(0, 150, k) + 'px'; blk.style.right = lerp(0, 1000, k) + 'px'; cells[0].d.querySelector('.n').style.fontSize = lerp(342, 230, k) + 'px'; grid.style.opacity = k; sub.style.opacity = 1 - k; cap.style.opacity = eo(prog(lt, T + 1.6, .4));
         const n = Math.round(it0.value * prog(lt, T + .5, 1.2)); cs.forEach((c, i) => { c.style.background = i < n ? C.pink : 'rgba(211,218,255,.25)'; c.style.transform = i < n && i >= n - 3 ? 'scale(1.12)' : ''; }); }
     }, sfx(a, b) { return pct && b - a > 5.5 ? [{ t: a + 3.5, d: 1.2, k: 'fill', n: Math.min(24, Math.round(it0.value)) }] : []; } };
   };
@@ -601,8 +601,8 @@
       const fn = S[sc.type]; if (!fn) throw new Error('Escena desconeguda: ' + sc.type);
       let o = fn(sc);
       if (BIG.has(sc.type)) { const w = E('div', 'position:absolute;inset:0'); o.el.style.transform = 'scale(1.16)'; o.el.style.transformOrigin = '50% 62%'; w.appendChild(o.el); o.el = w; }
-      if (DATA.has(sc.type)) o.el.prepend(E('div', 'position:absolute;inset:-80px;background-image:linear-gradient(rgba(150,168,255,.1) 2px,transparent 2px),linear-gradient(90deg,rgba(150,168,255,.1) 2px,transparent 2px);background-size:60px 60px'));
-      if (sc.type === 'bars' && !sc.tito) { sc.tito = 'tired'; sc._tAuto = 1; } // segon temps de les barres: el Tito reacciona als 3 s
+      if (DATA.has(sc.type)) o.el.prepend(E('div', 'position:absolute;inset:-80px;background-image:linear-gradient(rgba(150,168,255,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(150,168,255,.05) 2px,transparent 2px);background-size:60px 60px'));
+       // segon temps de les barres: el Tito reacciona als 3 s
       if (sc.tito && sc.type !== 'persona' && sc.type !== 'situacion') { // el Tito petit reaccionant a la cantonada dreta
         const cm = E('div', 'position:absolute;left:1570px;top:700px;width:213px;height:320px'); cm.innerHTML = personSVG(213); const dl = sc.type === 'bars' && !sc._tAuto ? 0 : 0; o.el.appendChild(cm);
         const r0 = o.render; o.render = (lt, d) => { r0(lt, d); const a = back(prog(lt, sc._tAuto ? 3 : .4, .6)); cm.style.transform = `translateY(${(1 - a) * 260}px)`;
@@ -616,7 +616,7 @@
     });
     // transicions: cortineta de marca quan canvia el lloc o el tipus de pla gran; si no, tall sec amb empenta
     scenes.forEach((s, i) => { if (!i) { s.tr = 'none'; s.pre = 0; return; } const p = scenes[i - 1].sc, c = s.sc;
-      s.tr = c.tr || ((BIGT.has(c.type) || BIGT.has(p.type)) && (c.type !== p.type || c.lugar !== p.lugar) || i % 4 === 0 ? 'swipe' : 'cut');
+      s.tr = c.tr || ((BIGT.has(c.type) || BIGT.has(p.type)) && (c.type !== p.type || c.lugar !== p.lugar) ? 'swipe' : 'cut');
       s.pre = PRE; if (c.type === 'bars' && p.type === 'bars' && c.title === p.title) c._prev = p.items.map(x => x.label); });
     scenes.forEach((s, i) => { s.nx = scenes[i + 1] || null; });
     let sw = document.getElementById('swipe');
@@ -644,7 +644,7 @@
   const BIGT = new Set(['situacion', 'escaner', 'experimento', 'veredicto', 'persona', 'endcard']);
   // cortineta: banda estreta (cobalt 230 + groc 50 + rosa 140) que creua la pantalla en 0,3 s; darrere hi ha el pla nou, davant el vell
   const DATA = new Set(['counter', 'stats', 'bars', 'gauge', 'wave', 'road', 'title', 'question', 'list', 'clock', 'hypnogram', 'steps', 'quote', 'cells', 'memory', 'receptor', 'brain', 'amygdala', 'distort', 'flicker', 'body']);
-  const BW = 420, SWD = .3, PRE = .4, TAN = Math.tan(12 * Math.PI / 180);
+  const BW = 420, SWD = .9, PRE = .4, TAN = Math.tan(12 * Math.PI / 180);
   const seamX = (t, T) => lerp(-500, 2420, eio((t - (T - SWD / 2)) / SWD)) + 115; // costura al mig de la franja cobalt
   function clipFor(t, T, keepLeft, s) { // polígon a coordenades locals de l'escena (desfà la càmera)
     const X = seamX(t, T), yT = -120, yB = 1200, xT = X + TAN * (540 - yT), xB = X + TAN * (540 - yB);
@@ -663,11 +663,11 @@
       if (!vis) return;
       const lt = t - s.t0 + s.pre, d = s.t1 - s.t0 + s.pre;
       s.el.style.opacity = 1;
-      const aIn = s.tr === 'cut' ? 1 - 4.5 * (1 - eo(prog(lt, 0, .5))) : 1;
+      const aIn = s.tr === 'cut' ? 1 - 1.4 * (1 - eio(prog(lt, s.pre, .9))) : 1;
       const cam = s.cam || (s.cam = ['in', 'left', 'out', 'right', 'in', 'up'][i % 6]);
       const ck = eio(prog(lt, 0, d + .4)); let sx = 1, tx = 0, ty = 0;
       if (cam === 'in') sx = 1 + .05 * ck; if (cam === 'out') sx = 1.06 - .05 * ck;
-      if (cam === 'left') { sx = 1.04; tx = lerp(28, -28, ck); } if (cam === 'right') { sx = 1.04; tx = lerp(-28, 28, ck); } if (cam === 'up') { sx = 1.04; ty = lerp(18, -18, ck); }
+      if (cam === 'left') { sx = 1.03; tx = lerp(14, -14, ck); } if (cam === 'right') { sx = 1.03; tx = lerp(-14, 14, ck); } if (cam === 'up') { sx = 1.03; ty = lerp(10, -10, ck); }
       if (d > 6.5) sx *= 1 + .045 * eo(prog(lt, d * .52, .45));
       const S2 = sx * (1.015 - .015 * aIn); s.el.style.transform = `translate(${tx}px,${ty}px) scale(${S2})`; // aIn < 1 → empenta d'entrada
       const cv = { tx, ty, sc: S2 }, cin = inW && t < s.t0 + inW, cout = outW && t >= s.t1 - outW;

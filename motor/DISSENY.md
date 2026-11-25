@@ -16,7 +16,7 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
    - L'adhesiu blanc (hora + `label` + `sub`) entra a cop amb rebot. Lloc nou: afegeix `LUG.<nom>` a `escenas.js` amb el mateix esquema (`el`, `render`, `sfx`).
 6. **Plans i transicions**: pensa en plans, no en diapositives.
    - Una línia llarga es pot partir en dos plans sense tocar la veu: `scene.then = {…escena, at: segons}` (p. ex. situació 4 s → gràfic). Fes-ho sempre que una línia passi de 8 s.
-   - Transicions automàtiques: **cortineta de marca** (banda estreta inclinada 12°: cobalt 230 px + groc 50 + rosa 140, creua la pantalla en 0,3 s; darrere ja hi ha el pla nou, que arrenca 0,3 s avançat perquè no es vegi buit; whoosh) quan canvia el lloc o el tipus de pla gran; **tall sec amb empenta** (zoom 1,07 → 1 i cop curt) entre plans del mateix món. Mai fosos encadenats ni pantalles senceres d'un color. Es pot forçar amb `tr: "swipe" | "cut"`.
+   - Transicions tranquil·les i sense so: **cortineta lenta** (banda inclinada cobalt/groc/rosa que creua en 0,9 s i destapa el pla nou) només quan canvia el lloc o el tipus de pla; si no, **tall net** amb un acostament suau (1,04 → 1 en 0,9 s). Res de cops ràpids ni whooshes (el Manel els troba agobiants). Es pot forçar amb `tr`.
    - **Adhesius** (hora + etiqueta + frase) fixos a pantalla, fora del moviment de càmera, dins la caixa x 1290–1790 / y 600–940; entren opacs amb un cop d'escala (0,55 → 1,08 → 1).
    - **Cap pla mort**: si un pla passa de 4 s sense res nou, li cal un segon temps (`then`, o el que porta l'escena: `stats` amb % passa sol a una graella de 100; `wave` porta el cap del Tito que recorre la corba; les barres tenen reflex). El render avisa dels plans de més de 8 s.
 7. **Òrgans dibuixats** (`motor/organs.js`): cervell, cor, pulmons, fetge sa i amb cirrosi, estómac i ronyó, en l'estil pla del Tito (sense contorns realistes). `organ`, `escaner` i el `scan` del Tito els fan servir sols; les il·lustracions de Servier queden només per als òrgans que no hi són (llavors cal el crèdit a la descripció).
@@ -31,6 +31,9 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
 ## Ritme visual
 - Sempre ha de passar alguna cosa: màxim 2 escenes seguides sense el Tito, sense situació o sense un número que es mogui.
 - Una de cada tres escenes de dades porta el Tito petit reaccionant (`tito: "shock"`).
+
+## Cada vídeo, escenes noves
+Cada vídeo estrena ≥ 3 escenes pròpies del seu tema (GSAP a `fx.js` o lloc nou a `escenas.js`); les genèriques només fan de suport. Un protagonista per pla: no apilar gràfic + adhesiu + Tito petit + font.
 
 ## Escenes de dades (mateix món que les il·lustrades)
 - Graella de plànol de fons (60 px), contingut centrat entre y 240 i 980, res enganxat a dalt.
