@@ -7,14 +7,19 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
 ### Elements fixos (tots els vídeos)
 1. **Escena `experimento`** a la línia 2–3: fitxa del voluntari + segell «Experimento Nº 00X» (amb so de segell). Numeració correlativa (001 = 72 h sin dormir).
 2. **Medidor «Límite»** a dalt (HUD automàtic): barra de cian → groc → rosa amb marques. Es configura amb `video.json → hud: {max, unit, marks, title}` (per defecte hores 0–72). Quan s'acaba la part de risc, passa sol a l'estat **«Recuperación»** (cian) i baixa a 0.
-3. **Modo escáner**: `persona` amb `scan: "<òrgan>"` (corazon, pulmones, cerebro_lateral, higado_3d, estomago… de `motor/organs/`) obre una finestra rodona al pit del Tito amb l'òrgan bategant.
+3. **Modo escáner (rayos X)**: `persona` amb `scan: "<òrgan>"` obre la finestra al lloc real del cos: el cap es torna transparent i es veu el cervell; el cor surt al pit a l'esquerra del Tito; els pulmons, al centre del pit; el fetge, l'estómac i el pàncrees, a la panxa.
 4. **Escena `veredicto`**: frase popular + segell **Mito / Ciencia / A medias**. Una per vídeo, com a mínim.
-5. **Final `endcard`**: el Tito content + «¿Qué le hacemos a Tito la próxima?» + «Escríbelo en los comentarios» + botó Suscríbete. (Si poses `text` propi, el subtítol passa a «Un experimento nuevo cada semana».)
+5. **Escenes `situacion`**: el Tito al cotxe (amb microsomni), al llit o a l'escriptori, mentre el narrador ho explica. Moviment continu (carretera, fanals, vapor del cafè, rellotge, respiració). Afegeix llocs nous quan calgui.
+6. **Final `endcard`**: el Tito content + «¿Qué le hacemos a Tito la próxima?» + «Escríbelo en los comentarios» + botó Suscríbete. (Si poses `text` propi, el subtítol passa a «Un experimento nuevo cada semana».)
 
 ## El Tito (`motor/tito.js`)
 - Dibuix estilitzat ben fet (no ninot, no realista): cabell castany amb tupè, samarreta rosa, **cordó groc gruixut** i targeta «VOLUNTARIO / TITO» (el seu tret propi).
 - `persona`: `hour` o `fatigue` (0–1), `mood`: ok | tired | angry | happy | shock | sleep, `label`, `sub`, `big` (xifra en groc), `scan`.
 - Surt 4–6 cops per vídeo: inici, punt de gir, clímax, veredicte, recuperació i final. Respira, parpelleja, badalla si està cansat, sua a partir de f > 0,55.
+
+## Ritme visual
+- Sempre ha de passar alguna cosa: màxim 2 escenes seguides sense el Tito, sense situació o sense un número que es mogui.
+- Una de cada tres escenes de dades porta el Tito petit reaccionant (`tito: "shock"`).
 
 ## Color (cada color vol dir una cosa)
 | Token | Hex | Significat |

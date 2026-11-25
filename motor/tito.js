@@ -8,16 +8,20 @@
   const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
   const lerp = (a, b, x) => a + (b - a) * x;
 
+  // on es mira cada òrgan (coordenades del bust): cap per al cervell, pit per al cor i els pulmons, panxa per al fetge i l'estómac
+  const SPOT = { corazon: [222, 470, 64], corazon_interior: [222, 470, 64], sistole: [222, 470, 64], diastole: [222, 470, 64], pulmones: [200, 476, 86], pulmon: [200, 476, 86], traquea_bronquios: [200, 470, 80],
+    higado_3d: [168, 552, 60], higado: [168, 552, 60], higado_cirrosis: [168, 552, 60], estomago: [234, 552, 58], estomago_partes: [234, 552, 58], pancreas: [214, 566, 52], rinon: [160, 566, 50], intestino: [200, 560, 70], aparato_digestivo: [200, 540, 82] };
   function svg(w, o = {}) {
     const u = 'tt' + (n++);
     const organ = o.organ || 'corazon';
+    const head = /cerebro|ojo/.test(organ), [sx, sy, sr] = SPOT[organ] || [200, 478, 74];
     return `<svg class="tito" width="${w}" height="${w * 1.5}" viewBox="0 0 400 600" style="overflow:visible">
 <defs>
- <clipPath id="${u}w"><circle cx="200" cy="478" r="74"/></clipPath>
+ <clipPath id="${u}w"><circle cx="${sx}" cy="${sy}" r="${sr}"/></clipPath>
  <clipPath id="${u}h"><path d="M126,178 C126,262 150,304 182,318 C190,322 212,322 220,318 C252,304 276,262 276,178 C276,110 246,80 201,80 C156,80 126,110 126,178Z"/></clipPath>
  <radialGradient id="${u}g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3EF0FF" stop-opacity=".35"/><stop offset="1" stop-color="#3EF0FF" stop-opacity="0"/></radialGradient>
 </defs>
-<g class="body">
+<g class="body" data-sx="${sx}" data-sy="${sy}" data-sr="${sr}">
  <path d="M176,290 L176,380 C188,394 212,394 226,380 L226,290Z" fill="${SK}"/>
  <path d="M176,316 C192,338 212,338 226,314 L226,352 C208,368 190,368 176,356Z" fill="${SD}" opacity=".75"/>
  <path d="M48,600 C52,452 108,384 200,376 C292,384 348,452 352,600Z" fill="${TEE}"/>
@@ -28,12 +32,12 @@
  <g class="badge" transform="translate(200 548) rotate(-4)"><rect x="-54" y="-30" width="108" height="64" rx="9" fill="#fff"/><rect x="-54" y="-30" width="108" height="20" rx="9" fill="#2B3FE6"/><rect x="-54" y="-18" width="108" height="8" fill="#2B3FE6"/>
   <text x="0" y="-15" text-anchor="middle" font-family="Brico" font-weight="800" font-size="13" fill="#fff" letter-spacing=".5">VOLUNTARIO</text>
   <text x="0" y="22" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="75%" font-size="34" fill="${INK}">TITO</text></g>
- <g class="scan" opacity="0">
-  <circle cx="200" cy="478" r="96" fill="url(#${u}g)"/>
-  <circle cx="200" cy="478" r="74" fill="#0C1170"/>
-  <g clip-path="url(#${u}w)"><image class="org" href="organs/${organ}.svg" x="132" y="410" width="136" height="136" preserveAspectRatio="xMidYMid meet"/></g>
-  <circle class="ring" cx="200" cy="478" r="74" fill="none" stroke="#3EF0FF" stroke-width="7"/>
-  <circle class="pulse" cx="200" cy="478" r="74" fill="none" stroke="#3EF0FF" stroke-width="4" opacity="0"/>
+ <g class="scan" opacity="0" data-head="${head ? 1 : 0}">${head ? '' : `
+  <circle cx="${sx}" cy="${sy}" r="${sr + 22}" fill="url(#${u}g)"/>
+  <circle cx="${sx}" cy="${sy}" r="${sr}" fill="#0C1170"/>
+  <g clip-path="url(#${u}w)"><image class="org" href="organs/${organ}.svg" x="${sx - sr * .92}" y="${sy - sr * .92}" width="${sr * 1.84}" height="${sr * 1.84}" preserveAspectRatio="xMidYMid meet"/></g>
+  <circle class="ring" cx="${sx}" cy="${sy}" r="${sr}" fill="none" stroke="#3EF0FF" stroke-width="7"/>
+  <circle class="pulse" cx="${sx}" cy="${sy}" r="${sr}" fill="none" stroke="#3EF0FF" stroke-width="4" opacity="0"/>`}
  </g>
 </g>
 <g class="head">
@@ -61,6 +65,12 @@
  <path class="mouth" fill="none" stroke="#8E3B3B" stroke-width="6" stroke-linecap="round"/>
  <path class="lip" fill="none" stroke="#C9725E" stroke-width="3" stroke-linecap="round" opacity=".7"/>
  <ellipse class="open" cx="201" cy="290" rx="0" ry="0" fill="#6E1E2A"/>
+ <g class="scanH" opacity="0">
+  <path d="M126,178 C126,262 150,304 182,318 C190,322 212,322 220,318 C252,304 276,262 276,178 C276,110 246,80 201,80 C156,80 126,110 126,178Z" fill="#0C1170" fill-opacity=".82" stroke="#3EF0FF" stroke-width="7"/>
+  <g clip-path="url(#${u}h)"><path d="M140,190 C140,120 170,94 201,94 C240,94 262,122 262,190 C262,232 250,262 236,276 L236,300 L166,300 L166,276 C152,262 140,232 140,190Z" fill="none" stroke="#D3DAFF" stroke-width="5" opacity=".45"/>
+   <image class="orgH" href="organs/${o.organ && /cerebro/.test(o.organ) ? o.organ : 'cerebro_lateral'}.svg" x="124" y="88" width="154" height="154" preserveAspectRatio="xMidYMid meet"/></g>
+  <path class="pulseH" d="M126,178 C126,262 150,304 182,318 C190,322 212,322 220,318 C252,304 276,262 276,178 C276,110 246,80 201,80 C156,80 126,110 126,178Z" fill="none" stroke="#3EF0FF" stroke-width="4" opacity="0"/>
+ </g>
  <path class="sweat" d="M272,150 C278,168 288,178 276,190 C264,196 254,184 260,170Z" fill="#9EE7FF" stroke="#fff" stroke-width="2.5" opacity="0"/>
  <g class="zzz" opacity="0" font-family="Brico" font-weight="800" fill="#fff"><text x="300" y="120" font-size="40">z</text><text x="330" y="84" font-size="54">z</text><text x="364" y="40" font-size="70">Z</text></g>
 </g>
@@ -106,11 +116,21 @@
     q('sweat').setAttribute('opacity', (f > .55 || o.sweat) && !sleep ? .95 : 0); q('sweat').setAttribute('transform', `translate(0 ${(t * 14) % 20})`);
     const z = q('zzz'); z.setAttribute('opacity', sleep ? .95 : 0); z.setAttribute('transform', `translate(0 ${-((t * 18) % 24)})`);
     // finestra del pit (modo escáner)
-    const sc = cl(o.scan || 0), g = q('scan'); g.setAttribute('opacity', sc);
-    g.setAttribute('transform', `translate(200 478) scale(${.6 + .4 * sc}) translate(-200 -478)`);
-    const beat = Math.pow(Math.max(0, Math.sin(t * Math.PI * 2 * (o.bpm || 1.25))), 8);
-    q('org').setAttribute('transform', `translate(200 478) scale(${1 + .06 * beat}) translate(-200 -478)`);
-    const pp = (t * 1.1) % 1; q('badge').setAttribute('opacity', 1 - sc); q('pulse').setAttribute('r', 74 + pp * 40); q('pulse').setAttribute('opacity', sc * (1 - pp) * .8);
+    const sc = cl(o.scan || 0), g = q('scan'), head = g.dataset.head === '1', bd = q('body');
+    const sx = +bd.dataset.sx, sy = +bd.dataset.sy, sr = +bd.dataset.sr;
+    const beat = Math.pow(Math.max(0, Math.sin(t * Math.PI * 2 * (o.bpm || 1.25))), 8), pp = (t * 1.1) % 1;
+    if (head) {
+      const h = q('scanH'); h.setAttribute('opacity', sc); g.setAttribute('opacity', 0);
+      q('orgH').setAttribute('transform', `translate(201 167) scale(${1 + .03 * Math.sin(t * 3)}) translate(-201 -167)`);
+      q('pulseH').setAttribute('opacity', sc * (1 - pp) * .7); q('pulseH').setAttribute('transform', `translate(201 200) scale(${1 + pp * .15}) translate(-201 -200)`);
+      q('badge').setAttribute('opacity', 1);
+    } else {
+      g.setAttribute('opacity', sc); q('scanH').setAttribute('opacity', 0);
+      g.setAttribute('transform', `translate(${sx} ${sy}) scale(${.6 + .4 * sc}) translate(${-sx} ${-sy})`);
+      const og = q('org'); if (og) og.setAttribute('transform', `translate(${sx} ${sy}) scale(${1 + .06 * beat}) translate(${-sx} ${-sy})`);
+      const pl = q('pulse'); if (pl) { pl.setAttribute('r', sr + pp * 40); pl.setAttribute('opacity', sc * (1 - pp) * .8); }
+      q('badge').setAttribute('opacity', 1 - sc);
+    }
   }
   window.Tito = { svg, render };
 })();

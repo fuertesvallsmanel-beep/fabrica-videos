@@ -437,6 +437,73 @@
       personRender(hold.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / (window.VIDEO.hud && window.VIDEO.hud.max || 72), sc.mood || 'ok', { scan: sc.scan ? eo(prog(lt, .6, .7)) : 0, seed: 1.7 }); hd(lt); } };
   };
 
+
+  // situacion: el Tito fent el que explica el narrador. sc.lugar: coche | cama | escritorio · sc.time ('03:47'), sc.hour|fatigue, sc.mood, sc.label, sc.sub, sc.microsueno (coche)
+  S.situacion = (sc) => {
+    const el = E('div', 'position:absolute;inset:0;overflow:hidden');
+    const L = sc.lugar || 'escritorio', f = sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / ((window.VIDEO && window.VIDEO.hud && window.VIDEO.hud.max) || 72);
+    const bg = E('div', 'position:absolute;inset:0'), tito = E('div', 'position:absolute'), fg = E('div', 'position:absolute;inset:0');
+    el.appendChild(bg); el.appendChild(tito); el.appendChild(fg);
+    tito.innerHTML = personSVG(L === 'cama' ? 380 : 420);
+    const clockTxt = sc.time || '';
+    let upd = () => {};
+    if (L === 'coche') {
+      bg.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><rect y="840" width="1920" height="240" fill="#0A1270"/><rect y="836" width="1920" height="8" fill="#3B5BFF"/>
+        <g class="dash"></g><g class="poles"></g></svg>`;
+      const dash = bg.querySelector('.dash'), poles = bg.querySelector('.poles');
+      for (let i = 0; i < 12; i++) dash.innerHTML += `<rect x="${i * 240}" y="950" width="120" height="14" rx="7" fill="#D3DAFF" opacity=".7"/>`;
+      for (let i = 0; i < 4; i++) poles.innerHTML += `<g><rect x="-6" y="380" width="12" height="460" fill="#4553C8"/><rect x="-6" y="380" width="90" height="12" rx="6" fill="#4553C8"/><ellipse cx="78" cy="400" rx="26" ry="12" fill="#FFF4B3"/><path d="M60,404 L-40,836 L200,836 L98,404Z" fill="#FFF4B3" opacity=".08"/></g>`;
+      tito.style.cssText += ';left:640px;top:300px;clip-path:inset(0 0 150px 0)';
+      fg.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0;overflow:visible"><g class="car">
+        <path fill-rule="evenodd" d="M300,700 C300,640 340,620 400,612 L560,600 C620,520 700,470 820,466 L1040,466 C1120,470 1170,520 1220,590 L1400,606 C1470,616 1500,650 1500,700 L1500,780 C1500,800 1486,812 1466,812 L334,812 C314,812 300,800 300,780Z M600,600 C650,540 720,504 820,500 L1036,500 C1100,504 1140,546 1180,598Z" fill="#EEF1FF"/>
+        <path d="M600,600 L1180,598" stroke="#C7D0FF" stroke-width="6"/><rect x="900" y="500" width="14" height="100" fill="#C7D0FF"/>
+        <path d="M1500,700 L1500,690 L1460,690 L1460,712 L1500,712Z" fill="#FFD60A"/><path d="M300,700 L340,700 L340,724 L300,724Z" fill="#FF3B6B"/>
+        <rect x="300" y="740" width="1200" height="14" fill="#C7D0FF"/>
+        <g class="w1" transform="translate(520 812)"><circle r="78" fill="#0B0F4A"/><circle r="40" fill="#9FB0FF"/><path d="M-36,0 L36,0 M0,-36 L0,36" stroke="#0B0F4A" stroke-width="8"/></g>
+        <g class="w2" transform="translate(1290 812)"><circle r="78" fill="#0B0F4A"/><circle r="40" fill="#9FB0FF"/><path d="M-36,0 L36,0 M0,-36 L0,36" stroke="#0B0F4A" stroke-width="8"/></g>
+        </g>
+        <path class="beam" d="M1500,700 L1920,610 L1920,810 Z" fill="#FFF4B3" opacity=".16"/></svg>`;
+      upd = lt => { const v = 620; dash.setAttribute('transform', `translate(${-((lt * v) % 240)} 0)`);
+        [...poles.children].forEach((g, i) => g.setAttribute('transform', `translate(${((i * 620 - lt * v * .8) % 2480 + 2480) % 2480 - 280} 0)`));
+        const nod = sc.microsueno ? Math.max(0, Math.sin(lt * 1.3)) : 0, drift = sc.microsueno ? Math.sin(lt * .9) * 10 : 0;
+        const car = fg.querySelector('.car'); car.setAttribute('transform', `translate(0 ${Math.sin(lt * 9) * 2.5}) rotate(${drift * .15} 900 812)`);
+        fg.querySelectorAll('.w1,.w2').forEach((w, i) => w.setAttribute('transform', `translate(${i ? 1290 : 520} 812) rotate(${lt * 520})`));
+        tito.style.transform = `translate(0 ${Math.sin(lt * 9) * 2.5}px) rotate(${nod * 14}deg)`;
+        personRender(tito.firstChild, lt, sc.microsueno ? Math.max(f, .7 + .3 * nod) : f, nod > .8 ? 'sleep' : (sc.mood || 'tired'), { seed: .4 }); };
+    }
+    if (L === 'cama') {
+      bg.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><g transform="translate(0 90)"><rect x="180" y="150" width="380" height="300" rx="20" fill="#0C1170" stroke="#4553C8" stroke-width="10"/><circle cx="460" cy="250" r="46" fill="#FFF4B3"/><circle cx="440" cy="236" r="46" fill="#0C1170"/>
+        <circle cx="300" cy="230" r="4" fill="#fff"/><circle cx="250" cy="330" r="3" fill="#fff"/><circle cx="380" cy="380" r="3" fill="#fff"/><path d="M370,150 V450 M180,300 H560" stroke="#4553C8" stroke-width="8"/></g>
+        <rect x="140" y="520" width="60" height="420" rx="20" fill="#4553C8"/><rect x="190" y="700" width="1180" height="120" rx="24" fill="#EEF1FF"/><rect x="190" y="800" width="1180" height="40" fill="#C7D0FF"/>
+        <rect x="1360" y="700" width="40" height="240" rx="14" fill="#4553C8"/><rect x="240" y="620" width="300" height="110" rx="50" fill="#fff"/>
+        <rect x="1440" y="700" width="260" height="240" rx="18" fill="#2433C4"/><rect x="1470" y="620" width="200" height="90" rx="16" fill="#0B0F4A"/>
+        <text class="clk" x="1570" y="682" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="62" fill="#FF3B6B">${clockTxt}</text></svg>`;
+      tito.style.cssText += ';left:500px;top:300px;transform-origin:0 0';
+      fg.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><path class="bl" d="M660,520 C800,470 980,500 1050,560 C1160,620 1300,612 1370,650 L1370,840 L660,840 Z" fill="#7FB2FF"/><path d="M700,560 C820,520 960,540 1030,600 M1060,640 C1180,670 1300,660 1360,690" stroke="#9FB0FF" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M660,520 C680,560 680,800 660,840" stroke="#5F86E6" stroke-width="8" fill="none"/></svg>`;
+      upd = lt => { tito.style.transform = `translate(-150px, 580px) rotate(-90deg)`; fg.querySelector('.bl').setAttribute('transform', `translate(0 ${Math.sin(lt * 1.6) * 4})`);
+        const c = bg.querySelector('.clk'); if (c && clockTxt) c.textContent = clockTxt.replace(':', Math.floor(lt * 2) % 2 ? ' ' : ':');
+        personRender(tito.firstChild, lt, f, sc.mood || 'tired', { seed: 1.1 }); };
+    }
+    if (L === 'escritorio') {
+      bg.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><circle cx="1180" cy="360" r="90" fill="#EEF1FF" stroke="#4553C8" stroke-width="12"/><line class="hh" x1="1180" y1="360" x2="1180" y2="312" stroke="#0B0F4A" stroke-width="10" stroke-linecap="round"/><line class="mh" x1="1180" y1="360" x2="1238" y2="360" stroke="#FF3B6B" stroke-width="6" stroke-linecap="round"/>
+        <text x="1180" y="510" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="56" fill="#fff">${clockTxt}</text></svg>`;
+      tito.style.cssText += ';left:420px;top:180px';
+      fg.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0"><defs><radialGradient id="glw" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3EF0FF" stop-opacity=".16"/><stop offset="1" stop-color="#3EF0FF" stop-opacity="0"/></radialGradient></defs>
+        <ellipse class="glow" cx="630" cy="560" rx="360" ry="260" fill="url(#glw)"/>
+        <rect x="120" y="800" width="1240" height="40" rx="12" fill="#EEF1FF"/><rect x="160" y="840" width="1160" height="240" fill="#2433C4"/>
+        <path d="M470,800 L520,610 L800,610 L850,800Z" fill="#C7D0FF"/><circle cx="660" cy="700" r="22" fill="#9FB0FF"/><rect x="430" y="790" width="460" height="14" rx="6" fill="#9FB0FF"/>
+        <rect x="1000" y="700" width="90" height="100" rx="14" fill="#FF3B6B"/><path d="M1090,722 C1130,722 1130,778 1090,778" stroke="#FF3B6B" stroke-width="14" fill="none"/>
+        <path class="st1" d="M1025,690 C1010,660 1040,640 1025,610" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".7"/><path class="st2" d="M1060,690 C1045,660 1075,640 1060,610" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".7"/>
+        <path d="M240,800 L240,620 L320,560" stroke="#4553C8" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M290,540 L380,560 L340,620 Z" fill="#FFD60A"/></svg>`;
+      upd = lt => { fg.querySelectorAll('.st1,.st2').forEach((p, i) => { const k = (lt * .8 + i * .5) % 1; p.setAttribute('transform', `translate(0 ${-k * 40})`); p.setAttribute('opacity', .7 * (1 - k)); });
+        fg.querySelector('.glow').setAttribute('opacity', .8 + .2 * Math.sin(lt * 7) * Math.sin(lt * 3.1));
+        bg.querySelector('.mh').setAttribute('transform', `rotate(${lt * 30} 1180 360)`);
+        personRender(tito.firstChild, lt, f, sc.mood || 'tired', { seed: .8 }); };
+    }
+    const hd = sc.label || sc.sub ? header(el, sc.label, sc.sub, sc.microsueno ? C.red : C.yellow, 1430, 380, 440) : () => {};
+    return { el, render(lt) { const a = eo(prog(lt, 0, .5)); el.style.opacity = 1; bg.style.opacity = a; fg.style.transform = `translateX(${(1 - a) * 80}px)`; upd(lt); hd(lt); } };
+  };
+
   // experimento: fitxa d'entrada amb segell. sc.num ('002'), sc.prueba, sc.riesgo
   S.experimento = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
@@ -497,6 +564,11 @@
       const sc = ln.scene; const fn = S[sc.type]; if (!fn) throw new Error('Escena desconeguda: ' + sc.type);
       let o = fn(sc);
       if (BIG.has(sc.type)) { const w = E('div', 'position:absolute;inset:0'); o.el.style.transform = 'scale(1.16)'; o.el.style.transformOrigin = '50% 62%'; w.appendChild(o.el); o.el = w; }
+      if (sc.tito && sc.type !== 'persona' && sc.type !== 'situacion') { // el Tito petit reaccionant a la cantonada
+        const cm = E('div', 'position:absolute;left:60px;bottom:-40px;width:300px;height:450px'); cm.innerHTML = personSVG(300); o.el.appendChild(cm);
+        const r0 = o.render; o.render = (lt, d) => { r0(lt, d); const a = back(prog(lt, .4, .6)); cm.style.transform = `translateY(${(1 - a) * 220}px)`;
+          personRender(cm.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.tito, { seed: i * .37 }); };
+      }
       o.disp = o.el.style.display || 'block'; uniq(o.el, 's' + i); o.el.style.display = 'none'; o.el.classList.add('scene'); stage.appendChild(o.el);
       o.t0 = V.starts[i]; o.t1 = i + 1 < V.lines.length ? V.starts[i + 1] : V.total; o.sc = sc; return o;
     });
