@@ -6,7 +6,7 @@ Cada semana, Tito se presta a un experimento extremo para que tú no tengas que 
 Lo vemos hora a hora, dentro de su cuerpo y de su cerebro, con animaciones y ciencia de verdad (siempre con fuentes).
 Mitos, récords y lo que dice la ciencia, sin rollos.
 
-🧪 Nuevo experimento martes y viernes.
+🧪 Nuevo experimento cada semana (y un Short cada día).
 💬 Tú decides el siguiente: déjalo en los comentarios.
 
 Contenido divulgativo; no sustituye el consejo médico.
