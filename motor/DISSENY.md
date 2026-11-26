@@ -41,7 +41,7 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
 - **La comunitat tria**: el tema que més es demani als comentaris passa al davant a `temas.md` (i al vídeo es diu: «Lo pidieron ustedes»).
 
 ## Cada vídeo, escenes noves
-Cada vídeo estrena ≥ 3 escenes pròpies del seu tema (GSAP a `fx.js` o lloc nou a `escenas.js`); les genèriques només fan de suport. Un protagonista per pla: no apilar gràfic + adhesiu + Tito petit + font.
+Cada vídeo es fa pràcticament de zero: ≥ 6 escenes pròpies del seu tema (GSAP a `fx.js` o lloc nou a `escenas.js`) que ocupin ≥ 60 % del temps; les reutilitzades canvien ≥ 2 coses (decorat, colors, càmera, gràfic, acció del Tito). Només la marca (experimento, medidor, escàner, veredicto, endcard, Tito) es repeteix igual. Un protagonista per pla: no apilar gràfic + adhesiu + Tito petit + font.
 
 ## Escenes de dades (mateix món que les il·lustrades)
 - Graella de plànol de fons (60 px), contingut centrat entre y 240 i 980, res enganxat a dalt.
