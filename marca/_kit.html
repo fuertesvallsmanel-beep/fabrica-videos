@@ -16,12 +16,16 @@ window.make = (kind) => {
   if(kind.startsWith('avatar')){ document.body.style.cssText='width:800px;height:800px';
     // el Tito mentre l'escàner el travessa: a dalt de la línia es veu el cervell, a sota la cara (el «modo escáner» és la marca)
     const L=v=>`<div class="tt" style="position:absolute;left:${338-600*.5025}px;top:40px">${Tito.svg(600,{organ:'cerebro'})}</div>`;
-    const Y=kind==='avatarB'?300:318;
+    const Y=kind==='avatar'?318:300;
     R.innerHTML=`<div class="bg"></div><div style="position:absolute;left:30px;top:30px;width:740px;height:740px;border-radius:50%;background:#FFD60A"></div>
-      <div style="position:absolute;left:62px;top:62px;width:676px;height:676px;border-radius:50%;background:#2B3FE6;overflow:hidden"><div class="grid"></div>
+      <div style="position:absolute;left:62px;top:62px;width:676px;height:676px;border-radius:50%;background:#2B3FE6;overflow:hidden"><div class="grid" style="background-position:56.5px 56.5px"></div>
         <div id="a">${L()}</div><div id="b" style="position:absolute;inset:0;clip-path:inset(0 0 ${676-Y}px 0)"><div style="position:absolute;inset:0;background:#0C1170"></div>${L()}</div>
         <div style="position:absolute;left:0;right:0;top:${Y-6}px;height:12px;background:#3EF0FF;box-shadow:0 0 30px 10px rgba(62,240,255,.7)"></div></div>`;
     const sv=R.querySelectorAll('svg.tito'); Tito.render(sv[0],1.2,0,'happy',{}); Tito.render(sv[1],1.2,0,'happy',{scan:1});
+    if(kind==='avatarG'){ // proposta: l'anell és el medidor «Límite», gairebé al màxim
+      R.insertAdjacentHTML('beforeend',`<div style="position:absolute;left:30px;top:30px;width:740px;height:740px;border-radius:50%;background:conic-gradient(from 215deg,#3EF0FF 0deg,#FFD60A 160deg,#FF3B6B 298deg,#0C1170 300deg);-webkit-mask:radial-gradient(circle,transparent 337px,#000 338px)"></div>`);
+      R.children[1].style.background='transparent';
+    }
   }
   if(kind==='watermark'){ document.body.style.cssText='width:300px;height:300px;background:transparent';
     R.innerHTML=`<div style="position:absolute;inset:6px;border-radius:50%;background:#2B3FE6;border:12px solid #fff;box-sizing:border-box;overflow:hidden"><div id="f" style="position:absolute;left:${132-300*.5025}px;top:-24px"></div></div>`;
