@@ -4,6 +4,15 @@ que canvien: una sola variable per variant), en fa thumb_b.jpg i thumb_c.jpg per
 import json, sys, pathlib
 from playwright.sync_api import sync_playwright
 vdir = pathlib.Path(sys.argv[1]).resolve(); V = json.loads((vdir / 'video.json').read_text()); T = V['thumb']
+# Fons opcional: thumb.bg_t = segon del vídeo (amb pauses) amb la situació extrema; es renderitza sense medidor ni adhesius
+if T.get('bg_t') is not None:
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent)); import render_video as rv
+    TT = rv.paced(vdir, V, json.loads((vdir / 'timings.json').read_text())); V2 = dict(V, starts=TT['starts'], total=TT['total'])
+    with sync_playwright() as p:
+        br, pg, _ = rv.open_page(p, V2, 1920, 1080)
+        pg.evaluate("t => { Motor.render(t); for (const id of ['hud','src','ovl','swipe','fade','grainw']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; } }", float(T['bg_t']))
+        pg.wait_for_timeout(300); pg.screenshot(path=str(vdir / 'thumb_bg.png')); br.close()
+    T = dict(T, bgUrl=(vdir / 'thumb_bg.png').as_uri())
 jobs = [('thumb.jpg', T)] + [(f'thumb_{c}.jpg', {**T, **v}) for c, v in zip('bc', V.get('thumbs', []))]
 with sync_playwright() as p:
     b = p.chromium.launch(executable_path=('/usr/bin/google-chrome' if __import__('os').path.exists('/usr/bin/google-chrome') else None))
