@@ -1,4 +1,6 @@
-# Configuració única del canal (la fa el Manel una sola vegada, ~10 min)
+# Configuració única del canal
+
+**Estat (26/11/2026):** el Manel diu que la configuració del canal ja la va fer en el seu moment. No li tornis a recordar res d'aquesta llista. Només queda pendent, si encara no ho ha fet, pujar les imatges noves del Tito (creades el 26/11/2026, punt 1 i Instagram/TikTok).
 
 Aquestes coses no es poden fer amb vidIQ; es fan a mà un cop i ja queden per sempre.
 
