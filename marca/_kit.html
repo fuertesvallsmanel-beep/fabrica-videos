@@ -24,7 +24,7 @@ window.make = (kind) => {
     const sv=R.querySelectorAll('svg.tito'); Tito.render(sv[0],1.2,0,'happy',{}); Tito.render(sv[1],1.2,0,'happy',{scan:1});
   }
   if(kind==='watermark'){ document.body.style.cssText='width:300px;height:300px;background:transparent';
-    R.innerHTML=`<div style="position:absolute;inset:6px;border-radius:50%;background:#2B3FE6;border:12px solid #fff;box-sizing:border-box;overflow:hidden"><div id="f" style="position:absolute;left:${144-300*.5025}px;top:-12px"></div></div>`;
+    R.innerHTML=`<div style="position:absolute;inset:6px;border-radius:50%;background:#2B3FE6;border:12px solid #fff;box-sizing:border-box;overflow:hidden"><div id="f" style="position:absolute;left:${132-300*.5025}px;top:-24px"></div></div>`;
     const f=document.getElementById('f'); f.innerHTML=Tito.svg(300); Tito.render(f.firstChild,1.2,0,"happy",{});
   }
   if(kind==='banner'){ document.body.style.cssText='width:2560px;height:1440px';
