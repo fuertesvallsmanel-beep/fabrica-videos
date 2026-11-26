@@ -105,8 +105,10 @@
     return { el, render(lt, d) {
       const { n, j } = phase(lt);
       const zm = sc.plano === 'abierto' ? 0 : sc.plano === 'cerca' ? 1 : eio(prog(lt, .9, Math.min(2.2, Math.max(1, d * .4)))), push = sc.plano === 'cerca' ? .08 * eio(prog(lt, 0, d)) : 0;
-      bg.style.transform = `scale(${1 + .12 * zm})`;
-      car.style.transform = `scale(${1 + .7 * zm + push})`;
+      const close = d >= 7 && lt >= 4.5 && sc.plano !== 'abierto'; // pla llarg: tall a primer pla de la cara (que no quedi quiet)
+      bg.style.transform = `scale(${close ? 1.3 : 1 + .12 * zm})`;
+      car.style.transformOrigin = close ? `${CX + 190}px ${GY - 697}px` : `${PX}px ${PY}px`;
+      car.style.transform = close ? `scale(${(2.5 + .08 * eio(prog(lt, 4.5, d - 4.5))).toFixed(3)})` : `scale(${1 + .7 * zm + push})`;
       OB.forEach(o => { o.z = ZN + ((o.z0 + SPD * lt) % L); const s = FOC / o.z;
         o.g.setAttribute('transform', `translate(${px(VX + o.X * s)} ${px(VY + CH * s)}) scale(${(s / 100).toFixed(4)})`);
         o.g.setAttribute('opacity', (clamp((ZF - o.z) / 5) * clamp((o.z - ZN) / .5)).toFixed(3)); });

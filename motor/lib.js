@@ -182,14 +182,16 @@
       <path class="arc" d="M100,500 A400,400 0 0 1 900,500" fill="none" stroke="url(#gg)" stroke-width="64" stroke-linecap="round"/>
       <line class="nd" x1="500" y1="500" x2="500" y2="150" stroke="#fff" stroke-width="14" stroke-linecap="round"/><circle cx="500" cy="500" r="30" fill="#fff"/></svg>
       <div style="position:absolute;top:236px;width:100%;text-align:center;color:${C.soft};font-size:46px;font-weight:800">${lab(sc.label) || ''}</div>
-      <div class="v" style="position:absolute;top:830px;width:100%;text-align:center;color:${C.yellow};font-size:140px;${FD};line-height:1;${SHD}">100 %</div>`;
+      <div class="v" style="position:absolute;top:880px;width:100%;text-align:center;color:${C.yellow};font-size:118px;${FD};line-height:1;${SHD}">100 %</div>`;
+    const hub = E('div', `position:absolute;left:885px;top:725px;width:150px;height:150px;border-radius:50%;overflow:hidden;background:#3B5BFF;border:7px solid #fff;box-shadow:8px 8px 0 rgba(7,11,69,.45)`); // el cap del Tito fa de centre de l'agulla
+    hub.innerHTML = `<div style="position:absolute;left:-86px;top:-100px">${personSVG(320)}</div>`; el.appendChild(hub);
     const svg = el.firstChild; const arc = svg.querySelector('.arc'); let L = 0;
     return { el, render(lt) {
       if (!L) { L = arc.getTotalLength(); arc.style.strokeDasharray = L; }
       const v = lerp(sc.from, sc.to, eio(prog(lt, 1, 2.2))) + (lt > 3.2 ? Math.sin(lt * 9) * .6 : 0);
       arc.style.strokeDashoffset = L * (1 - v / 100);
       svg.querySelector('.nd').setAttribute('transform', `rotate(${-90 + 180 * v / 100} 500 500)`);
-      el.querySelector('.v').textContent = Math.round(v) + ' %';
+      el.querySelector('.v').textContent = Math.round(v) + ' %'; personRender(hub.querySelector('svg'), lt, clamp(1 - v / 100 + .2), v < 70 ? 'tired' : 'ok', { seed: .5 });
       svg.style.opacity = eo(prog(lt, 0, .5)); enter(el.children[1], lt, .1, 16);
     } };
   };
@@ -234,7 +236,7 @@
       <text class="tl" text-anchor="middle" fill="${C.yellow}" font-family="Brico" font-weight="800" font-stretch="76%" font-size="68" style="paint-order:stroke" stroke="#0A1A8C" stroke-width="10">${sc.time || ''}</text></svg>
       <div style="position:absolute;left:${X0}px;top:250px;color:${dc};font-size:44px;font-weight:800">${sc.sub ? '' : lab(sc.label) || ''}</div><div style="position:absolute;left:${X0}px;top:${sc.sub ? 260 : 304}px;color:#fff;font-size:58px;font-weight:800">${sc.sub || ''}</div>`;
     const hd = E('div', `position:absolute;left:0;top:0;width:150px;height:150px;border-radius:50%;overflow:hidden;background:#3B5BFF;border:7px solid #fff;box-shadow:8px 8px 0 rgba(7,11,69,.45);opacity:0`);
-    hd.innerHTML = `<div style="position:absolute;left:-95px;top:-62px">${personSVG(320)}</div>`; el.appendChild(hd);
+    hd.innerHTML = `<div style="position:absolute;left:-86px;top:-100px">${personSVG(320)}</div>`; el.appendChild(hd);
     const svg = el.firstChild, w = svg.querySelector('.w'), tl = svg.querySelector('.tl'); let L = 0;
     return { el, render(lt) {
       if (!L) { L = w.getTotalLength(); w.style.strokeDasharray = L; }
