@@ -36,7 +36,7 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
 - **Qui és**: un voluntari valent i una mica ingenu que diu que sí a tots els experiments perquè vol saber «què passa». Mai és un metge ni dona consells: li passen coses i el narrador les explica.
 - **Parla en bafarades** (`dice`): frases curtes, optimistes al principi i cada cop més desesperades («¡Listo! ¿Qué puede salir mal?» → «Solo cierro los ojos un segundo…»). El narrador és el científic que el fa patir amb humor: aquest duo és el que la gent recorda.
 - **Sempre se'n surt**: pot patir (cansament, fred, mareig), però mai es veu ferit de manera gràfica, i al final sempre es recupera i somriu. Això fa que el canal sigui còmode de mirar i que la gent hi torni.
-- **Ritual de cada vídeo** (igual sempre): obertura en acció → fitxa «Experimento número N. Voluntario: Tito.» amb la sintonia de 3 notes → … → «Experimento número N… superado.» → final amb «Experimentos superados: N» i «¿Qué le hacemos a Tito la próxima?».
+- **Ritual de cada vídeo** (igual sempre): obertura en acció → fitxa «Experimento número N. Voluntario: Tito.» amb la sintonia de 3 notes → … → «Experimento número N… <resultat real: superado, abortado, por los pelos…>» → final amb «Experimentos: N» i «¿Qué le hacemos a Tito la próxima?».
 - **Coses que repeteix**: la tarjeta «VOLUNTARIO / TITO» penjada al coll, la samarreta rosa i el cordó groc; la cara de sorpresa quan arriba el gir; el polze amunt quan se'n recupera.
 - **La comunitat tria**: el tema que més es demani als comentaris passa al davant a `temas.md` (i al vídeo es diu: «Lo pidieron ustedes»).
 

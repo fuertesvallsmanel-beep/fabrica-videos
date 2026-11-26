@@ -583,7 +583,7 @@
     el.appendChild(r);
     // gag recurrent: el comptador d'experiments que el Tito ha superat (surt del número de la fitxa experimento del vídeo)
     const ex = (window.VIDEO && window.VIDEO.lines || []).map(l => l.scene).find(x => x && x.type === 'experimento'), nEx = ex && parseInt(ex.num, 10);
-    if (nEx) { const cnt = E('div', `position:absolute;left:930px;top:720px;background:#fff;color:${C.ink};border-radius:18px;padding:10px 26px 14px;font-size:40px;font-weight:800;box-shadow:8px 8px 0 rgba(7,11,69,.45);transform:rotate(-3deg)`, `Experimentos superados: <span style="color:${C.pink}">${nEx}</span>`); el.appendChild(cnt); r.__cnt = cnt; }
+    if (nEx) { const cnt = E('div', `position:absolute;left:930px;top:720px;background:#fff;color:${C.ink};border-radius:18px;padding:10px 26px 14px;font-size:40px;font-weight:800;box-shadow:8px 8px 0 rgba(7,11,69,.45);transform:rotate(-3deg)`, `Experimentos: <span style="color:${C.pink}">${nEx}</span>`); el.appendChild(cnt); r.__cnt = cnt; }
     return { el, render(lt) { hold.style.opacity = eo(prog(lt, 0, .5)); disc.style.transform = `scale(${.8 + .2 * back(prog(lt, 0, .7))})`; personRender(hold.firstChild, lt, 0, 'happy', {});
       enter(r.children[0], lt, .3); enter(r.children[1], lt, .7); enter(r.children[2], lt, 1.0); if (r.__cnt) { const k = back(prog(lt, 1.4, .5)); r.__cnt.style.opacity = lt > 1.4 ? 1 : 0; r.__cnt.style.transform = `rotate(-3deg) scale(${.6 + .4 * k})`; } r.children[2].style.transform += ` scale(${1 + .035 * Math.sin(lt * 5)})`; } };
   };
