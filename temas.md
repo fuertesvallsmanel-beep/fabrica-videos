@@ -13,9 +13,9 @@ Marca `[x]` quan estigui publicat i afegeix la data.
 - [ ] E — ¿Qué le pasa a tu cuerpo en la cima del Everest sin oxígeno? (metro a metro)
 - [ ] E — Fuerzas G: qué le pasa a tu cuerpo en una montaña rusa extrema o un caza (G a G)
 - [ ] C — ¿Qué le pasa a tu cerebro cuando miras el móvil antes de dormir? (4.400/mes, comp. 27)
-- [ ] C — Burnout: qué le pasa a tu cuerpo y a tu cerebro cuando estás quemado (4.500/mes, comp. 37)
-- [ ] C — ¿Qué le hace el estrés crónico a tu cuerpo?
-- [ ] C — ¿Qué le pasa a tu cerebro cuando compras? (3.900/mes, comp. 12)
+- [ ] C — Burnout: Tito trabaja 80 horas por semana (4.500/mes, comp. 37; reformulat perquè el Tito el visqui)
+- [ ] C — Tito, 30 días de estrés de exámenes: qué le pasa a su cuerpo (reformulat el 26/11/2026 perquè el Tito el pugui viure)
+- [ ] C — Tito en el Black Friday: qué le pasa a su cerebro cuando compra (3.900/mes, comp. 12; reformulat perquè el Tito el visqui)
 - [ ] E — ¿Qué le pasa a tu cuerpo si ayunas 72 horas? (hora a hora) — (26/11/2026: baixat; frega dietes, cal tractar-lo amb molta cura mèdica i sense recomanar-lo)
 
 ### Aparcats (línia H: només si es poden plantejar com a repte extrem del Tito)

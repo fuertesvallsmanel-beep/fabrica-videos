@@ -551,7 +551,7 @@
         <div style="font-size:36px;font-weight:700;color:#5A64B8;margin-top:22px">Riesgo</div><div style="font-size:52px;font-weight:800;color:${C.pink}">${sc.riesgo || 'Alto'}</div></div>`;
     el.appendChild(card); card.querySelector('.ph').innerHTML = personSVG(360);
     const st = E('div', `position:absolute;left:1360px;top:740px;transform-origin:50% 50%;border:12px solid ${C.yellow};border-radius:18px;color:${C.yellow};padding:6px 38px 14px;text-align:center;background:rgba(11,15,74,.55)`,
-      `<div style="font-size:54px;${FD}">Experimento</div><div style="font-size:140px;${FD};line-height:.85">Nº ${sc.num || '001'}</div>`); el.appendChild(st);
+      `<div style="font-size:54px;${FD}">Experimento</div><div style="font-size:140px;${FD};line-height:.85;margin-top:10px">Nº ${sc.num || '001'}</div>`); el.appendChild(st);
     return { el, render(lt) { const a = eo(prog(lt, 0, .5)); card.style.opacity = a; card.style.transform = `translateY(${(1 - a) * 60}px) rotate(${-3 + (1 - a) * -4}deg)`;
       personRender(card.querySelector('svg'), lt, 0, 'happy', {});
       const p = prog(lt, .75, .35); st.style.opacity = p > 0 ? 1 : 0; st.style.transform = `rotate(-10deg) scale(${p > 0 ? 1 + 1.6 * (1 - eo(p)) : 2.6})`; } };
@@ -615,7 +615,11 @@
           personRender(cm.firstChild, lt, sc.fatigue != null ? sc.fatigue : (sc.hour || 0) / 72, sc.tito, { seed: i * .37 }); };
       }
       o.disp = o.el.style.display || 'block'; uniq(o.el, 's' + i); o.el.style.display = 'none'; o.el.classList.add('scene'); stage.appendChild(o.el);
-      o.t0 = t0; o.t1 = t1; o.sc = sc; o.line = li;
+      o.t0 = t0; o.t1 = t1; o.sc = sc; o.line = li; o.bb = o.bb || null;
+      if (sc.dice) { // el Tito parla: bafarada de còmic (només text, no costa veu) al costat del seu cap
+        const bb = E('div', `position:absolute;left:0;top:0;max-width:560px;background:#fff;color:${C.ink};border-radius:30px;padding:20px 30px 24px;font-size:46px;font-weight:800;line-height:1.1;box-shadow:10px 10px 0 rgba(7,11,69,.5);opacity:0`, sc.dice);
+        bb.innerHTML += `<svg width="60" height="46" style="position:absolute;left:34px;bottom:-40px"><path d="M0,0 L60,0 L8,44Z" fill="#fff"/></svg>`; bb.dataset.ovl = 1; bb.dataset.dice = 1; o.el.appendChild(bb); o.bb = bb;
+      }
       const ov = [...o.el.querySelectorAll('[data-ovl]')]; // adhesius: fixos a pantalla, fora del moviment de càmera
       if (ov.length) { o.ov = E('div', 'position:absolute;inset:0;display:none;pointer-events:none'); ov.forEach(n => o.ov.appendChild(n)); ovl.appendChild(o.ov); }
       return o;
@@ -679,6 +683,11 @@
       const cv = { tx, ty, sc: S2 }, cin = inW && t < s.t0 + inW, cout = outW && t >= s.t1 - outW;
       s.el.style.clipPath = cin ? clipFor(t, s.t0, true, cv) : cout ? clipFor(t, s.t1, false, cv) : 'none';
       if (s.ov) s.ov.style.clipPath = cin ? clipFor(t, s.t0, true) : cout ? clipFor(t, s.t1, false) : 'none';
+      if (s.bb) { const hd = s.el.querySelector('svg.tito .head') || s.el.querySelector('svg.tito'); // bafarada: a dalt a la dreta del cap, dins del marge
+        if (hd) { const r = hd.getBoundingClientRect(), wr = document.getElementById('world').getBoundingClientRect(), k = wr.width / 1920, bw = s.bb.offsetWidth, bh = s.bb.offsetHeight;
+          let x = (r.right - wr.left) / k - 40, y = (r.top - wr.top) / k - bh - 30; x = clamp(x, 120, 1800 - bw); y = clamp(y, 240, 900 - bh);
+          const vis2 = parseFloat(getComputedStyle(hd.closest('div') || s.el).opacity || 1) > .5, at = s.sc.diceAt != null ? s.sc.diceAt : (s.sc.type === 'escaner' ? .3 : 1.2), u = prog(lt, at, .27), sc2 = u < .6 ? lerp(.5, 1.08, eo(u / .6)) : lerp(1.08, 1, eio((u - .6) / .4));
+          s.bb.style.left = x.toFixed(0) + 'px'; s.bb.style.top = y.toFixed(0) + 'px'; s.bb.style.opacity = lt >= at && vis2 ? 1 : 0; const left = x + bw / 2 < (r.left + r.right) / 2 / k - wr.left / k; const tl = s.bb.querySelector('svg'); tl.style.left = left ? (bw - 94) + 'px' : '34px'; tl.style.transform = left ? 'scaleX(-1)' : ''; s.bb.style.transformOrigin = '50% 110%'; s.bb.style.transform = `scale(${sc2.toFixed(3)})`; } }
       try { s.render(Math.max(0, lt), d); } catch (e) { console.error(e); }
       if (t >= s.t0 && t < s.t1) { active = s; const prev = sc[i - 1]; hourFrom = prev && prev.hour != null ? prev.hour : (s.hour || 0); hourTo = s.hour; hourT0 = s.t0; }
     });
