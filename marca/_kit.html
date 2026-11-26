@@ -32,22 +32,16 @@ window.make = (kind) => {
     const f=document.getElementById('f'); f.innerHTML=Tito.svg(300); Tito.render(f.firstChild,1.2,0,"happy",{});
   }
   if(kind==='banner'){ document.body.style.cssText='width:2560px;height:1440px';
-    const deco=(x,y,s,svg)=>`<div style="position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s}px;opacity:.9">${svg}</div>`;
-    const OA=window.OrganArt;
     R.innerHTML=`<div class="bg"></div><div class="grid"></div>
-    ${deco(120,560,300,OA.svg('corazon',300,300))}${deco(2140,560,300,OA.svg('pulmones',300,300))}${deco(330,600,220,OA.svg('estomago',220,220))}${deco(1990,600,200,OA.svg('rinon',200,200))}
-    <div style="position:absolute;left:507px;top:508px;width:1546px;height:423px;overflow:hidden">
-      <div style="position:absolute;left:40px;top:40px;width:360px;height:360px;border-radius:50%;background:#FFD60A"></div>
-      <div style="position:absolute;left:58px;top:58px;width:324px;height:324px;border-radius:50%;background:#3B5BFF"></div>
-      <div id="t" style="position:absolute;left:${220-330*.5025}px;top:10px;width:330px;height:413px;overflow:hidden"></div>
-      <div style="position:absolute;left:470px;top:70px">
+    <div style="position:absolute;left:507px;top:508px;width:1546px;height:423px">
+      <div style="position:absolute;left:50px;top:22px;width:390px;height:390px;border-radius:50%;background:#3B5BFF;opacity:.6"></div>
+      <div id="t" style="position:absolute;left:45px;top:0px;width:400px;height:533px;overflow:hidden"></div>
+      <div style="position:absolute;left:500px;top:40px">
         <div class="FD" style="color:#fff;font-size:150px;line-height:.95;text-shadow:8px 8px 0 #0A1A8C">Cuerpo al <span style="color:#FFD60A">Límite</span></div>
-        <div style="color:#D3DAFF;font-size:36px;font-weight:700;margin-top:18px;white-space:nowrap">Cada semana, Tito se presta a un experimento extremo</div>
-        <div style="display:inline-block;margin-top:22px;padding:12px 30px 16px;border-radius:999px;background:#FF3B6B;color:#fff;font-size:38px;font-weight:800">Nuevo experimento martes y viernes</div>
+        <div style="color:#D3DAFF;font-size:36px;font-weight:700;margin-top:22px;white-space:nowrap">Cada semana, Tito se presta a un experimento extremo</div>
+        <div style="display:inline-block;margin-top:26px;padding:12px 30px 16px;border-radius:999px;background:#FF3B6B;color:#fff;font-size:40px;font-weight:800">Nuevo experimento martes y viernes</div>
       </div></div>`;
-    const t=document.getElementById('t'); const Y2=150;
-    t.innerHTML=`<div>${Tito.svg(330,{organ:'cerebro'})}</div><div style="position:absolute;inset:0;clip-path:inset(0 0 ${413-Y2}px 0)">${Tito.svg(330,{organ:'cerebro'})}</div><div style="position:absolute;left:-10px;width:350px;top:${Y2-5}px;height:10px;border-radius:5px;background:#3EF0FF;box-shadow:0 0 24px 8px rgba(62,240,255,.7)"></div>`;
-    t.style.overflow='visible'; const sv=t.querySelectorAll('svg.tito'); Tito.render(sv[0],1.2,0,'happy',{}); Tito.render(sv[1],1.2,0,'happy',{scan:1});
+    const t=document.getElementById('t'); t.innerHTML=Tito.svg(400); Tito.render(t.firstChild,1.2,.15,'happy',{pose:'wave'});
   }
 };
 </script></body></html>
