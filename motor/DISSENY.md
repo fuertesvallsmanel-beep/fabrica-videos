@@ -32,6 +32,13 @@ Cada vídeo és un **experimento** que viu el **Tito**, el voluntari que s'apunt
 - Sempre ha de passar alguna cosa: màxim 2 escenes seguides sense el Tito, sense situació o sense un número que es mogui.
 - Una de cada tres escenes de dades porta el Tito petit reaccionant (`tito: "shock"`).
 
+## La bíblia del Tito (perquè la gent digui «el vídeo del ninot aquell a qui li fan coses»)
+- **Qui és**: un voluntari valent i una mica ingenu que diu que sí a tots els experiments perquè vol saber «què passa». Mai és un metge ni dona consells: li passen coses i el narrador les explica.
+- **Sempre se'n surt**: pot patir (cansament, fred, mareig), però mai es veu ferit de manera gràfica, i al final sempre es recupera i somriu. Això fa que el canal sigui còmode de mirar i que la gent hi torni.
+- **Ritual de cada vídeo** (igual sempre): obertura en acció → fitxa «Experimento número N. Voluntario: Tito.» amb la sintonia de 3 notes → … → «Experimento número N… superado.» → final amb «Experimentos superados: N» i «¿Qué le hacemos a Tito la próxima?».
+- **Coses que repeteix**: la tarjeta «VOLUNTARIO / TITO» penjada al coll, la samarreta rosa i el cordó groc; la cara de sorpresa quan arriba el gir; el polze amunt quan se'n recupera.
+- **La comunitat tria**: el tema que més es demani als comentaris passa al davant a `temas.md` (i al vídeo es diu: «Lo pidieron ustedes»).
+
 ## Cada vídeo, escenes noves
 Cada vídeo estrena ≥ 3 escenes pròpies del seu tema (GSAP a `fx.js` o lloc nou a `escenas.js`); les genèriques només fan de suport. Un protagonista per pla: no apilar gràfic + adhesiu + Tito petit + font.
 

@@ -128,6 +128,13 @@ def sfx_track(total, SH, t_off=0.0):
     click = np.pad(tone(1800, 900, .05, 70) * .22, (0, int(.03 * SR))) + tone(300, 180, .08, 40) * .25
     m2 = int(.4 * SR); w2 = np.convolve(rng.standard_normal(m2), np.ones(25) / 25, 'same') * np.sin(np.linspace(0, np.pi, m2)) ** 2 * .22
     KIND = {'whoosh': w2, 'click': click, 'stamp': stamp * .9, 'pop': tone(600, 1100, .06, 50) * .14, 'tick': tick * .8, 'thump': thump, 'blip': blip(3)}
+    # sintonia de marca (3 notes de marimba, igual a tots els vídeos): a la fitxa experimento i al tancament
+    def mar(f, dur=.45): tt = np.arange(int(dur * SR)) / SR; return (np.sin(2 * np.pi * f * tt) + .35 * np.sin(2 * np.pi * 4 * f * tt) * np.exp(-tt * 30)) * np.exp(-tt * 9)
+    logo = np.zeros(int(1.1 * SR))
+    for k, (f, g) in enumerate(((523.25, .5), (659.25, .5), (987.77, .65))): i0 = int(k * .13 * SR); x = mar(f) * g * .55; logo[i0:i0 + len(x)] += x[:len(logo) - i0]
+    for s in SH:
+        if s['type'] == 'experimento': put(s.get('ta', s['t0']) + .35, logo)
+        if s['type'] == 'endcard': put(s.get('ta', s['t0']) + .25, logo)
     for kind, at in SCENE_SFX:
         if kind in KIND: put(at, KIND[kind])
         if kind == 'stamp': put(at, stamp_hi, .8)

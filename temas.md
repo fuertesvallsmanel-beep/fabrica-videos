@@ -5,15 +5,18 @@ Dades de vidIQ (nov. 2026): cerques/mes i competència (0–100, més baix = mé
 Marca `[x]` quan estigui publicat i afegeix la data.
 
 - [x] E — ¿Qué le pasa a tu cuerpo y a tu cerebro si no duermes 72 horas? (hora a hora) — vídeo 001
-- [ ] E — ¿Qué le pasa a tu cuerpo si ayunas 72 horas? (hora a hora)
-- [ ] E — ¿Qué le pasa a tu cuerpo si no bebes agua? (hora a hora)
-- [ ] C — ¿Qué le pasa a tu cerebro cuando miras el móvil antes de dormir? (4.400/mes, comp. 27)
-- [ ] E — ¿Qué le pasa a tu cuerpo en el espacio sin traje? (segundo a segundo)
-- [ ] C — ¿Qué le hace el alcohol a tu cerebro, copa a copa? (5.200/mes, comp. 44)
+- [ ] E — ¿Qué le pasa a tu cuerpo en el espacio sin traje? (segundo a segundo) ← espectacular i molt visual; ideal per al 002
+- [ ] C — ¿Qué le hace el alcohol a tu cerebro, copa a copa? (5.200/mes, comp. 44) ← 2n de dissabte: es busca molt, és proper i encaixa amb l'escena `encaje`; alternar un E espectacular i un C proper
 - [ ] E — Hipotermia: qué le pasa a tu cuerpo con frío extremo, grado a grado
+- [ ] E — ¿Qué le pasa a tu cuerpo si no bebes agua? (hora a hora)
+- [ ] E — ¿Qué le pasa a tu cuerpo si te cae un rayo? (segundo a segundo)
+- [ ] E — ¿Qué le pasa a tu cuerpo en la cima del Everest sin oxígeno? (metro a metro)
+- [ ] E — Fuerzas G: qué le pasa a tu cuerpo en una montaña rusa extrema o un caza (G a G)
+- [ ] C — ¿Qué le pasa a tu cerebro cuando miras el móvil antes de dormir? (4.400/mes, comp. 27)
 - [ ] C — Burnout: qué le pasa a tu cuerpo y a tu cerebro cuando estás quemado (4.500/mes, comp. 37)
 - [ ] C — ¿Qué le hace el estrés crónico a tu cuerpo?
 - [ ] C — ¿Qué le pasa a tu cerebro cuando compras? (3.900/mes, comp. 12)
+- [ ] E — ¿Qué le pasa a tu cuerpo si ayunas 72 horas? (hora a hora) — (26/11/2026: baixat; frega dietes, cal tractar-lo amb molta cura mèdica i sense recomanar-lo)
 
 ### Aparcats (línia H: només si es poden plantejar com a repte extrem del Tito)
 - [ ] H — ¿Qué le pasa a tu cuerpo si dejas el azúcar 30 días? (competidor: «dejar pan y azúcar 14 días» 1,6 M visites)
