@@ -249,7 +249,7 @@ def voice_beats(vdir, starts, total):
 
 
 def open_page(p, V, W, H):
-    br = p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--force-device-scale-factor=1', '--allow-file-access-from-files'])
+    br = p.chromium.launch(executable_path=('/usr/bin/google-chrome' if __import__('os').path.exists('/usr/bin/google-chrome') else None), args=['--force-device-scale-factor=1', '--allow-file-access-from-files'])
     pg = br.new_page(viewport={'width': W, 'height': H})
     errs = []; pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
     pg.goto((ROOT / 'engine.html').as_uri()); pg.wait_for_timeout(300)

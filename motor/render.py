@@ -8,7 +8,7 @@ fps = 30
 frames_only = sys.argv[4:]  # optional list of times for preview stills
 
 with sync_playwright() as p:
-    b = p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--force-device-scale-factor=1"])
+    b = p.chromium.launch(executable_path=('/usr/bin/google-chrome' if __import__('os').path.exists('/usr/bin/google-chrome') else None), args=["--force-device-scale-factor=1"])
     pg = b.new_page(viewport={"width": 1920, "height": 1080})
     pg.goto(html.as_uri())
     pg.wait_for_timeout(500)

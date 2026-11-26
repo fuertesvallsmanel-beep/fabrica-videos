@@ -8,3 +8,7 @@ videos/*/render.log
 videos/*/*.ass
 demo/*.mp4
 __pycache__/
+videos/*/*.wav
+videos/*/render*.log
+videos/*/rv/
+videos/*/qa.md
