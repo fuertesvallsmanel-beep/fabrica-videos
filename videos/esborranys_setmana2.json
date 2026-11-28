@@ -1,17 +1,20 @@
 {
- "nota": "Esborranys vidIQ de la setmana 2 (28/11/2026). Publicar amb vidiq_social_post_publish(postId, revision) NOMÉS després de l'OK del Manel.",
+ "nota": "Setmana 2 (28/11/2026): el Manel va dir OK el 28/11 a les 19:39 UTC; tot publicat/programat amb vidiq_social_post_publish. Miniatura del 002: la B (triada pel Manel).",
  "llargs": [
   {
    "que": "002 YouTube",
    "postId": "e13fed3c-9593-49d7-a1ae-3609c1abe17f",
-   "revision": "b954e4a6",
-   "publishAt": "2026-12-01T00:00:00Z"
+   "revision": "75748ef2",
+   "publishAt": "2026-12-01T00:00:00Z",
+   "thumbnailImageId": "9ff0ce59-0d35-4c7c-a5ac-60bcc5ca2980",
+   "youtube": "EesSPsP9SWY"
   },
   {
    "que": "003 YouTube",
    "postId": "118812c2-35ac-4847-8f59-4a5dc69d839b",
    "revision": "e645de94",
-   "publishAt": "2026-12-04T00:00:00Z"
+   "publishAt": "2026-12-04T00:00:00Z",
+   "youtube": "8IgnWMO9J-8"
   }
  ],
  "shorts_youtube": [
@@ -19,43 +22,50 @@
    "que": "short5 (001) microsueño",
    "postId": "12f02792-7db6-4d62-9ac7-db5608c9bb5b",
    "revision": "6ad3a29c",
-   "publishAt": "2026-11-29T22:00:00Z"
+   "publishAt": "2026-11-29T22:00:00Z",
+   "youtube": "aQXex_cFmPg"
   },
   {
    "que": "002 short1 saliva",
    "postId": "28626a6d-fd83-46d4-a5e8-66f8fd4bbe19",
    "revision": "fa557f14",
-   "publishAt": "2026-11-30T22:00:00Z"
+   "publishAt": "2026-11-30T22:00:00Z",
+   "youtube": "2a8en2l1ECI"
   },
   {
    "que": "002 short2 cuánto aguanta",
    "postId": "633ce2d0-a6ca-4bdb-8c93-2cfa39de6c5f",
    "revision": "a45e3d64",
-   "publishAt": "2026-12-01T22:00:00Z"
+   "publishAt": "2026-12-01T22:00:00Z",
+   "youtube": "vFbPOVJx-RE"
   },
   {
    "que": "002 short3 explotas",
    "postId": "afb9bf6f-e255-40b9-887d-2766a61b5a93",
    "revision": "29aa0554",
-   "publishAt": "2026-12-02T22:00:00Z"
+   "publishAt": "2026-12-02T22:00:00Z",
+   "youtube": "rwijH5wQ98M"
   },
   {
    "que": "003 short1 copa 3",
    "postId": "e12dede9-421d-4eee-9bc5-b59df564dff5",
    "revision": "6f0721c0",
-   "publishAt": "2026-12-03T22:00:00Z"
+   "publishAt": "2026-12-03T22:00:00Z",
+   "youtube": "HH8wyIFZ82Y"
   },
   {
    "que": "003 short2 café",
    "postId": "a12987ca-ff29-4b6b-8138-0ec245191e06",
    "revision": "b0bb829e",
-   "publishAt": "2026-12-04T22:00:00Z"
+   "publishAt": "2026-12-04T22:00:00Z",
+   "youtube": "oRODr8ShqRc"
   },
   {
    "que": "003 short3 botón rojo",
    "postId": "2ac59110-8dd1-4c34-97b2-6922d5f21743",
    "revision": "9ed8852e",
-   "publishAt": "2026-12-05T22:00:00Z"
+   "publishAt": "2026-12-05T22:00:00Z",
+   "youtube": "Glah9OsM9HY"
   }
  ],
  "shorts_ig_tiktok": [
