@@ -20,6 +20,12 @@ Parla-li en **català**. Ell no vol haver de fer res excepte aprovar la setmana 
 - Les URL de `assets.vidiq.com` es poden baixar amb `curl` des d'aquí.
 
 ## Protocol del dissabte (resum; el detall és a les seccions de sota)
+**Desar sempre i gastar poc (après el 28/11/2026: l'execució es va quedar sense ús a 1 h 19 min, amb les 2 veus pagades —392 crèdits— i res desat).**
+- **Un vídeo sencer abans de començar el següent**: guió → Porta A → veu → render → esborrany. Mai les veus dels dos vídeos alhora.
+- **Commit i push a `main` després de cada fase**: guió aprovat (`video.json`), veu (`timings.json` + `voz.mp3`, que sí que va a main), escenes noves del motor, miniatures i esborranys (`registre.md` amb els uploadId i draftId). Si l'execució s'atura, la següent ho troba al repositori.
+- **Reprendre, no repetir**: al principi, mira `registre.md` i `videos/`: si hi ha un vídeo d'aquesta setmana a mitges, continua'l des de la fase on es va quedar. **Mai tornis a generar una veu que ja existeix** (`voz.mp3` o `timings.json`); si falta el fitxer, recupera-la gratis amb `vidiq_jobs_list` + `vidiq_job_poll`.
+- **Estalvi d'ús**: Porta A i director d'art = 1 agent cadascun i com a màxim 2 voltes; fulls de contactes petits (1 fotograma cada 6 s, 320 px d'ample, un sol full per vídeo) i no tornis a mirar imatges que ja has aprovat; no rellegeixis fitxers grans sencers (fes servir `grep` o trossos); no renderitzis el vídeo sencer per provar res (fes servir `--stills` o `--range`).
+- Si veus que l'ús s'acaba, para en un punt desat (commit) i avisa el Manel en una línia de què falta.
 1. Crèdits (`vidiq_balance`) → quants vídeos toquen. 2. Revisió de rendiment (secció 0) i, el primer dissabte del mes, exploració (0b).
 3. Temes de `temas.md` → guió `video.json` amb intro divertida de 15–25 s, **la majoria del vídeo fet de zero per al tema** (≥ 6 escenes noves i ≥ 60 % del temps en pantalla; la resta, variades), ritual fix, bafarades del Tito, plans de 5–7 s, 6:30–9:00 (6.000–8.000 caràcters).
 4. **Porta A**: agent revisor del guió, tots els punts ≥ 8 (abans de gastar crèdits de veu).
