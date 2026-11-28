@@ -19,10 +19,12 @@
   body.vert{width:1080px;height:1920px}
   body.vert #vbg{display:block;position:absolute;inset:0;background:radial-gradient(1000px 1300px at 50% 42%,#2B3FE6 0%,#1724B0 55%,#0C1170 100%)}
   body.vert #cv2{display:block;position:absolute;inset:0}
+  /* Short (28/11/2026): escena a ×0,64 (es veu x 117–1803: res tallat; a ×0,72 es tallaven textos i caps) i sense la franja del medidor (il·legible en vertical) */
   body.vert #world{transform:translate(-75px,400px) scale(.64);box-shadow:none}
-  body.vert #vtop{display:flex;position:absolute;left:60px;right:60px;top:90px;height:300px;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  body.vert #vcap{display:flex;position:absolute;left:50px;right:50px;top:1150px;height:280px;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:82px;font-weight:800;font-stretch:80%;line-height:1.12;text-shadow:5px 5px 0 rgba(7,11,69,.5)}
-  body.vert #vchar{display:block;position:absolute;left:390px;top:1455px;width:300px;height:450px}
+  body.vert #hud{display:none}
+  body.vert #vtop{display:flex;position:absolute;left:50px;right:50px;top:56px;height:310px;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  body.vert #vcap{display:flex;position:absolute;left:50px;right:50px;top:1110px;height:300px;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:88px;font-weight:800;font-stretch:80%;line-height:1.12;text-shadow:5px 5px 0 rgba(7,11,69,.5)}
+  body.vert #vchar{display:block;position:absolute;left:390px;top:1450px;width:300px;height:450px}
   body.vert #fade{width:1080px;height:1920px}
   body.vert #grainw{width:1080px;height:1920px}
 </style></head>

@@ -12,3 +12,5 @@ videos/*/*.wav
 videos/*/render*.log
 videos/*/rv/
 videos/*/qa.md
+videos/*/short*.log
+videos/*/thumb_bg.png

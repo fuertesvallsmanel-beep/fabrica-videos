@@ -1,0 +1,705 @@
+{
+ "id": "003-alcohol-cerebro",
+ "title": "Lo primero que el alcohol apaga en tu cerebro",
+ "short_title": "Copa a copa",
+ "hud": {
+  "max": 5,
+  "unit": "copas",
+  "marks": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "labels": [
+   "0",
+   "1 copa",
+   "2 copas",
+   "3 copas",
+   "4 copas",
+   "5"
+  ],
+  "title": "Copa a copa"
+ },
+ "lines": [
+  {
+   "text": "Desde la primera copa, algo se empieza a apagar en tu cerebro. Hoy lo vemos en Tito: copa a copa… hasta que yo diga basta.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "abierto",
+    "copas": 0,
+    "mood": "happy",
+    "dice": "¿Las copas las paga la universidad?",
+    "diceAt": 4.6
+   }
+  },
+  {
+   "text": "Las reglas: hay médicos, agua y comida. Y un botón rojo. Si lo aprieto, se acabó el experimento.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "cerca",
+    "copas": 0,
+    "mood": "ok",
+    "boton": true
+   }
+  },
+  {
+   "text": "¿Y qué se apaga primero? El alcohol no apaga el cerebro de golpe: lo va bajando por partes, como las luces de una casa. Y suele seguir un orden.",
+   "scene": {
+    "type": "apagon",
+    "modo": "teaser",
+    "heads": [
+     "¿Qué se apaga *primero*?",
+     "*Por partes*, en orden"
+    ]
+   }
+  },
+  {
+   "text": "Experimento número tres. Voluntario: Tito.",
+   "scene": {
+    "type": "experimento",
+    "num": "003",
+    "prueba": "Copa a copa",
+    "riesgo": "Alto"
+   }
+  },
+  {
+   "text": "Y al final te cuento el truco para «bajar la borrachera» que muchísima gente usa… y que no sirve para nada.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "barra",
+    "cafe": true,
+    "copas": 0,
+    "label": "Al final",
+    "sub": "El truco que\nno funciona"
+   }
+  },
+  {
+   "text": "Primero, ¿qué es una copa, o un trago? En Estados Unidos, una bebida estándar lleva unos catorce gramos de alcohol puro.",
+   "scene": {
+    "type": "bebida",
+    "fase": 1,
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Eso es una lata de cerveza, una copa de vino o un shot de tequila. Parecen muy distintas… pero llevan lo mismo. Y ojo: muchos cócteles llevan más de una.",
+   "scene": {
+    "type": "bebida",
+    "fase": 2,
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Copa uno. ¡Salud! El alcohol pasa del estómago y del intestino a la sangre. Y la sangre lo reparte por todo el cuerpo… incluido el cerebro.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "barra",
+    "hour": 1,
+    "copas": 1,
+    "brindis": true,
+    "mood": "happy",
+    "label": "Copa 1",
+    "sub": "¡Salud!"
+   }
+  },
+  {
+   "text": "Allí hace dos cosas a la vez. Pisa el freno de tus neuronas, que se llama gaba. Y suelta el acelerador, que se llama glutamato.",
+   "scene": {
+    "type": "freno",
+    "hour": 1,
+    "heads": [
+     "Pisa el *freno*: GABA",
+     "Suelta el *acelerador*: glutamato"
+    ],
+    "source": "Abrahao, Salinas y Lovinger, Neuron (2017)"
+   }
+  },
+  {
+   "text": "Resultado: tus neuronas se mandan menos mensajes y todo tu cerebro va más lento. Aunque al principio te anime, el alcohol es un depresor.",
+   "scene": {
+    "type": "freno",
+    "hour": 1,
+    "modo": "lento",
+    "heads": [
+     "Menos *mensajes*",
+     "Es un *depresor*"
+    ],
+    "source": "Abrahao, Salinas y Lovinger, Neuron (2017)"
+   }
+  },
+  {
+   "text": "Número uno de la lista: el juicio. Lo primero que se apaga es la corteza prefrontal, aquí adelante: la parte que piensa antes de actuar.",
+   "scene": {
+    "type": "apagon",
+    "hour": 1.5,
+    "foco": 1,
+    "heads": [
+     "1. El *juicio*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Copa dos. Tito se siente genial. Más gracioso, más valiente… más guapo. ¿Te suena?",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "abierto",
+    "hour": 2,
+    "copas": 2,
+    "mood": "happy",
+    "dice": "¡Oigan, yo canto increíble!",
+    "diceAt": 2.6
+   }
+  },
+  {
+   "text": "Y hay más: el alcohol libera dopamina, la molécula de la recompensa. Es parte de por qué las primeras copas se sienten bien… y piden otra.",
+   "scene": {
+    "type": "apagon",
+    "hour": 2,
+    "modo": "recompensa",
+    "heads": [
+     "*Dopamina*",
+     "Quiero *otra*"
+    ],
+    "source": "Boileau et al., Synapse (2003)"
+   }
+  },
+  {
+   "text": "Es una trampa. Con el juicio apagado, te sientes mejor justo cuando empiezas a decidir peor. ¿Y lo notas? No.",
+   "scene": {
+    "type": "apagon",
+    "hour": 2,
+    "foco": 1,
+    "modo": "trampa",
+    "heads": [
+     "Te sientes *mejor*",
+     "Decides *peor*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "¿Cuántas copas son demasiadas? Depende. Tu peso, tu sexo, si comiste y lo rápido que bebes cambian cuánto alcohol llega a tu sangre.",
+   "scene": {
+    "type": "curva",
+    "hour": 2,
+    "modo": "comparar",
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Con la misma cantidad, las mujeres suelen llegar a más alcohol en sangre. Y si vas a manejar, ninguna cuenta de copas es segura.",
+   "scene": {
+    "type": "curva",
+    "hour": 2,
+    "modo": "comparar2",
+    "source": "NIAAA, Women and Alcohol"
+   }
+  },
+  {
+   "text": "¿Y el que dice «a mí no me hace nada»? Su cerebro aprendió a disimular. Pero el alcohol sigue ahí, haciendo efecto.",
+   "scene": {
+    "type": "curva",
+    "hour": 2,
+    "modo": "tolerancia",
+    "source": "NIAAA, Alcohol Alert n.º 28 (Tolerancia)"
+   }
+  },
+  {
+   "text": "Pregunta rápida antes de la copa tres: ¿qué crees que se apaga ahora? ¿La memoria? ¿El equilibrio? Piénsalo…",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "barra",
+    "hour": 2.5,
+    "copas": 2,
+    "pregunta": true
+   }
+  },
+  {
+   "text": "Copa tres. ¿Acertaste? Le toca al número dos: el equilibrio. Los reflejos van más lentos y la habitación empieza a moverse.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "cerca",
+    "hour": 3,
+    "copas": 3,
+    "mareo": 0.5,
+    "mood": "tired",
+    "label": "Copa 3",
+    "sub": "Todo se mueve"
+   }
+  },
+  {
+   "text": "El culpable es el cerebelo, aquí atrás. ¡Ahí viven cuatro de cada cinco neuronas de tu cerebro! Coordina cada movimiento… y con alcohol, se vuelve torpe.",
+   "scene": {
+    "type": "apagon",
+    "hour": 3,
+    "foco": 2,
+    "heads": [
+     "2. El *equilibrio*"
+    ],
+    "source": "Azevedo et al., J Comp Neurol (2009); NIAAA",
+    "then": {
+     "type": "situacion",
+     "lugar": "bar",
+     "plano": "cerca",
+     "copas": 3,
+     "mareo": 0.6,
+     "mood": "tired",
+     "at": 6.8
+    }
+   }
+  },
+  {
+   "text": "Y hablar no es poca cosa: cada frase mueve más de cien músculos a la vez. Por eso la lengua se traba.",
+   "scene": {
+    "type": "apagon",
+    "hour": 3,
+    "foco": 2,
+    "modo": "habla",
+    "heads": [
+     "Más de *100 músculos*"
+    ],
+    "source": "Simonyan y Horwitz, Neuroscientist (2011)"
+   }
+  },
+  {
+   "text": "Y tocarte la nariz con los ojos cerrados se vuelve dificilísimo. A ver, Tito…",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "cerca",
+    "hour": 3,
+    "copas": 3,
+    "mareo": 0.6,
+    "nariz": true,
+    "mood": "tired",
+    "dice": "Tranquilos… lo tengo controlado.",
+    "diceAt": 1.6
+   }
+  },
+  {
+   "text": "Copa cuatro. Tito se ríe de todo, habla más fuerte y jura que está perfecto. Y yo… miro el reloj.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "barra",
+    "hour": 4,
+    "copas": 4,
+    "mareo": 0.7,
+    "mood": "happy",
+    "label": "Copa 4",
+    "sub": "Se ríe de todo"
+   }
+  },
+  {
+   "text": "Aquí paramos. ¡Botón rojo! Los números tres y cuatro no los probamos… ni en nombre de la ciencia. Lo siento, Tito: hoy el juicio lo pongo yo.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "cerca",
+    "hour": 4,
+    "copas": 4,
+    "mareo": 0.5,
+    "boton": true,
+    "mood": "angry",
+    "dice": "¿Qué? ¡Pero si estoy perfecto!",
+    "diceAt": 2.4,
+    "pulsa": true
+   }
+  },
+  {
+   "text": "Número tres: la memoria. Esto ya pasa con mucho más alcohol. El hipocampo es la grabadora de tu cerebro: convierte lo que vives en recuerdos.",
+   "scene": {
+    "type": "apagon",
+    "hour": 4,
+    "foco": 3,
+    "heads": [
+     "3. La *memoria*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Con mucho alcohol, la grabadora se detiene. No borra lo que ya sabías: deja de guardar lo nuevo. Sigues despierto… pero no grabas nada.",
+   "scene": {
+    "type": "memoria",
+    "hour": 4,
+    "heads": [
+     "Sigues *despierto*",
+     "Pero *no grabas*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Eso es una laguna mental. Suelen empezar alrededor de uno coma seis gramos de alcohol por litro de sangre: casi el doble del límite para manejar en Estados Unidos.",
+   "scene": {
+    "type": "memoria",
+    "hour": 4,
+    "modo": "laguna",
+    "big": "1,6 g/L",
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)",
+    "tito": "shock"
+   }
+  },
+  {
+   "text": "Hay dos tipos: lagunas con islas de recuerdos sueltos… y lagunas completas de horas, como si nunca hubieran pasado.",
+   "scene": {
+    "type": "memoria",
+    "hour": 4,
+    "modo": "tipos",
+    "heads": [
+     "Islas de *recuerdos*",
+     "Laguna *completa*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Y una laguna no es desmayarse. La persona sigue despierta, hablando, riendo. Solo que mañana no recordará nada.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "cerca",
+    "hour": 4,
+    "copas": 4,
+    "mareo": 0.3,
+    "mood": "ok",
+    "label": "Si siguiera bebiendo…",
+    "sub": "Despierto, pero\nsin grabar",
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)",
+    "agua": true
+   }
+  },
+  {
+   "text": "¿Y cuándo son más probables? Si bebes rápido o con el estómago vacío: el alcohol sube de golpe en la sangre.",
+   "scene": {
+    "type": "curva",
+    "hour": 4,
+    "modo": "rapido",
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Mientras tanto, Tito ya solo bebe agua… y nos mira muy mal. Sigamos: el número cuatro es el más serio. Las zonas que controlan la respiración, el ritmo del corazón y la temperatura.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "plano": "abierto",
+    "hour": 4,
+    "copas": 4,
+    "agua": true,
+    "mareo": 0.2,
+    "mood": "angry",
+    "then": {
+     "type": "apagon",
+     "foco": 4,
+     "heads": [
+      "4. Lo que te mantiene *vivo*"
+     ],
+     "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)",
+     "at": 4.6
+    }
+   }
+  },
+  {
+   "text": "Con muchísimo alcohol, también se apagan. Incluso el reflejo que evita que te ahogues si vomitas. Eso es una intoxicación grave… y puede matar.",
+   "scene": {
+    "type": "apagon",
+    "hour": 4,
+    "foco": 4,
+    "modo": "peligro",
+    "heads": [
+     "Intoxicación *grave*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Y algo importante: el alcohol en sangre puede seguir subiendo aunque ya no se beba más, o aunque la persona ya esté inconsciente.",
+   "scene": {
+    "type": "curva",
+    "hour": 4,
+    "modo": "sigue",
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Las señales de alarma: confusión, vómitos, convulsiones, respiración muy lenta o irregular, piel fría y húmeda… o no poder despertar.",
+   "scene": {
+    "type": "list",
+    "hour": 4,
+    "color": "red",
+    "items": [
+     "Confusión, vómitos o convulsiones",
+     "Respiración lenta o irregular",
+     "Piel fría y húmeda",
+     "No poder despertar"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)",
+    "tito": "shock"
+   }
+  },
+  {
+   "text": "Si ves eso en alguien, llama a emergencias de inmediato. No esperes a que tenga todos los síntomas.",
+   "scene": {
+    "type": "title",
+    "hour": 4,
+    "kicker": "Si ves eso en alguien",
+    "title": "Llama a\nemergencias",
+    "sub": "No esperes a que tenga todos los síntomas",
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "Modo escáner. Mientras tanto, el hígado de Tito intenta limpiar todo ese alcohol. Pero trabaja a su propio ritmo… y no acepta propinas.",
+   "scene": {
+    "type": "escaner",
+    "organ": "higado",
+    "hour": 4,
+    "mood": "tired",
+    "label": "Copa 4",
+    "sub": "El hígado\nhace lo que puede",
+    "pins": [
+     {
+      "x": 30,
+      "y": 30,
+      "text": "Hígado"
+     }
+    ]
+   }
+  },
+  {
+   "text": "Según los institutos de salud de Estados Unidos, un adulto tarda unas dos horas en eliminar el alcohol de una sola bebida. Tito lleva cuatro. Haz la cuenta.",
+   "scene": {
+    "type": "cola",
+    "hour": 4,
+    "big": "2 h",
+    "label": "por cada bebida",
+    "source": "NIAAA, College Drinking Prevention"
+   }
+  },
+  {
+   "text": "En el hígado, el alcohol se convierte primero en acetaldehído, una sustancia tóxica. Y después en acetato, mucho menos dañino.",
+   "scene": {
+    "type": "cola",
+    "hour": 4,
+    "modo": "quimica",
+    "heads": [
+     "*Acetaldehído*: tóxico",
+     "*Acetato*: mucho menos dañino"
+    ],
+    "source": "NIAAA, Alcohol Alert n.º 72 (2007)"
+   }
+  },
+  {
+   "text": "Y no hay atajos. El alcohol hace fila, molécula a molécula, y el hígado no se apura por nadie. Ni por Tito.",
+   "scene": {
+    "type": "cola",
+    "hour": 4,
+    "modo": "fila",
+    "heads": [
+     "*Sin* atajos",
+     "Una molécula *tras otra*"
+    ],
+    "tito": "tired"
+   }
+  },
+  {
+   "text": "¿Te acuerdas del truco del principio? «Un café bien cargado te baja la borrachera».",
+   "scene": {
+    "type": "veredicto",
+    "calm": true,
+    "claim": "Un café te baja la borrachera",
+    "verdict": "mito",
+    "note": "Solo el tiempo saca el alcohol de tu sangre"
+   }
+  },
+  {
+   "text": "Mito. El café no acelera tu hígado. La ducha fría, tampoco. Y hasta pueden empeorar las cosas. Solo el tiempo saca el alcohol de tu sangre.",
+   "scene": {
+    "type": "cola",
+    "calm": true,
+    "modo": "cafe",
+    "heads": [
+     "El café *no* acelera",
+     "Solo el *tiempo*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "¿Y sudarla bailando? Ni lo intentes, Tito. Por el sudor, el aliento y la orina sale muy poquito: casi todo lo limpia el hígado.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "calm": true,
+    "plano": "abierto",
+    "copas": 4,
+    "baila": true,
+    "mood": "happy",
+    "label": "¿Sudarla bailando?",
+    "sub": "Casi todo lo\nlimpia el hígado",
+    "source": "Cederbaum, Clin Liver Dis (2012); NIAAA"
+   }
+  },
+  {
+   "text": "A la mañana siguiente, después de muchas horas, Tito ya no tiene alcohol en la sangre… ni ganas de cantar.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "calm": true,
+    "plano": "abierto",
+    "manana": true,
+    "copas": 0,
+    "mood": "tired"
+   }
+  },
+  {
+   "text": "¿Y la resaca? No tiene una sola causa. El alcohol frena la hormona que retiene agua: vas más al baño… y amaneces deshidratado.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "calm": true,
+    "plano": "cerca",
+    "manana": true,
+    "agua": true,
+    "copas": 0,
+    "mood": "tired",
+    "label": "¿Y la resaca?",
+    "sub": "Menos hormona\nque retiene agua",
+    "source": "NIAAA, Hangovers"
+   }
+  },
+  {
+   "text": "Además, durmió peor. El alcohol te ayuda a dormirte antes, pero te roba sueño REM, sobre todo en la primera mitad de la noche.",
+   "scene": {
+    "type": "hypnogram",
+    "calm": true,
+    "alcohol": true,
+    "source": "Ebrahim et al., Alcohol Clin Exp Res (2013)"
+   }
+  },
+  {
+   "text": "Todas las zonas vuelven a encenderse. Pero beber en exceso durante años sí deja huella: puede llegar a encoger las neuronas.",
+   "scene": {
+    "type": "apagon",
+    "calm": true,
+    "modo": "enciende",
+    "heads": [
+     "Todo *se enciende*",
+     "Pero el exceso *deja huella*"
+    ],
+    "source": "NIAAA (Institutos Nacionales de Salud de EE. UU.)"
+   }
+  },
+  {
+   "text": "¿Y los adolescentes? Su cerebro sigue en construcción hasta pasados los veinte años… y el alcohol puede interferir en su desarrollo.",
+   "scene": {
+    "type": "persona",
+    "calm": true,
+    "mood": "ok",
+    "fatigue": 0.1,
+    "color": "cyan",
+    "label": "Adolescentes",
+    "sub": "El cerebro sigue en\nconstrucción pasados los 20",
+    "source": "NIAAA, Underage Drinking / adolescent brain"
+   }
+  },
+  {
+   "text": "Repasemos el apagón, luz por luz: primero el juicio, luego el equilibrio, después la memoria… y al final, lo que te mantiene vivo.",
+   "scene": {
+    "type": "apagon",
+    "calm": true,
+    "modo": "resumen"
+   }
+  },
+  {
+   "text": "Experimento número tres… abortado. Por seguridad.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "bar",
+    "calm": true,
+    "plano": "cerca",
+    "manana": true,
+    "copas": 0,
+    "mood": "angry",
+    "label": "Experimento Nº 003",
+    "sub": "Abortado…\npor seguridad",
+    "dice": "¡Pero si iba ganando!",
+    "diceAt": 1.8
+   }
+  },
+  {
+   "text": "¿Qué le hacemos a Tito la próxima? Escríbelo en los comentarios. Y si te gustan estos experimentos, suscríbete.",
+   "scene": {
+    "type": "endcard",
+    "text": ""
+   }
+  }
+ ],
+ "sources": [
+  "NIAAA. Understanding the Dangers of Alcohol Overdose (2023).",
+  "NIAAA. Interrupted Memories: Alcohol-Induced Blackouts.",
+  "NIAAA. What Is a Standard Drink? / CDC. About Standard Drink Sizes (2024).",
+  "NIAAA. Health Topics: Alcohol and the Brain.",
+  "NIAAA, College Drinking Prevention. Alcohol Myths (eliminación de una bebida, café y duchas frías).",
+  "NIAAA. Alcohol Metabolism: An Update. Alcohol Alert n.º 72, 2007.",
+  "NIAAA. Alcohol and Tolerance. Alcohol Alert n.º 28, 1995.",
+  "NIAAA. Hangovers (fact sheet).",
+  "Abrahao KP, Salinas AG, Lovinger DM. Alcohol and the brain: neuronal molecular targets, synapses, and circuits. Neuron. 2017;96:1223–1238.",
+  "Boileau I, et al. Alcohol promotes dopamine release in the human nucleus accumbens. Synapse. 2003;49:226–231.",
+  "Azevedo FAC, et al. Equal numbers of neuronal and nonneuronal cells make the human brain an isometrically scaled-up primate brain. J Comp Neurol. 2009;513:532–541.",
+  "Simonyan K, Horwitz B. Laryngeal motor cortex and control of speech in humans. The Neuroscientist. 2011;17:197–208.",
+  "Ebrahim IO, et al. Alcohol and sleep I: effects on normal sleep. Alcoholism: Clinical and Experimental Research. 2013;37:539–549.",
+  "NIAAA. Women and Alcohol.",
+  "NIAAA. Underage Drinking (desarrollo del cerebro adolescente).",
+  "Cederbaum AI. Alcohol metabolism. Clinics in Liver Disease. 2012;16:667–685."
+ ],
+ "thumb": {
+  "num": "003",
+  "l1": "Copa 1",
+  "l2": "y ya…",
+  "s1": 240,
+  "s2": 150,
+  "acc": "#FF3B6B",
+  "person": {
+   "fatigue": 0.35,
+   "mood": "shock",
+   "blush": 1,
+   "pose": "mug",
+   "cup": "copa"
+  },
+  "bg_t": 96.0,
+  "bg_sin_tito": true,
+  "prop": "copa"
+ },
+ "thumbs": [
+  {
+   "l1": "Copa 3",
+   "l2": "¿qué cae?",
+   "s1": 240,
+   "s2": 130
+  },
+  {
+   "person": {
+    "fatigue": 0.35,
+    "mood": "shock",
+    "blush": 1,
+    "pose": "mug",
+    "cup": "copa",
+    "scan": "cerebro"
+   }
+  }
+ ]
+}

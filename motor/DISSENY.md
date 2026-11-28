@@ -56,7 +56,8 @@ Cada vídeo es fa pràcticament de zero: ≥ 6 escenes pròpies del seu tema (GS
 |---|---|---|
 | Fons | #2B3FE6 → #1724B0 → #0C1170 | cobalt elèctric amb taques suaus i gra |
 | Perill / marca | #FF3B6B (pink, red) | dany, risc, segell «Mito», samarreta del Tito |
-| Dada clau | #FFD60A (yellow) | **només** la xifra protagonista de l'escena i la paraula «Límite» |
+| Dada clau | #FFD60A (yellow) | **només** la xifra protagonista de l'escena i la paraula «Límite». **Un sol element groc per pla** (director d'art, 28/11/2026): si hi ha una frase final groga, el número de sobre va en blanc; pastilles de referència en blanc |
+| Alcohol / beguda | #FF8A3D (orange) | la molècula, la gota i el líquid de les begudes (003); mai per a dades |
 | Recuperació | #3EF0FF (cyan) | el que millora, «Ciencia», «Recuperación» |
 | Text | #FFFFFF / #D3DAFF | títol / secundari |
 | Ombra | #0A1A8C, 8 px sense desenfocament | xifres i titulars (efecte adhesiu) |
@@ -72,12 +73,43 @@ Res de resplendors de neó ni xarxes de punts: és el que fa que sembli plantill
 - Zona segura: res entre y = 0 i 220 px (és del medidor) i res a menys de 120 px de les vores.
 - Diagrames (cervell, cos, receptors, cèl·lules…): il·lustració gran a l'esquerra (≈ 55–60 % de l'amplada) + text a la dreta a x ≈ 1100. Quan facis escenes noves, dissenya-les ja grans (l'escalat automàtic queda desactivat perquè xocava amb el medidor).
 - Moviment: un sol gest per escena.
+- Línies de llindar (límits, zones): blanques i discontínues, amb l'etiqueta en una pastilla blanca a sobre; mai creuen un text.
+- Gràfics amb el Tito petit a la cantonada: el gràfic acaba a x ≤ 1550 o no hi posis el Tito (tapava el final de les corbes).
+- Plans de prop en llocs amb decorat alt (bar): res del decorat a y < 220 (s'amaguen prestatges de dalt i el rellotge) i res darrere la bafarada.
+- El Tito a l'espai sura per sobre de l'horitzó (60–80 px), mai amb els peus a la Terra.
 
 ## Miniatura (`make_thumb.py`, camps `thumb`)
 - `{num:"002", l1:"72 H", l2:"SIN DORMIR", s1:270, s2:150, acc:"#FF3B6B", person:{fatigue, mood, scan}}`.
 - Cara del Tito gran a l'esquerra amb contorn blanc, sense disc; pastilla «Experimento 00X»; màxim 2–3 paraules; sense etiqueta extra.
 - Prova obligatòria a 320×180: s'ha de llegir el número i entendre l'emoció en 1 segon.
+- Ha de dir de què va sense llegir: `thumb.prop` (p. ex. `"copa"`) posa l'objecte de la situació davant del Tito; `bg_sin_tito` si al fons hi surt un altre Tito; la cara, extrema (shock), no un somriure. El text no repeteix paraules del títol.
 
 ## Shorts (vertical 1080×1920)
-- Ganxo a dalt (s'amaga als 2,5 s), escena ampliada al centre, subtítols de 82 px paraula a paraula amb la paraula actual en groc, el Tito sencer a baix.
+- (28/11/2026) Ganxo a dalt **opac des del primer fotograma** (sense fos d'entrada ni cortineta a mitges) que als 2,6 s s'encongeix i es queda com a títol fix; escena a ×0,64 (es veu x 117–1803 del pla horitzontal: provat ×0,72 i tallava textos i el cap del Tito; adhesius fins a x 1770) sense la franja del medidor ni el Tito de cantonada (ja hi és el de sota); adhesius dibuixats a ×1,3 perquè es llegeixin; els grups de subtítols no acaben mai en una paraula funcional («de», «la», «que»…); subtítols de 88 px per frases (es tallen a la puntuació, mai una paraula sola, `text-wrap: balance`) amb la paraula actual en groc; el Tito sencer a baix i, quan ja surt al pla, els subtítols baixen al mig de l'espai lliure.
 - Pendent (proper pas de millora): disseny vertical natiu per a cada tipus d'escena.
+
+## Llocs i escenes nous (28/11/2026, vídeos 002 i 003) — reutilitzables, sempre variant-los
+**Llocs (`situacion`, `motor/escenas.js`)**
+- `esclusa`: compartiment d'aire d'una nau, de cara; comporta rodona amb ull de bou i la Terra; panell amb pantalla i indicador de pressió. `plano` abierto|cerca · `pantalla` (text) · `cuenta` (3-2-1 als últims temps de la línia) · `abre` (s'obre i el Tito surt disparat, amb paper i mitjó) · `repress` (torna l'aire 0→100 %, es desinfla) · `inconsciente` · `despierta` · `manta` (manta tèrmica) · `leonov` (vestit inflat que es desinfla) · `traje`. Sons: brunzit de nau, xiulet de descompressió, clàxon, aire que entra.
+- `espacio`: el Tito surant (amb cames) davant la Terra i l'estació. `plano` abierto|cerca|lejos|globo (globus estratosfèric de Kittinger, sense Tito) · `vacio` (sense Tito) · `burbujas` (saliva) · `hinchado` 0–1 (galtes inflades) · `inconsciente` · `escarcha` · `borroso` (visió doble i vinyeta) · `saluda` · `nada` · `silencio` (icona i sense ambient) · `traje` · `inflado` · `cine` (franges de pel·lícula) · `rescate` (braç robòtic). Sons: ambient d'espai molt baix, bombolles, batec lent, servo.
+- `camara`: cambra de buit dels anys 60 amb un voluntari amb vestit (no és el Tito). `plano` abierto|cerca (visera amb bombolles) · `recupera`. Sons: clàxon i fuita, o aire que torna.
+- `bar`: bar del laboratori (prestatges d'ampolles sense marques, rètol, rellotge, finestra). `plano` abierto|cerca|barra · `copas` (gots buits a la barra, galtes vermelles) · `mareo` 0–1 (balanceig i visió doble) · `brindis` · `boton` (+ `pulsa`: un guant prem el botó vermell) · `cafe` · `pregunta` · `nariz` (s'intenta tocar el nas i falla) · `agua` · `manana` (matí, ulleres de sol) · `baila`. Sons: bar (murmuri i dringadissa), clinc, botó, ritme de ball.
+
+**Escenes GSAP (`motor/fx.js`)** — totes amb `heads` (titulars sincronitzats amb les frases; `*paraules clau*`, també de diverses paraules; `hb` = índexs de frase).
+- `presion`: `modo` barras (tubs d'aire en %, `items`, `show`, `from`; els que encara no toquen surten en fantasma amb «?») · hervor (termòmetre: el punt d'ebullició baixa de 100 a 37 °C mentre l'altitud puja) · armstrong (escala 0–40 km amb Everest, avió i la línia de 19 km).
+- `pulmon` (modo aguanta): pulmons en un disc, cadenat a la boca, l'aire de fora desapareix i els pulmons s'inflen.
+- `cuenta`: anell de compte enrere (`from`, `to`, `label`, `pill`) + figura amb el camí de la sang pulmons → cor → cervell.
+- `ebullicion`: tall de pell; `modo` piel | tension | aguanta | mano (mà 1× vs 2×) | resumen (tres files amb icona; els titulars són les files).
+- `termo`: floc de neu ratllat + termòmetre a 37 °C, o `modo` termo (doble paret amb buit, la calor rebota).
+- `linea`: línia de temps (`max`, `at`, `marks`, `zones`, `pill`, `resumen` + `big`).
+- `apagon`: el cervell com una casa amb llums (1 judici, 2 equilibri, 3 memòria, 4 funcions vitals) + rànquing a la dreta. `foco` 1–4 o `modo` teaser | trampa | recompensa | habla | peligro | enciende | resumen.
+- `bebida`: `fase` 1 (14 g) | 2 (cervesa, vi, destil·lat, còctel ≥ 2).
+- `freno`: pedals GABA/glutamat i velocímetre d'activitat; `modo` lento = xarxa de neurones que s'alenteix.
+- `curva`: alcohol en sang (qualitatiu): `modo` comparar | comparar2 | tolerancia | rapido | sigue.
+- `memoria`: gravadora-pel·lícula (deixa de gravar al 2n titular) · `modo` laguna (xifra + barres) | tipos.
+- `cola`: el fetge treballa a ritme fix (cinta amb molècules); `big`/`label`, `modo` fila | quimica | cafe.
+- `hypnogram` amb `alcohol: true`: REM perdut a la primera meitat (rosa, discontinu).
+- HUD: `hud.labels` per posar text propi a les marques (p. ex. «1 copa»).
+- El Tito: `pose` `nose`; got (`cup: 'copa' | 'agua'`) a la postura `mug`; `blush`, `gafas`, `noZ` (ulls tancats sense «z»); capes `data-into` (head/body/legs) a `titoBox` d'`escenas.js` per a vestit, casc, galtes, bombolles, gebre, manta i cames.
+
+**Marges amb càmera**: el motor fa zoom fins a ≈ 1,10 sobre el centre; tot text ha d'anar entre x ≈ 200 i 1720 (i y ≥ 250 si hi ha medidor) perquè no surti del marge en moviment. Als grups SVG que GSAP mou (x, y, scale), mai un `transform` propi: embolcalla'ls en un `<g transform>` exterior.

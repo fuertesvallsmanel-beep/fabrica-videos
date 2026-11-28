@@ -1,0 +1,79 @@
+[
+ {
+  "dir": "videos/_demo",
+  "a": 15,
+  "b": 17,
+  "hook": "Tito maneja con 24 h sin dormir",
+  "name": "short5",
+  "publishAt": "2026-11-29T22:00:00Z",
+  "format": "xifra",
+  "title": "3 segundos dormido al volante: 80 metros a ciegas #shorts",
+  "text": "A 100 km/h, un microsueño de 3 segundos son más de 80 metros a ciegas. En EE. UU., uno de cada cinco choques mortales involucra a un conductor con sueño (AAA Foundation, 2014). Video completo en YouTube: Cuerpo al Límite. #sueño #ciencia #cerebro #microsueño #manejar"
+ },
+ {
+  "dir": "videos/002-espacio-sin-traje",
+  "a": 15,
+  "b": 18,
+  "hook": "A Tito le hierve la saliva en el espacio",
+  "name": "short1",
+  "publishAt": "2026-11-30T22:00:00Z",
+  "format": "momento",
+  "title": "Sin traje en el espacio, tu saliva hierve #shorts",
+  "text": "En el vacío, la saliva de la lengua empieza a hervir: es lo último que recordaba un ingeniero de la NASA antes de desmayarse en una cámara de vacío. Video completo en YouTube: Cuerpo al Límite. #espacio #ciencia #NASA #cuerpohumano #astronauta"
+ },
+ {
+  "dir": "videos/002-espacio-sin-traje",
+  "a": 32,
+  "b": 35,
+  "hook": "¿Cuánto aguantaría Tito en el vacío?",
+  "name": "short2",
+  "publishAt": "2026-12-01T22:00:00Z",
+  "format": "pregunta",
+  "title": "¿Cuánto tiempo sobrevive un cuerpo en el vacío? #shorts",
+  "text": "En un estudio de 1965 con perros, ninguno murió tras 90 segundos en el vacío; a partir de los 2 minutos empezaban a morir (Bancroft y Dunn, USAF/NASA). En personas nunca se ha medido. Video completo en YouTube: Cuerpo al Límite. #espacio #ciencia #vacío #cuerpohumano #NASA"
+ },
+ {
+  "dir": "videos/002-espacio-sin-traje",
+  "a": 45,
+  "b": 47,
+  "hook": "¿Tito explotaría en el espacio?",
+  "name": "short3",
+  "publishAt": "2026-12-02T22:00:00Z",
+  "format": "mito",
+  "title": "¿Explotas en el espacio sin traje? Mito #shorts",
+  "text": "Mito: en el espacio no explotas. Te hinchas, pero la piel aguanta; el verdadero peligro es quedarte sin oxígeno en menos de 15 segundos (Murray et al., 2013). Video completo en YouTube: Cuerpo al Límite. #espacio #mitos #ciencia #cuerpohumano #astronauta"
+ },
+ {
+  "dir": "videos/003-alcohol-cerebro",
+  "a": 17,
+  "b": 19,
+  "hook": "Tito va por la copa 3: ¿qué se apaga?",
+  "name": "short1",
+  "publishAt": "2026-12-03T22:00:00Z",
+  "format": "pregunta",
+  "title": "Copa 3: lo que el alcohol apaga en tu cerebro #shorts",
+  "text": "Con el alcohol, el equilibrio falla porque el cerebelo, donde viven cuatro de cada cinco neuronas de tu cerebro, se vuelve torpe (Azevedo et al., 2009; NIAAA). Video completo en YouTube: Cuerpo al Límite. #alcohol #cerebro #ciencia #neurociencia #cuerpohumano"
+ },
+ {
+  "dir": "videos/003-alcohol-cerebro",
+  "a": 39,
+  "b": 42,
+  "hook": "¿Un café le baja la borrachera a Tito?",
+  "name": "short2",
+  "publishAt": "2026-12-04T22:00:00Z",
+  "format": "mito",
+  "title": "¿Un café te baja la borrachera? Mito #shorts",
+  "text": "Mito: el café no acelera tu hígado y la ducha fría tampoco. Un adulto tarda unas dos horas en eliminar el alcohol de una sola bebida (NIAAA). Video completo en YouTube: Cuerpo al Límite. #alcohol #mitos #ciencia #resaca #cerebro"
+ },
+ {
+  "dir": "videos/003-alcohol-cerebro",
+  "a": 22,
+  "b": 24,
+  "hook": "Copa 4 y… ¡botón rojo para Tito!",
+  "name": "short3",
+  "publishAt": "2026-12-05T22:00:00Z",
+  "format": "momento",
+  "title": "Copa 4: por qué paramos el experimento #shorts",
+  "text": "Con mucho alcohol, el hipocampo deja de grabar: las lagunas suelen empezar alrededor de 1,6 g/L, casi el doble del límite para manejar en EE. UU. (NIAAA). Video completo en YouTube: Cuerpo al Límite. #alcohol #cerebro #memoria #ciencia #neurociencia"
+ }
+]

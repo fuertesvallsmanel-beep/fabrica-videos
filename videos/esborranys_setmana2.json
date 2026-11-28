@@ -1,0 +1,19 @@
+{"nota": "Esborranys vidIQ de la setmana 2 (28/11/2026). Publicar amb vidiq_social_post_publish(postId, revision) NOMÉS després de l'OK del Manel.",
+ "llargs": [
+  {"que": "002 YouTube", "postId": "e13fed3c-9593-49d7-a1ae-3609c1abe17f", "revision": "b954e4a6", "publishAt": "2026-12-01T00:00:00Z"}],
+ "shorts_youtube": [
+  {"que": "short5 (001) microsueño", "postId": "12f02792-7db6-4d62-9ac7-db5608c9bb5b", "revision": "6ad3a29c", "publishAt": "2026-11-29T22:00:00Z"},
+  {"que": "002 short1 saliva", "postId": "28626a6d-fd83-46d4-a5e8-66f8fd4bbe19", "revision": "fa557f14", "publishAt": "2026-11-30T22:00:00Z"},
+  {"que": "002 short2 cuánto aguanta", "postId": "633ce2d0-a6ca-4bdb-8c93-2cfa39de6c5f", "revision": "a45e3d64", "publishAt": "2026-12-01T22:00:00Z"},
+  {"que": "002 short3 explotas", "postId": "afb9bf6f-e255-40b9-887d-2766a61b5a93", "revision": "29aa0554", "publishAt": "2026-12-02T22:00:00Z"},
+  {"que": "003 short1 copa 3", "postId": "e12dede9-421d-4eee-9bc5-b59df564dff5", "revision": "6f0721c0", "publishAt": "2026-12-03T22:00:00Z"},
+  {"que": "003 short2 café", "postId": "a12987ca-ff29-4b6b-8138-0ec245191e06", "revision": "b0bb829e", "publishAt": "2026-12-04T22:00:00Z"},
+  {"que": "003 short3 botón rojo", "postId": "2ac59110-8dd1-4c34-97b2-6922d5f21743", "revision": "9ed8852e", "publishAt": "2026-12-05T22:00:00Z"}],
+ "shorts_ig_tiktok": [
+  {"que": "short5 (001)", "postId": "f5325d2c-b152-4380-9131-7908614e0241", "revision": "204807cb-598eb3c8"},
+  {"que": "002 short1", "postId": "fe9f8cd9-f4a0-4b0b-a182-286078fd3f0b", "revision": "523ac36d-a7256571"},
+  {"que": "002 short2", "postId": "6af5842d-e97e-410e-9b5c-39fd974d089c", "revision": "417443b7-d177a48f"},
+  {"que": "002 short3", "postId": "2ef0ca59-8289-4389-b834-0c3244db2b85", "revision": "1d3ccbce-5b55d986"},
+  {"que": "003 short1", "postId": "0c4a53b7-52a4-4e37-9c32-9b8bb6c7194e", "revision": "818e764a-ef90f1a0"},
+  {"que": "003 short2", "postId": "4c65aa71-e557-48fc-8ec7-a6c073eabba7", "revision": "fbb246b2-ff085a65"},
+  {"que": "003 short3", "postId": "db6f1ed7-b804-4002-ba5b-44cc0a0368a7", "revision": "1603b0e3-c7d257cb"}]}

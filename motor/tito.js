@@ -40,7 +40,9 @@
   <path class="aRs" fill="none" stroke="${SD}" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/><path class="aR" fill="none" stroke="${SK}" stroke-width="41" stroke-linecap="round" stroke-linejoin="round"/><path class="sR" fill="none" stroke="${TEE}" stroke-width="64" stroke-linecap="round"/>
   <g class="hL"><circle r="26" fill="${SK}"/><ellipse cx="14" cy="-12" rx="9" ry="12" fill="${SK}"/><path d="M-12,8 Q0,16 12,8" stroke="${SD}" stroke-width="3" fill="none"/></g>
   <g class="hR"><circle r="26" fill="${SK}"/><ellipse cx="-14" cy="-12" rx="9" ry="12" fill="${SK}"/><path d="M-12,8 Q0,16 12,8" stroke="${SD}" stroke-width="3" fill="none"/></g>
-  <g class="mug" opacity="0"><path d="M-30,-22 C-48,-22 -48,14 -30,14" stroke="#EEF1FF" stroke-width="10" fill="none"/><rect x="-30" y="-40" width="60" height="72" rx="10" fill="#EEF1FF"/><rect x="-30" y="-40" width="60" height="12" rx="5" fill="#C7D0FF"/><rect x="-22" y="-8" width="44" height="14" rx="4" fill="#FF3B6B"/><circle cx="-34" cy="0" r="14" fill="${SK}"/></g>
+  <g class="mug" opacity="0"><g class="cupM"><path d="M-30,-22 C-48,-22 -48,14 -30,14" stroke="#EEF1FF" stroke-width="10" fill="none"/><rect x="-30" y="-40" width="60" height="72" rx="10" fill="#EEF1FF"/><rect x="-30" y="-40" width="60" height="12" rx="5" fill="#C7D0FF"/><rect x="-22" y="-8" width="44" height="14" rx="4" fill="#FF3B6B"/></g>
+   <g class="cupG" opacity="0"><path d="M-30,-46 L30,-46 L24,30 C23,36 19,38 14,38 L-14,38 C-19,38 -23,36 -24,30Z" fill="#EEF1FF" opacity=".35"/><path class="liq" d="M-27,-14 L27,-14 L24,30 C23,36 19,38 14,38 L-14,38 C-19,38 -23,36 -24,30Z" fill="#FF8A3D"/><path d="M-30,-46 L30,-46 L24,30 C23,36 19,38 14,38 L-14,38 C-19,38 -23,36 -24,30Z" fill="none" stroke="#fff" stroke-width="5"/><path d="M-18,-36 L-15,24" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/></g>
+   <circle cx="-34" cy="0" r="14" fill="${SK}"/></g>
  </g>
  <g class="scan" opacity="0" data-head="${head ? 1 : 0}">${head ? '' : `
   <circle cx="${sx}" cy="${sy}" r="${sr + 22}" fill="url(#${u}g)"/>
@@ -81,6 +83,8 @@
    <g class="orgH">${window.OrganArt ? OrganArt.svg('cerebro', 160, 130, 'x="121" y="100"') : `<image href="organs/cerebro_lateral.svg" x="124" y="88" width="154" height="154"/>`}</g></g>
   <path class="pulseH" d="M126,178 C126,262 150,304 182,318 C190,322 212,322 220,318 C252,304 276,262 276,178 C276,110 246,80 201,80 C156,80 126,110 126,178Z" fill="none" stroke="#3EF0FF" stroke-width="4" opacity="0"/>
  </g>
+ <g class="blush" opacity="0"><ellipse cx="158" cy="258" rx="24" ry="13" fill="#FF6E8F"/><ellipse cx="246" cy="258" rx="22" ry="12" fill="#FF6E8F"/></g>
+ <g class="gafas" opacity="0"><rect x="134" y="196" width="68" height="46" rx="16" fill="#0B0F4A"/><rect x="200" y="196" width="68" height="46" rx="16" fill="#0B0F4A"/><path d="M196,212 Q201,206 206,212" stroke="#0B0F4A" stroke-width="7" fill="none"/><path d="M146,206 L170,206" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".5"/><path d="M212,206 L236,206" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".5"/></g>
  <path class="sweat" d="M272,150 C278,168 288,178 276,190 C264,196 254,184 260,170Z" fill="#9EE7FF" stroke="#fff" stroke-width="2.5" opacity="0"/>
  <g class="zzz" opacity="0" font-family="Brico" font-weight="800" fill="#fff"><text x="300" y="120" font-size="40">z</text><text x="330" y="84" font-size="54">z</text><text x="364" y="40" font-size="70">Z</text></g>
 </g>
@@ -124,7 +128,8 @@
     qa('ck').forEach(e => e.setAttribute('opacity', (happy ? .45 : .28) * (1 - f)));
     q('pale').setAttribute('opacity', f * .22);
     q('sweat').setAttribute('opacity', (f > .55 || o.sweat) && !sleep ? .95 : 0); q('sweat').setAttribute('transform', `translate(0 ${(t * 14) % 20})`);
-    const z = q('zzz'); z.setAttribute('opacity', sleep ? .95 : 0); z.setAttribute('transform', `translate(0 ${-((t * 18) % 24)})`);
+    const z = q('zzz'); z.setAttribute('opacity', sleep && !o.noZ ? .95 : 0);
+    const bl = q('blush'); if (bl) bl.setAttribute('opacity', cl(o.blush || 0) * .55); const gf = q('gafas'); if (gf) gf.setAttribute('opacity', o.gafas ? 1 : 0); z.setAttribute('transform', `translate(0 ${-((t * 18) % 24)})`);
 
     // braços i objectes segons la postura (opts.pose: wheel | type | mug | wave | point)
     const pose = o.pose || 'none', A = q('arms');
@@ -133,14 +138,17 @@
       type: { L: [[110, 448], [62, 548], [148, 566]], R: [[290, 448], [338, 548], [252, 566]] },
       mug: { L: null, R: [[290, 448], [340, 580], [262, 500]] },
       wave: { L: null, R: [[290, 448], [372, 380], [356, 270]] },
-      point: { L: null, R: [[290, 448], [360, 470], [420, 430]] } }[pose];
+      point: { L: null, R: [[290, 448], [360, 470], [420, 430]] },
+      nose: { L: null, R: [[290, 448], [338, 392], [232, 270]] } }[pose];
     A.setAttribute('opacity', P ? 1 : 0); q('wheel').setAttribute('opacity', pose === 'wheel' ? 1 : 0); q('mug').setAttribute('opacity', pose === 'mug' ? 1 : 0);
+    if (pose === 'mug') { const cup = o.cup || 'mug'; q('cupM').setAttribute('opacity', cup === 'mug' ? 1 : 0); q('cupG').setAttribute('opacity', cup === 'mug' ? 0 : 1); q('liq').setAttribute('fill', cup === 'agua' ? '#9EE7FF' : '#FF8A3D'); }
     if (P) ['L', 'R'].forEach(k => {
       const a = P[k], vis = !!a; ['a' + k + 's', 'a' + k, 's' + k, 'h' + k].forEach(c => q(c).setAttribute('opacity', vis ? 1 : 0)); if (!vis) return;
       let [S0, E0, W0] = a.map(p => p.slice());
       if (pose === 'type') { W0[1] += Math.sin(t * 6 + (k === 'L' ? 0 : 2)) * 2.5; }
       if (pose === 'wave') { const w = Math.sin(t * 7) * 26; W0[0] += w; }
       if (pose === 'wheel') { const st = Math.sin(t * .8) * 4; W0[1] += st * (k === 'L' ? 1 : -1); }
+      if (pose === 'nose') { W0[0] += 26 + Math.sin(t * 2.1) * 30; W0[1] += Math.sin(t * 3.3) * 16 - 4; E0[0] += Math.sin(t * 2.1) * 8; } // intenta tocar-se el nas… i falla
       if (pose === 'mug') { const u = (t % 6.5) / 6.5, sip = u < .55 ? 0 : Math.sin((u - .55) / .45 * Math.PI) ** 2; E0 = [lerp(340, 352, sip), lerp(580, 470, sip)]; W0 = [lerp(262, 266, sip), lerp(500, 336, sip)]; q('mug').dataset.sip = sip; }
       const sl = [lerp(S0[0], E0[0], .38), lerp(S0[1], E0[1], .38)];
       const d1 = `M${S0[0]},${S0[1]} L${E0[0]},${E0[1]} L${W0[0]},${W0[1]}`;

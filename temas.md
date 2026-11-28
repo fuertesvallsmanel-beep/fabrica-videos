@@ -5,8 +5,8 @@ Dades de vidIQ (nov. 2026): cerques/mes i competència (0–100, més baix = mé
 Marca `[x]` quan estigui publicat i afegeix la data.
 
 - [x] E — ¿Qué le pasa a tu cuerpo y a tu cerebro si no duermes 72 horas? (hora a hora) — vídeo 001
-- [ ] E — ¿Qué le pasa a tu cuerpo en el espacio sin traje? (segundo a segundo) ← espectacular i molt visual; ideal per al 002
-- [ ] C — ¿Qué le hace el alcohol a tu cerebro, copa a copa? (5.200/mes, comp. 44) ← 2n de dissabte: es busca molt, és proper i encaixa amb l'escena `encaje`; alternar un E espectacular i un C proper
+- [x] E — ¿Qué le pasa a tu cuerpo en el espacio sin traje? (segundo a segundo) → 002 «¿Cuánto sobrevivirías en el espacio sin traje?» (esborrany 01/12, pendent OK) ← espectacular i molt visual; ideal per al 002
+- [x] C — ¿Qué le hace el alcohol a tu cerebro, copa a copa? → 003 «Lo primero que el alcohol apaga en tu cerebro» (esborrany 04/12, pendent OK) (5.200/mes, comp. 44) ← 2n de dissabte: es busca molt, és proper i encaixa amb l'escena `encaje`; alternar un E espectacular i un C proper
 - [ ] E — Hipotermia: qué le pasa a tu cuerpo con frío extremo, grado a grado
 - [ ] E — ¿Qué le pasa a tu cuerpo si no bebes agua? (hora a hora)
 - [ ] E — ¿Qué le pasa a tu cuerpo si te cae un rayo? (segundo a segundo)

@@ -19,9 +19,13 @@ function make(T){
   const acc = T.acc || '#FF3B6B';
   const p = T.person || {fatigue: .9, mood: 'tired'};
   const d = document.getElementById('disc'); d.style.display='none';
-  if (T.bgUrl) { document.body.style.background = `linear-gradient(90deg,rgba(12,17,112,.1) 0%,rgba(12,17,112,.35) 40%,rgba(12,17,112,.82) 62%),url(${T.bgUrl}) center/cover`; } // fons: un pla del propi vídeo (la situació extrema)
-  const w = document.getElementById('who'); w.style.cssText += ';left:-150px;top:-40px;filter:drop-shadow(6px 0 0 #fff) drop-shadow(-6px 0 0 #fff) drop-shadow(0 6px 0 #fff) drop-shadow(0 -6px 0 #fff)'; w.innerHTML = Tito.svg(880, {organ: p.scan || 'corazon'});
-  Tito.render(w.firstChild, 1.0, p.fatigue ?? .9, p.mood || 'tired', {scan: p.scan ? 1 : 0, sweat: (p.fatigue ?? .9) > .5});
+  if (T.bgUrl) { document.body.style.background = `linear-gradient(90deg,rgba(12,17,112,.04) 0%,rgba(12,17,112,.22) 40%,rgba(12,17,112,.7) 62%),url(${T.bgUrl}) center/cover`; } // fons: un pla del propi vídeo (la situació extrema)
+  const w = document.getElementById('who'); w.style.cssText += ';left:-150px;top:-90px;filter:drop-shadow(6px 0 0 #fff) drop-shadow(-6px 0 0 #fff) drop-shadow(0 6px 0 #fff) drop-shadow(0 -6px 0 #fff)'; w.innerHTML = Tito.svg(880, {organ: p.scan || 'corazon'});
+  Tito.render(w.firstChild, 1.0, p.fatigue ?? .9, p.mood || 'tired', {scan: p.scan ? 1 : 0, sweat: (p.fatigue ?? .9) > .5, blush: p.blush || 0, gafas: !!p.gafas, pose: p.pose, cup: p.cup});
+  // objecte de la situació davant del Tito (p. ex. thumb.prop = "copa"): diu de què va el vídeo sense llegir res
+  if (T.prop === 'copa') { const g = document.createElement('div'); g.style.cssText = 'position:absolute;left:372px;top:486px;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(10px 10px 0 rgba(7,11,69,.45))';
+    g.innerHTML = '<svg width="190" height="272" viewBox="-115 -320 230 330"><path d="M-100,-300 L100,-300 L14,-170 L14,-30 L70,-10 L-70,-10 L-14,-30 L-14,-170Z" fill="#EEF1FF" fill-opacity=".35" stroke="#fff" stroke-width="10" stroke-linejoin="round"/><path d="M-80,-270 L80,-270 L12,-176 L-12,-176Z" fill="#FF8A3D"/><path d="M-62,-258 L-30,-214" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".7"/><circle cx="66" cy="-298" r="26" fill="#FF3B6B"/><path d="M66,-298 L96,-340" stroke="#3EF0FF" stroke-width="8" stroke-linecap="round"/></svg>';
+    document.body.insertBefore(g, document.getElementById('t')); }
   document.getElementById('t').innerHTML = (T.num ? `<div class="exp">Experimento ${T.num}</div>` : '') +
     `<div class="big" style="font-size:${T.s1 || 230}px;color:#FFD60A"><span>${T.l1acc || ''}</span>${T.l1 || ''}</div>` +
     `<div class="big" style="font-size:${T.s2 || 130}px;margin-top:8px">${T.l2 || ''}</div>` +

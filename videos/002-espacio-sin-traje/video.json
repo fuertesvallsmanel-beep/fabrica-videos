@@ -1,0 +1,891 @@
+{
+ "id": "002-espacio-sin-traje",
+ "title": "¿Cuánto sobrevivirías en el espacio sin traje?",
+ "short_title": "Espacio sin traje",
+ "hud": {
+  "max": 90,
+  "unit": "s",
+  "marks": [
+   0,
+   15,
+   30,
+   60,
+   90
+  ],
+  "title": "Segundos en el vacío"
+ },
+ "lines": [
+  {
+   "text": "Tito está a punto de salir al espacio… sin traje. Sin casco. Sin nada.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "mood": "happy",
+    "plano": "abierto",
+    "dice": "¿Sin traje? ¿Ni una chaqueta?",
+    "diceAt": 2.6
+   }
+  },
+  {
+   "text": "Buenas noticias, Tito: el paseo es cortito. Unos segundos, nada más. Las malas noticias… te las cuento allá afuera.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "mood": "shock",
+    "plano": "cerca",
+    "pantalla": "VACÍO"
+   }
+  },
+  {
+   "text": "¿Cuánto aguanta un cuerpo humano en el vacío? ¿Diez segundos? ¿Un minuto? ¿O explota al instante, como en las películas?",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "plano": "lejos",
+    "label": "La pregunta",
+    "sub": "¿Cuánto aguanta\nun cuerpo aquí afuera?",
+    "mood": "shock"
+   }
+  },
+  {
+   "text": "Experimento número dos. Voluntario: Tito.",
+   "scene": {
+    "type": "experimento",
+    "num": "002",
+    "prueba": "Espacio sin traje",
+    "riesgo": "Altísimo"
+   }
+  },
+  {
+   "text": "Y apúntate esto: casi todo lo que viste en las películas sobre el espacio… es mentira. Al final te digo cuál es la peor.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "cine": true,
+    "plano": "cerca",
+    "mood": "shock",
+    "label": "En el cine",
+    "sub": "Casi todo\nes mentira"
+   }
+  },
+  {
+   "text": "Primero, el enemigo invisible: la presión. Aquí abajo, todo el aire de la atmósfera te aprieta por todos lados. ¿Lo notas? Claro que no.",
+   "scene": {
+    "type": "presion",
+    "modo": "barras",
+    "hour": 0,
+    "title": "Cuánto te aprieta el aire",
+    "unit": "%",
+    "items": [
+     {
+      "label": "Nivel del mar",
+      "value": 100
+     },
+     {
+      "label": "Cima del Everest",
+      "value": 33
+     },
+     {
+      "label": "El espacio",
+      "value": 0
+     }
+    ],
+    "show": 1,
+    "then": {
+     "type": "situacion",
+     "lugar": "esclusa",
+     "plano": "cerca",
+     "mood": "ok",
+     "pantalla": "100 %",
+     "at": 7.4
+    }
+   }
+  },
+  {
+   "text": "En la cima del Everest, esa presión baja a un tercio, y por eso cuesta tanto respirar. Y en el espacio… es cero. Nada te aprieta.",
+   "scene": {
+    "type": "presion",
+    "modo": "barras",
+    "hour": 0,
+    "title": "Cuánto te aprieta el aire",
+    "unit": "%",
+    "items": [
+     {
+      "label": "Nivel del mar",
+      "value": 100
+     },
+     {
+      "label": "Cima del Everest",
+      "value": 33
+     },
+     {
+      "label": "El espacio",
+      "value": 0
+     }
+    ],
+    "show": 3,
+    "source": "West et al., J Appl Physiol (1983)",
+    "then": {
+     "type": "situacion",
+     "lugar": "esclusa",
+     "plano": "cerca",
+     "mood": "shock",
+     "pantalla": "0 %",
+     "at": 5.6
+    },
+    "from": 1
+   }
+  },
+  {
+   "text": "Y sin presión pasa algo rarísimo: el agua hierve más fácil. A diecinueve kilómetros de altura, hierve a treinta y siete grados. ¡Justo la temperatura de tu cuerpo!",
+   "scene": {
+    "type": "presion",
+    "modo": "hervor",
+    "hour": 0,
+    "tito": "shock",
+    "source": "Davis et al., Fundamentals of Aerospace Medicine (2008)",
+    "then": {
+     "type": "situacion",
+     "lugar": "esclusa",
+     "plano": "cerca",
+     "mood": "shock",
+     "pantalla": "37 °C",
+     "at": 6.2
+    }
+   }
+  },
+  {
+   "text": "En aviación la llaman línea de Armstrong, por el médico que la estudió. Por encima, sin traje, la saliva, las lágrimas y el agua bajo tu piel empiezan a hervir.",
+   "scene": {
+    "type": "presion",
+    "modo": "armstrong",
+    "hour": 0,
+    "source": "Murray et al., Aviat Space Environ Med (2013)",
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "lejos",
+     "label": "Por encima de 19 km",
+     "sub": "Los líquidos del\ncuerpo hierven",
+     "at": 6.8,
+     "mood": "shock"
+    }
+   }
+  },
+  {
+   "text": "Así que Tito entra a la esclusa de aire. Cerramos la compuerta de adentro. Y se queda solo frente a la de afuera. Tres… dos… uno…",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "hour": 0,
+    "mood": "shock",
+    "plano": "abierto",
+    "cuenta": 3,
+    "dice": "¿Seguro que esto es legal?",
+    "diceAt": 1.2
+   }
+  },
+  {
+   "text": "¡Fuera! Se abre la compuerta. El aire sale disparado hacia el espacio… y también sale de los pulmones de Tito.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "hour": 0,
+    "abre": true,
+    "mood": "shock",
+    "plano": "abierto"
+   }
+  },
+  {
+   "text": "¿Y qué harías tú por instinto? Aguantar la respiración. ¡Error! Sin presión afuera, el aire de adentro se expande… y puede desgarrar los pulmones.",
+   "scene": {
+    "type": "pulmon",
+    "hour": 1,
+    "modo": "aguanta",
+    "heads": [
+     "*Aguantar* el aire",
+     "Se *expande*",
+     "¡*Peligro*!"
+    ],
+    "source": "Scientific American (2008)",
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "cerca",
+     "hinchado": 0.45,
+     "mood": "shock",
+     "at": 7.2
+    }
+   }
+  },
+  {
+   "text": "Modo escáner. Lo mejor es soltar todo el aire, como hacen los buzos al subir. Los pulmones de Tito se vacían… y empieza la cuenta atrás.",
+   "scene": {
+    "type": "escaner",
+    "organ": "pulmones",
+    "hour": 2,
+    "mood": "shock",
+    "label": "Segundo 2",
+    "sub": "Los pulmones\nse vacían",
+    "pins": [
+     {
+      "x": 50,
+      "y": 16,
+      "text": "El aire sale"
+     }
+    ]
+   }
+  },
+  {
+   "text": "Su sangre ya no recoge oxígeno. Cuando esa sangre llegue al cerebro, Tito se apagará. ¿Cuánto crees que tarda? Menos de quince segundos.",
+   "scene": {
+    "type": "cuenta",
+    "hour": 3,
+    "from": 15,
+    "heads": [
+     "La sangre *sin oxígeno*",
+     "Viaja al *cerebro*",
+     "Menos de *15 segundos*"
+    ],
+    "label": "segundos de conciencia",
+    "source": "Scientific American (2008)"
+   }
+  },
+  {
+   "text": "Y ojo: no son quince segundos para hacer cosas. Para reaccionar te quedan muchos menos… y Tito los está gastando en saludar a la cámara.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 3,
+    "plano": "abierto",
+    "saluda": true,
+    "mood": "happy",
+    "label": "Para reaccionar",
+    "sub": "Te quedan\naún menos"
+   }
+  },
+  {
+   "text": "Le quedan unos diez segundos. Tito nota cosquillas en la boca… ¡La saliva de su lengua está burbujeando!",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 5,
+    "plano": "cerca",
+    "burbujas": true,
+    "mood": "shock"
+   }
+  },
+  {
+   "text": "No es un invento. Años sesenta: Jim LeBlanc, de la NASA, prueba un traje en una cámara de vacío. Y de repente… se le suelta la manguera de aire.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "camara",
+    "plano": "abierto",
+    "label": "NASA · años 60",
+    "sub": "Una fuga en la\ncámara de vacío"
+   }
+  },
+  {
+   "text": "Lo último que recordaba antes de desmayarse: la saliva hirviendo en su lengua.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "camara",
+    "plano": "cerca",
+    "label": "Lo último que recuerda",
+    "sub": "La saliva hirviendo\nen la lengua",
+    "source": "Testimonio de Jim LeBlanc (NASA), en Live Science"
+   }
+  },
+  {
+   "text": "Quedan ocho. Ahora, la piel. El agua de sus tejidos empieza a convertirse en vapor… y Tito se empieza a hinchar.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 7,
+    "plano": "abierto",
+    "hinchado": 0.6,
+    "mood": "shock"
+   }
+  },
+  {
+   "text": "Se llama ebulismo: burbujas de vapor dentro del cuerpo, sobre todo bajo la piel. En experimentos de los años sesenta, los perros se inflaban como una bolsa de cuero.",
+   "scene": {
+    "type": "ebullicion",
+    "hour": 7,
+    "modo": "piel",
+    "heads": [
+     "*Ebulismo*",
+     "Burbujas de *vapor*"
+    ],
+    "source": "Bancroft y Dunn, USAF/NASA (1965) · estudio en perros",
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "cerca",
+     "hinchado": 0.75,
+     "mood": "shock",
+     "at": 5.6
+    },
+    "tito": "shock"
+   }
+  },
+  {
+   "text": "¿Y va a reventar, como en las películas? Guarda esa pregunta… te la respondo al final.",
+   "scene": {
+    "type": "ebullicion",
+    "hour": 8,
+    "modo": "tension",
+    "heads": [
+     "¿Va a *reventar*?",
+     "Te lo digo *al final*"
+    ]
+   }
+  },
+  {
+   "text": "Le pasó de verdad a Joe Kittinger, en mil novecientos sesenta. Subió en globo a treinta y un kilómetros, le falló la presión de un guante… ¡y su mano se hinchó al doble!",
+   "scene": {
+    "type": "ebullicion",
+    "hour": 8,
+    "modo": "mano",
+    "heads": [
+     "Joe Kittinger, *1960*",
+     "Su mano: *el doble*"
+    ],
+    "source": "Kittinger y Caidin, The Long, Lonely Leap (1961)"
+   }
+  },
+  {
+   "text": "¿Y sabes qué hizo? No dijo nada, para que no cancelaran la misión. Siguió subiendo… y saltó. Al volver a tierra, su mano se recuperó.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "plano": "globo",
+    "hour": 8,
+    "label": "Joe Kittinger, 1960",
+    "sub": "No dijo nada…\ny saltó",
+    "source": "Kittinger y Caidin, The Long, Lonely Leap (1961)"
+   }
+  },
+  {
+   "text": "Mientras tanto, Tito intenta nadar de vuelta a la nave. Mala noticia: en el vacío no hay nada que empujar. Nadar no sirve de nada.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 9,
+    "plano": "cerca",
+    "nada": true,
+    "hinchado": 0.65,
+    "mood": "angry",
+    "dice": "¡Voy nadando! …¿Por qué no avanzo?",
+    "diceAt": 1.4
+   }
+  },
+  {
+   "text": "Quedan cinco… Tito ve borroso. Su cerebro está gastando el último oxígeno que le queda.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 10,
+    "plano": "cerca",
+    "borroso": true,
+    "hinchado": 0.7,
+    "mood": "tired"
+   }
+  },
+  {
+   "text": "En aquellos experimentos, los perros se desplomaban a los nueve o diez segundos. Y las personas, poco después: lo sabemos por accidentes como el de LeBlanc.",
+   "scene": {
+    "type": "cuenta",
+    "hour": 11,
+    "from": 10,
+    "to": 0,
+    "heads": [
+     "Perros: *9–10 s*",
+     "Personas: *poco más*"
+    ],
+    "label": "segundos hasta desmayarse",
+    "pill": "Estudio en animales",
+    "source": "Bancroft y Dunn, USAF/NASA (1965)",
+    "tito": "tired"
+   }
+  },
+  {
+   "text": "Cero. Se apagó. Tito flota inconsciente… en silencio total.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 15,
+    "plano": "abierto",
+    "inconsciente": true,
+    "hinchado": 0.8
+   }
+  },
+  {
+   "text": "Otra mentira del cine: las explosiones con ruido. En el vacío no hay aire, y sin aire el sonido no viaja. Ni una alarma. Ni un solo ruido.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 18,
+    "plano": "lejos",
+    "inconsciente": true,
+    "hinchado": 0.8,
+    "silencio": true,
+    "label": "Segundo 18",
+    "sub": "Silencio total",
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "cerca",
+     "inconsciente": true,
+     "hinchado": 0.8,
+     "silencio": true,
+     "at": 6.4
+    }
+   }
+  },
+  {
+   "text": "¿Y el frío? En las películas te congelas en un segundo. Pues tampoco. Lo siento, Hollywood.",
+   "scene": {
+    "type": "termo",
+    "hour": 20,
+    "heads": [
+     "¿Congelado *al instante*?",
+     "*No*"
+    ],
+    "tito": "sleep"
+   }
+  },
+  {
+   "text": "El vacío es un aislante buenísimo: es justo lo que usa un termo para que tu café no se enfríe. El cuerpo pierde su calor muy despacio.",
+   "scene": {
+    "type": "termo",
+    "hour": 22,
+    "modo": "termo",
+    "heads": [
+     "Como un *termo*",
+     "El calor se va *muy despacio*"
+    ],
+    "source": "Scientific American (2008)",
+    "tito": "sleep"
+   }
+  },
+  {
+   "text": "Lo único que sí se enfría es la boca. La saliva se evapora tan rápido que roba calor… ¡A los perros se les llegó a congelar la lengua!",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 25,
+    "plano": "cerca",
+    "inconsciente": true,
+    "hinchado": 0.8,
+    "escarcha": true,
+    "source": "Bancroft y Dunn, USAF/NASA (1965)"
+   }
+  },
+  {
+   "text": "Medio minuto. Tito sigue inconsciente… pero vivo. Y ahora empieza la otra cuenta atrás: ¿cuánto tiempo tenemos para rescatarlo?",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 30,
+    "plano": "abierto",
+    "inconsciente": true,
+    "hinchado": 0.8,
+    "label": "Segundo 30",
+    "sub": "Inconsciente…\npero vivo"
+   }
+  },
+  {
+   "text": "Hacia el minuto, se forman burbujas en las venas que frenan la sangre. La circulación casi se detiene. Ahora sí, el reloj corre de verdad.",
+   "scene": {
+    "type": "linea",
+    "hour": 60,
+    "max": 180,
+    "at": 60,
+    "marks": [
+     {
+      "t": 10,
+      "text": "Se desmaya"
+     },
+     {
+      "t": 60,
+      "text": "La sangre casi se detiene"
+     }
+    ],
+    "source": "Scientific American (2008)"
+   }
+  },
+  {
+   "text": "La respuesta viene de aquellos perros: ninguno murió con noventa segundos en el vacío. Y la mayoría se recuperó en minutos u horas.",
+   "scene": {
+    "type": "linea",
+    "hour": 70,
+    "max": 180,
+    "at": 90,
+    "marks": [
+     {
+      "t": 10,
+      "text": "Se desmaya"
+     },
+     {
+      "t": 90,
+      "text": "Todos sobreviven"
+     }
+    ],
+    "zones": [
+     {
+      "a": 0,
+      "b": 120,
+      "color": "cyan",
+      "text": "Sobrevivieron"
+     }
+    ],
+    "pill": "Estudio en animales",
+    "source": "Bancroft y Dunn, USAF/NASA (1965)",
+    "tito": "shock"
+   }
+  },
+  {
+   "text": "A partir de los dos minutos, empezaban a morir. Y recuerda: eran perros. En personas, esto nunca se ha medido.",
+   "scene": {
+    "type": "linea",
+    "hour": 75,
+    "max": 180,
+    "at": 150,
+    "marks": [
+     {
+      "t": 10,
+      "text": "Se desmaya"
+     },
+     {
+      "t": 90,
+      "text": "Todos sobreviven"
+     }
+    ],
+    "zones": [
+     {
+      "a": 0,
+      "b": 120,
+      "color": "cyan",
+      "text": "Sobrevivieron"
+     },
+     {
+      "a": 120,
+      "b": 180,
+      "color": "red",
+      "text": "Empiezan a morir"
+     }
+    ],
+    "pill": "Estudio en animales",
+    "source": "Bancroft y Dunn, USAF/NASA (1965)",
+    "tito": "shock"
+   }
+  },
+  {
+   "text": "Y no pensamos ser los primeros en medirlo. ¡Tito, adentro!",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "hour": 80,
+    "plano": "abierto",
+    "inconsciente": true,
+    "hinchado": 0.8,
+    "rescate": true
+   }
+  },
+  {
+   "text": "Cerramos la compuerta y volvemos a meter aire. Con la presión, el vapor de su cuerpo vuelve a ser líquido… y Tito se deshincha.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "calm": true,
+    "repress": true,
+    "inconsciente": true,
+    "plano": "abierto"
+   }
+  },
+  {
+   "text": "Y en cuanto la sangre vuelve a llevar oxígeno a su cerebro… Tito abre los ojos. Algo hinchado. Pero entero.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "calm": true,
+    "despierta": true,
+    "plano": "cerca",
+    "mood": "happy",
+    "dice": "¿Ya? ¿Gané?",
+    "diceAt": 3.0
+   }
+  },
+  {
+   "text": "Como aquel ingeniero de la NASA: recuperó la conciencia a los veintisiete segundos, cuando volvió la presión. ¿Las secuelas? Cuatro días sin sentir sabores.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "camara",
+    "calm": true,
+    "plano": "abierto",
+    "recupera": true,
+    "label": "Segundo 27",
+    "sub": "Recupera la conciencia",
+    "source": "Scientific American (2008)"
+   }
+  },
+  {
+   "text": "Por eso nadie sale sin traje… bueno, casi nadie. Un traje es una nave a tu medida: presión, oxígeno, temperatura… y hasta protección contra el sol.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "calm": true,
+    "plano": "abierto",
+    "traje": true,
+    "mood": "happy",
+    "label": "La solución",
+    "sub": "Una nave\na tu medida",
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "cerca",
+     "traje": true,
+     "mood": "happy",
+     "at": 6.0
+    }
+   }
+  },
+  {
+   "text": "Y aun con traje hay sustos. Año mil novecientos sesenta y cinco: la primera caminata espacial de la historia. ¡El traje de Alexei Leonov se infló tanto que no cabía por la compuerta!",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "calm": true,
+    "plano": "abierto",
+    "traje": true,
+    "inflado": true,
+    "mood": "shock",
+    "label": "Alexei Leonov, 1965",
+    "sub": "Su traje se infló\ny no cabía",
+    "source": "ESA / NASA History",
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "cerca",
+     "traje": true,
+     "inflado": true,
+     "mood": "shock",
+     "at": 6.2
+    }
+   }
+  },
+  {
+   "text": "¿Su solución? Soltar aire de su propio traje, poco a poco, hasta poder entrar. Arriesgadísimo… pero funcionó.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "calm": true,
+    "plano": "abierto",
+    "leonov": true,
+    "label": "La solución de Leonov",
+    "sub": "Soltar aire\npoco a poco"
+   }
+  },
+  {
+   "text": "¿Sabes a cuánta presión va un traje de la NASA? A menos que en la cima del Everest. Así el traje se dobla mejor… y para respirar, le meten oxígeno puro.",
+   "scene": {
+    "type": "presion",
+    "modo": "barras",
+    "calm": true,
+    "title": "Presión dentro del traje",
+    "unit": "%",
+    "items": [
+     {
+      "label": "Nivel del mar",
+      "value": 100
+     },
+     {
+      "label": "Cima del Everest",
+      "value": 33
+     },
+     {
+      "label": "Traje de la NASA",
+      "value": 29,
+      "color": "cyan"
+     }
+    ],
+    "show": 3,
+    "tito": "happy",
+    "source": "NASA, traje EMU (4,3 psi); West et al. (1983)",
+    "from": 2
+   }
+  },
+  {
+   "text": "Y dentro de la Estación Espacial, el aire está a la misma presión que aquí abajo. Por eso ahí adentro sí pueden andar en camiseta… como Tito hoy.",
+   "scene": {
+    "type": "presion",
+    "modo": "barras",
+    "calm": true,
+    "title": "Presión en la Estación Espacial",
+    "items": [
+     {
+      "label": "Nivel del mar",
+      "value": 100
+     },
+     {
+      "label": "Estación Espacial",
+      "value": 100,
+      "color": "cyan"
+     }
+    ],
+    "show": 2,
+    "source": "NASA, Estación Espacial Internacional",
+    "unit": "%",
+    "from": 1
+   }
+  },
+  {
+   "text": "Por cierto, hay una película que se acerca bastante. En «Dos mil uno: Una odisea del espacio», un astronauta cruza el vacío sin casco unos segundos… y sobrevive.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "espacio",
+    "calm": true,
+    "plano": "lejos",
+    "cine": true,
+    "label": "Una película que se acerca",
+    "sub": "«2001: Una odisea\ndel espacio» (1968)",
+    "traje": false,
+    "mood": "happy",
+    "poster": true,
+    "then": {
+     "type": "situacion",
+     "lugar": "espacio",
+     "plano": "cerca",
+     "cine": true,
+     "mood": "happy",
+     "at": 6.4
+    }
+   }
+  },
+  {
+   "text": "Y ahora, la mentira que te debía. La más repetida en el cine: «en el espacio, explotas».",
+   "scene": {
+    "type": "veredicto",
+    "calm": true,
+    "claim": "En el espacio, explotas",
+    "verdict": "mito",
+    "note": "Te hinchas, pero tu piel aguanta"
+   }
+  },
+  {
+   "text": "Mito. Te hinchas, sí, pero no revientas: tu piel funciona como un traje elástico. Tampoco te congelas al instante. El enemigo es la falta de oxígeno… y el reloj.",
+   "scene": {
+    "type": "ebullicion",
+    "calm": true,
+    "modo": "resumen",
+    "heads": [
+     "*No* revientas",
+     "*No* te congelas"
+    ],
+    "source": "Murray et al., Aviat Space Environ Med (2013)",
+    "then": {
+     "type": "cuenta",
+     "calm": true,
+     "from": 15,
+     "to": 0,
+     "at": 8.1,
+     "heads": [
+      "El enemigo: *sin oxígeno*"
+     ],
+     "label": "segundos de conciencia",
+     "pill": "El verdadero peligro",
+     "tito": "shock"
+    },
+    "tito": "happy"
+   }
+  },
+  {
+   "text": "Resumen del experimento: menos de quince segundos de conciencia, noventa segundos que los perros sí resistieron… y cero explosiones.",
+   "scene": {
+    "type": "linea",
+    "calm": true,
+    "max": 120,
+    "at": 120,
+    "resumen": true,
+    "marks": [
+     {
+      "t": 15,
+      "text": "15 s de conciencia"
+     },
+     {
+      "t": 90,
+      "text": "90 s (perros)"
+     }
+    ],
+    "zones": [
+     {
+      "a": 0,
+      "b": 90,
+      "color": "cyan",
+      "text": ""
+     }
+    ],
+    "big": "0 explosiones"
+   }
+  },
+  {
+   "text": "Experimento número dos… superado. Por los pelos.",
+   "scene": {
+    "type": "situacion",
+    "lugar": "esclusa",
+    "calm": true,
+    "manta": true,
+    "plano": "cerca",
+    "mood": "happy",
+    "label": "Experimento Nº 002",
+    "sub": "Superado…\npor los pelos"
+   }
+  },
+  {
+   "text": "¿Qué le hacemos a Tito la próxima? Escríbelo en los comentarios. Y si te gustan estos experimentos, suscríbete.",
+   "scene": {
+    "type": "endcard",
+    "text": ""
+   }
+  }
+ ],
+ "sources": [
+  "Bancroft RW, Dunn JE. Experimental animal decompressions to a near-vacuum environment. USAF School of Aerospace Medicine, SAM-TR-65-48 / NASA CR-68987, 1965 (estudio en perros).",
+  "Murray DH, Pilmanis AA, Blue RS, et al. Pathophysiology, prevention, and treatment of ebullism. Aviation, Space, and Environmental Medicine. 2013;84(2):89–96.",
+  "Davis JR, Johnson R, Stepanek J. Fundamentals of Aerospace Medicine, 4.ª ed. Lippincott Williams & Wilkins, 2008 (línea de Armstrong).",
+  "West JB, et al. Barometric pressures at extreme altitudes on Mt. Everest: physiological significance. Journal of Applied Physiology. 1983;54:1188–1194.",
+  "Hsu J. Survival in space unprotected is possible—briefly. Scientific American, 2008.",
+  "Live Science. What would happen to the human body in the vacuum of space? (testimonio de Jim LeBlanc, NASA).",
+  "Kittinger JW, Caidin M. The Long, Lonely Leap. Dutton, 1961 (Proyecto Excelsior III, 1960).",
+  "ESA / NASA History: primera caminata espacial de Alexei Leonov (Vosjod 2, 1965).",
+  "NASA. Extravehicular Mobility Unit (EMU): presión de trabajo de 4,3 psi.",
+  "NASA. Estación Espacial Internacional: presión de cabina equivalente al nivel del mar."
+ ],
+ "thumb": {
+  "num": "002",
+  "l1": "15 s",
+  "l2": "y te apagas",
+  "s1": 290,
+  "s2": 140,
+  "acc": "#FF3B6B",
+  "person": {
+   "fatigue": 0.3,
+   "mood": "shock"
+  },
+  "bg_t": 17.3,
+  "bg_sin_tito": true
+ },
+ "thumbs": [
+  {
+   "l1": "15 s",
+   "l2": "sin aire"
+  },
+  {
+   "person": {
+    "fatigue": 0.85,
+    "mood": "tired"
+   }
+  }
+ ]
+}

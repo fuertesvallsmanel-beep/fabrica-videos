@@ -132,6 +132,40 @@ def sfx_track(total, SH, t_off=0.0):
     def mar(f, dur=.45): tt = np.arange(int(dur * SR)) / SR; return (np.sin(2 * np.pi * f * tt) + .35 * np.sin(2 * np.pi * 4 * f * tt) * np.exp(-tt * 30)) * np.exp(-tt * 9)
     logo = np.zeros(int(1.1 * SR))
     for k, (f, g) in enumerate(((523.25, .5), (659.25, .5), (987.77, .65))): i0 = int(k * .13 * SR); x = mar(f) * g * .55; logo[i0:i0 + len(x)] += x[:len(logo) - i0]
+    # ambients i sons dels llocs nous (28/11/2026): nau, buit, espai, bar
+    def hum(d):
+        t = np.arange(int(d * SR)) / SR; x = (np.sin(2 * np.pi * 55 * t) + .5 * np.sin(2 * np.pi * 110 * t)) * .012 + filt(noise(d), None, 200) * .02
+        return fade(x, .4, .4)
+    def hiss(d):
+        t = np.arange(int(d * SR)) / SR; env = np.exp(-t / (d * .45)) * np.minimum(1, t / .03)
+        return filt(noise(d), 1200, 9000) * env * .22 + filt(noise(d), 80, 600) * env * .25
+    def refill(d):
+        t = np.arange(int(d * SR)) / SR; env = np.minimum(1, t / (d * .7)) * np.minimum(1, (d - t) / .3)
+        return filt(noise(d), 600, 5000) * env * .08
+    def klaxon(d):
+        t = np.arange(int(d * SR)) / SR; f = np.where((t % .9) < .45, 620, 520); s = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * .5
+        return filt(s, None, 1800) * (((t % .9) % .45) < .38) * .05 * np.minimum(1, (d - t) / .2)
+    def spacebed(d):
+        t = np.arange(int(d * SR)) / SR; x = filt(noise(d), None, 120) * .03 + np.sin(2 * np.pi * 41 * t) * .006 * (1 + .3 * np.sin(2 * np.pi * .1 * t))
+        return fade(x, .6, .6)
+    def servo(d):
+        t = np.arange(int(d * SR)) / SR; f = 180 + 40 * np.sin(2 * np.pi * .7 * t); s = np.sin(2 * np.pi * np.cumsum(f) / SR) + .4 * np.sin(4 * np.pi * np.cumsum(f) / SR)
+        return fade(filt(s, None, 1500) * .035, .2, .2)
+    def barbed(d):
+        x = filt(noise(d), 200, 900) * .012
+        for c in np.arange(.5, d - .3, 1.3):
+            if rng.random() < .55:
+                s = tone(3200 + rng.random() * 900, 3000, .25, 18) * .02; i0 = int(c * SR); e = min(len(s), len(x) - i0); x[i0:i0 + e] += s[:e]
+        return fade(x, .4, .4)
+    clink = tone(3400, 3300, .5, 9) * .1; clink[:int(.35 * SR)] += tone(5100, 5000, .35, 12) * .05
+    press = np.concatenate([tone(160, 90, .12, 25) * .35, np.zeros(int(.05 * SR)), tone(880, 880, .25, 8) * .08])
+    def disco(d):
+        t = np.arange(int(d * SR)) / SR; kick = np.zeros(len(t))
+        for c in np.arange(0, d, .5):
+            s = tone(110, 50, .18, 20) * .12; i0 = int(c * SR); e = min(len(s), len(kick) - i0); kick[i0:i0 + e] += s[:e]
+        bass = np.sin(2 * np.pi * np.where((t % 2) < 1, 98, 110) * t) * .02 * ((t % .25) < .18)
+        return fade(kick + bass, .2, .3)
+    KIND.update({'clink': clink, 'press': press, 'pop2': tone(900, 1500, .05, 60) * .08})
     for s in SH:
         if s['type'] == 'experimento': put(s.get('ta', s['t0']) + .35, logo)
         if s['type'] == 'endcard': put(s.get('ta', s['t0']) + .25, logo)
@@ -167,6 +201,17 @@ def sfx_track(total, SH, t_off=0.0):
                 bpm = e.get('bpm', 1.25); o = a; j = int(np.ceil((t - o) * bpm - .25))
                 while o + (j + .25) / bpm < t + d - .2: x = o + (j + .25) / bpm - .03; put(x, lub); put(x + .2, dub); j += 1
             elif k == 'breath': put(t, breath(d, a, t))
+            elif k == 'hum': put(t, hum(d + .3))
+            elif k == 'hiss': put(t, hiss(d))
+            elif k == 'refill': put(t, refill(d))
+            elif k == 'klaxon': put(t, klaxon(d))
+            elif k == 'space': put(t, spacebed(d + .3))
+            elif k == 'pop': put(t, KIND['pop2'])
+            elif k == 'servo': put(t, servo(d))
+            elif k == 'bar': put(t, barbed(d + .3))
+            elif k == 'clink': put(t, clink)
+            elif k == 'press': put(t, press)
+            elif k == 'disco': put(t, disco(d))
             elif k == 'fill':
                 nn = e.get('n', 12)
                 for q in range(nn): put(t + q * d / nn, blip(q % 10), .8)
@@ -268,12 +313,12 @@ def render_chunk(args):
     V, W, H, times, a, b, out = args
     with sync_playwright() as p:
         br, pg, errs = open_page(p, V, W, H)
-        if a:
-            cuts = set()
-            for s0 in V['starts']:
-                k = next((i for i, t in enumerate(times) if t >= s0), None)
-                if k is not None and k < a: cuts.update({max(0, k - 1), k})
-            for k in sorted(cuts): pg.evaluate(f'Motor.render({times[k]})')
+        # escalfa amb els inicis de línia anteriors al primer fotograma (també per a --range, --short i --stills,
+        # que comencen a mig vídeo: sense això el HUD de recuperació desapareixia, 28/11/2026)
+        t_first = times[a] if a < len(times) else times[-1]
+        for s0 in V['starts']:
+            if s0 < t_first - 1e-6:
+                for tw in (max(0.0, s0 - 1 / FPS), s0): pg.evaluate(f'Motor.render({tw})')
         ff = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', str(FPS), '-c:v', 'mjpeg', '-i', '-',
                                '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p', str(out)], stdin=subprocess.PIPE)
         for i in range(a, b):
@@ -301,12 +346,17 @@ def main():
         st = T['starts'] + [T['total']]
         t0, t1 = st[a], min(st[b + 1] + .5, T['total'] + 1.0)
         V.update(vertical=True, hook=hook, segStart=t0, segEnd=t1); short = (t0, t1, name)
+        for ln in V['lines']:  # el Tito de cantonada sobra al Short: el de sota ja reacciona
+            for scn in (ln['scene'], ln['scene'].get('then') or {}): scn.pop('tito', None)
     W, H = (1080, 1920) if short else (1920, 1080)
     with sync_playwright() as p:
         br, pg, errs = open_page(p, V, W, H)
         if stills:
             for s in stills:
                 tt = (short[0] + s) if short else s
+                for s0 in V['starts']:  # escalfa l'estat del HUD com en el render de veritat
+                    if s0 < tt - 1e-6:
+                        for tw in (max(0.0, s0 - 1 / FPS), s0): pg.evaluate(f'Motor.render({tw})')
                 pg.evaluate(f'Motor.render({tt})'); pg.screenshot(path=str(vdir / f"still_{'v' if short else ''}{s:g}.png"))
             br.close()
             if errs: print('ERRORS:', errs[:5])

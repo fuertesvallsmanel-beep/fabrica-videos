@@ -86,7 +86,7 @@
   S.title = (sc) => {
     const el = E('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center');
     const c = sc.calm ? C.cyan : C.red;
-    el.innerHTML = `<div style="color:${c};font-size:42px;font-weight:800;letter-spacing:.2px">${lab(sc.kicker) || ''}</div>
+    el.innerHTML = `<div style="${sc.kicker ? `background:${c};color:${sc.calm ? C.ink : '#fff'};padding:8px 30px 12px;border-radius:999px;` : ''}font-size:46px;font-weight:800;letter-spacing:.2px">${lab(sc.kicker) || ''}</div>
       <div class="t" style="color:#fff;font-size:151px;${FD};line-height:.98;letter-spacing:-3px;margin-top:20px"></div>
       <div style="color:${C.soft};font-size:40px;font-weight:600;margin-top:30px">${sc.sub || ''}</div>`;
     const t = el.children[1];
@@ -414,18 +414,29 @@
     return { el, render(lt) { enter(el.children[0], lt, 0, 20); [...q.children].forEach((s, i) => s.style.opacity = eo(prog(lt, .3 + i * .12, .3))); enter(el.children[2], lt, .5 + words.length * .12); } };
   };
 
-  S.hypnogram = () => {
+  // sc.alcohol: noche con alcohol → el REM de la primera mitad desaparece (marcado en rosa, discontinuo)
+  S.hypnogram = (sc = {}) => {
     const el = E('div', 'position:absolute;inset:0');
     // fases: 0 vigília, 1 REM, 2 N1, 3 N2, 4 N3 (profund). Nit de recuperació amb rebot de N3 i REM
-    const seq = [0, 2, 3, 4, 4, 4, 3, 1, 1, 3, 4, 4, 3, 1, 1, 1, 3, 4, 3, 1, 1, 1, 3, 3, 1, 1, 1, 0];
+    const al = !!sc.alcohol;
+    const seq = al ? [0, 3, 4, 4, 4, 4, 3, 3, 3, 3, 4, 3, 3, 3, 2, 3, 3, 1, 1, 3, 1, 1, 1, 3, 1, 1, 0, 0] : [0, 2, 3, 4, 4, 4, 3, 1, 1, 3, 4, 4, 3, 1, 1, 1, 3, 4, 3, 1, 1, 1, 3, 3, 1, 1, 1, 0];
+    const lost = al ? [7, 8, 12, 13, 14] : [];
     const yOf = s => [350, 530, 470, 610, 750][s];
     let segs = ''; const x0 = 420, dx = 1300 / seq.length;
-    seq.forEach((s, i) => { const c = s === 4 ? C.blue : s === 1 ? C.violet : '#6F7CD6'; segs += `<rect class="sg" x="${x0 + i * dx}" y="${yOf(s) - 14}" width="${dx + 1}" height="28" rx="6" fill="${c}" opacity="0"/>`; });
+    let step = ''; seq.forEach((s, i) => { step += (i ? 'L' : 'M') + (x0 + i * dx) + ',' + yOf(s) + 'L' + (x0 + (i + 1) * dx) + ',' + yOf(s); });
+    segs += `<path class="stp" d="${step}" stroke="#C7D0FF" stroke-width="6" fill="none" stroke-linejoin="round" opacity="0"/>`;
+    seq.forEach((s, i) => { const c = s === 4 ? C.blue : s === 1 ? C.violet : '#8F9BEA'; segs += `<rect class="sg" x="${x0 + i * dx}" y="${yOf(s) - 24}" width="${dx + 1}" height="48" rx="10" fill="${c}" opacity="0"/>`; });
+    lost.forEach(i => { segs += `<rect class="lost" x="${x0 + i * dx + 3}" y="${yOf(1) - 30}" width="${dx - 5}" height="60" rx="12" fill="${C.pink}" fill-opacity=".18" stroke="${C.pink}" stroke-width="7" stroke-dasharray="14 9" opacity="0"/>`; });
+    if (al) segs += `<g class="key" opacity="0"><text x="${x0 + 10.5 * dx}" y="${yOf(1) - 62}" text-anchor="middle" font-family="Brico" font-weight="800" font-stretch="76%" font-size="76" fill="${C.yellow}" style="text-shadow:6px 6px 0 #0A1A8C">Menos REM</text></g>`;
+    if (al) segs += `<path class="half" d="M${x0 + 14 * dx},300 V800" stroke="#D3DAFF" stroke-width="4" stroke-dasharray="12 10" opacity="0"/>`;
     const lbl = [['Despierto', 350], ['REM', 530], ['Ligero', 610], ['Profundo', 750]].map(([t, y]) => `<text x="${x0 - 30}" y="${y + 12}" fill="${C.soft}" font-size="40" font-weight="700" text-anchor="end">${t}</text>`).join('');
-    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0">${lbl}${segs}</svg><div style="position:absolute;left:200px;top:258px;color:${C.cyan};font-size:46px;font-weight:800">La noche de recuperación</div>
-      <div style="position:absolute;left:420px;top:850px;display:flex;gap:60px;font-size:40px;font-weight:800"><span style="color:${C.blue}">■ Sueño profundo ↑</span><span style="color:${C.violet}">■ Sueño REM ↑</span></div>`;
+    el.innerHTML = `<svg width="1920" height="1080" style="position:absolute;inset:0">${lbl}${segs}</svg><div style="position:absolute;left:200px;top:258px;color:${al ? C.pink : C.cyan};font-size:46px;font-weight:800">${al ? 'Una noche después de beber' : 'La noche de recuperación'}</div>
+      <div style="position:absolute;left:420px;top:850px;display:flex;gap:60px;font-size:40px;font-weight:800">${al ? `<span style="color:${C.pink}">▭ REM perdido</span><span style="color:${C.soft}">1.ª mitad de la noche</span>` : `<span style="color:${C.blue}">■ Sueño profundo ↑</span><span style="color:${C.violet}">■ Sueño REM ↑</span>`}</div>`;
     const svg = el.firstChild;
-    return { el, render(lt) { svg.querySelectorAll('.sg').forEach((r, i) => { const k = eo(prog(lt, .3 + i * .1, .3)); r.setAttribute('opacity', k); }); enter(el.children[1], lt, 0, 16); enter(el.children[2], lt, 2, 20); } };
+    return { el, render(lt) { svg.querySelectorAll('.sg').forEach((r, i) => { const k = eo(prog(lt, .3 + i * (al ? .07 : .1), .3)); r.setAttribute('opacity', k); });
+      const sp = svg.querySelector('.stp'); if (sp) sp.setAttribute('opacity', .5 * eo(prog(lt, .3, .6))); const ky = svg.querySelector('.key'); if (ky) ky.setAttribute('opacity', eo(prog(lt, 3.2, .4)));
+      svg.querySelectorAll('.lost').forEach((r, i) => r.setAttribute('opacity', eo(prog(lt, 2.6 + i * .25, .3)) * (.75 + .25 * Math.sin(lt * 5)))); const hf = svg.querySelector('.half'); if (hf) hf.setAttribute('opacity', .7 * eo(prog(lt, 2.3, .4)));
+      enter(el.children[1], lt, 0, 16); enter(el.children[2], lt, al ? 2.8 : 2, 20); } };
   };
 
 
@@ -561,11 +572,11 @@
   S.veredicto = (sc) => {
     const el = E('div', 'position:absolute;inset:0');
     const v = (sc.verdict || 'mito').toLowerCase(), vc = v === 'ciencia' ? C.cyan : v === 'mito' ? C.pink : C.yellow;
-    const top = E('div', 'position:absolute;left:180px;right:180px;top:200px;text-align:center');
+    const top = E('div', 'position:absolute;left:180px;right:180px;top:250px;text-align:center');
     top.innerHTML = `<div style="display:inline-block;background:${C.yellow};color:${C.ink};font-size:40px;font-weight:800;padding:8px 24px;border-radius:12px">¿Mito o ciencia?</div>
       <div class="q" style="color:#fff;font-size:130px;${FD};line-height:1;margin-top:36px;${SHD}">«${sc.claim || ''}»</div>
       <div style="color:${C.soft};font-size:44px;font-weight:600;margin-top:34px">${sc.note || ''}</div>`; el.appendChild(top);
-    const st = E('div', `position:absolute;left:1230px;top:700px;border:14px solid ${vc};border-radius:20px;color:${vc};padding:0 46px 10px;font-size:190px;${FD};background:rgba(11,15,74,.55)`, v === 'a medias' ? 'A medias' : v[0].toUpperCase() + v.slice(1)); el.appendChild(st);
+    const st = E('div', `position:absolute;left:1200px;top:720px;border:14px solid ${vc};border-radius:20px;color:${vc};padding:0 46px 10px;font-size:190px;${FD};background:rgba(11,15,74,.55)`, v === 'a medias' ? 'A medias' : v[0].toUpperCase() + v.slice(1)); el.appendChild(st);
     const hold = E('div', 'position:absolute;left:190px;top:600px'); hold.innerHTML = personSVG(300); el.appendChild(hold);
     return { el, render(lt) { enter(top.children[0], lt, 0, 16); enter(top.children[1], lt, .2, 26); enter(top.children[2], lt, .6, 16);
       const p = prog(lt, 1.3, .35); st.style.opacity = p > 0 ? 1 : 0; st.style.transform = `rotate(-11deg) scale(${p > 0 ? 1 + 1.4 * (1 - eo(p)) : 2.4})`;
@@ -576,8 +587,8 @@
     const el = E('div', 'position:absolute;inset:0');
     const disc = E('div', `position:absolute;left:170px;top:230px;width:620px;height:620px;border-radius:50%;background:#3B5BFF;opacity:.55`); el.appendChild(disc);
     const hold = E('div', 'position:absolute;left:190px;top:170px'); hold.innerHTML = personSVG(580); el.appendChild(hold);
-    const r = E('div', 'position:absolute;left:930px;top:250px;width:880px');
-    r.innerHTML = `<div style="color:#fff;font-size:116px;${FD};line-height:1;${SHD}">${sc.text || '¿Qué le hacemos a Tito la próxima?'}</div>
+    const r = E('div', 'position:absolute;left:920px;top:250px;width:800px');
+    r.innerHTML = `<div style="color:#fff;font-size:104px;${FD};line-height:1;${SHD}">${sc.text || '¿Qué le hacemos a Tito la próxima?'}</div>
       <div style="color:${C.soft};font-size:46px;font-weight:700;margin-top:30px">${sc.sub || (sc.text ? 'Un experimento nuevo cada semana' : 'Escríbelo en los comentarios')}</div>
       <div class="b" style="display:inline-block;margin-top:46px;padding:22px 56px;border-radius:999px;background:${C.pink};color:#fff;font-size:52px;${FD};box-shadow:8px 8px 0 rgba(7,11,69,.45)">Suscríbete</div>`;
     el.appendChild(r);
@@ -638,7 +649,7 @@
     hud.innerHTML = `<div style="position:absolute;left:-50px;top:-14px;width:1700px;height:158px;border-radius:32px;background:rgba(12,17,112,.8);z-index:-1"></div><div style="display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:34px;margin-bottom:12px"><span class="ttl" style="color:${C.yellow}">Límite</span><span style="color:#fff;opacity:.85">${HU.title}</span></div>
       <div style="position:relative;height:26px;border-radius:13px;background:rgba(7,11,69,.38)"><div class="pr" style="position:absolute;left:0;top:0;bottom:0;width:0;border-radius:13px;background:linear-gradient(90deg,${C.cyan},${C.yellow} 55%,${C.pink});background-size:1600px 100%"></div>
       <div class="kn" style="position:absolute;left:0;top:50%;width:44px;height:44px;margin:-22px;border-radius:50%;background:#fff;border:6px solid ${C.pink};box-shadow:4px 4px 0 rgba(7,11,69,.4)"></div></div>` +
-      HU.marks.map(h => `<div class="mk" data-h="${h}" style="position:absolute;top:96px;left:${h / HU.max * 1600}px;transform:translateX(-50%);font-weight:700;font-size:30px;white-space:nowrap">${h} ${HU.unit}</div>`).join('');
+      HU.marks.map((h, k) => `<div class="mk" data-h="${h}" style="position:absolute;top:96px;left:${h / HU.max * 1600}px;transform:translateX(-50%);font-weight:700;font-size:30px;white-space:nowrap">${HU.labels && HU.labels[k] != null ? HU.labels[k] : h + ' ' + HU.unit}</div>`).join('');
     // hores per escena (arrossegant l'última definida)
     let last = null; scenes.forEach(s => { if (s.sc.hour != null) last = s.sc.hour; s.hour = s.sc.hour != null ? s.sc.hour : (s.sc.calm || s.sc.type === 'endcard' ? null : last); if (s.sc.calm || s.sc.type === 'title' && s.sc.calm) last = null; });
     window.__scenes = scenes;
@@ -649,6 +660,10 @@
       // paraules amb temps aproximat (proporcional als caràcters dins de cada línia)
       window.__words = [];
       V.lines.forEach((ln, i) => { const ws = ln.text.split(/\s+/); const a = V.starts[i], b = i + 1 < V.lines.length ? V.starts[i + 1] : V.total - 1.2; const tot = ws.reduce((x, w) => x + w.length + 1, 0); let cur = a; ws.forEach(w => { const d = (b - a) * (w.length + 1) / tot; window.__words.push({ w, t0: cur, t1: cur + d, line: i }); cur += d; }); });
+      // grups de subtítol: es talla després de puntuació o a les 5 paraules; un grup d'una sola paraula s'enganxa a l'anterior
+      { const W2 = window.__words, FW = /^(de|del|la|las|el|los|en|a|al|lo|que|y|o|un|una|por|con|se|su|sus|tu|te|mi|para|sin|es|ni|le)$/i; let g = 0, n = 0;
+        W2.forEach((w, j) => { const p = W2[j - 1]; if (p && (p.line !== w.line || (n >= 5 && (!FW.test(p.w) || n >= 7)) || (/[.,;:!?…»]$/.test(p.w) && n >= 2))) { g++; n = 0; } w.g = g; n++; }); // mai talla just després d'una paraula funcional («de», «la»…)
+        const cnt = {}; W2.forEach(w => cnt[w.g] = (cnt[w.g] || 0) + 1); W2.forEach((w, j) => { if (cnt[w.g] === 1 && j && W2[j - 1].line === w.line && cnt[W2[j - 1].g] < 6) { cnt[W2[j - 1].g]++; cnt[w.g]--; w.g = W2[j - 1].g; } }); }
     }
   }
   const BIGT = new Set(['situacion', 'escaner', 'experimento', 'veredicto', 'persona', 'endcard']);
@@ -666,8 +681,9 @@
   function render(t) {
     const sc = window.__scenes; particles(t);
     let active = null, hourFrom = 0, hourTo = null, hourT0 = 0;
+    const SEG0 = (window.VIDEO && window.VIDEO.segStart) || 0, first = x => SEG0 > 0 && !!x && Math.abs(x.t0 - SEG0) < .02; // un tros (Short) no comença mai a mitja cortineta
     sc.forEach((s, i) => {
-      const inW = s.tr === 'swipe' ? SWD / 2 : 0, outW = s.nx && s.nx.tr === 'swipe' ? SWD / 2 : 0;
+      const inW = s.tr === 'swipe' && !first(s) ? SWD / 2 : 0, outW = s.nx && s.nx.tr === 'swipe' && !first(s.nx) ? SWD / 2 : 0;
       const vis = t >= s.t0 - inW && (t < s.t1 + outW || i === sc.length - 1);
       s.el.style.display = vis ? s.disp : 'none'; if (s.ov) s.ov.style.display = vis ? 'block' : 'none';
       if (!vis) return;
@@ -693,7 +709,7 @@
     });
     // cortineta: banda inclinada amb franges de marca; el tall passa just quan tapa tota la pantalla
     const swp = document.getElementById('swipe'), band = swp.firstChild; let on = false;
-    sc.forEach(s => { if (s.tr !== 'swipe' || Math.abs(t - s.t0) > SWD / 2) return; on = true; band.style.left = (seamX(t, s.t0) - 115).toFixed(0) + 'px'; });
+    sc.forEach(s => { if (s.tr !== 'swipe' || first(s) || Math.abs(t - s.t0) > SWD / 2) return; on = true; band.style.left = (seamX(t, s.t0) - 115).toFixed(0) + 'px'; });
     swp.style.display = on ? 'block' : 'none';
     const hud = document.getElementById('hud');
     let hv = hourTo == null ? null : lerp(hourFrom, hourTo, eio(prog(t, hourT0, 1.2)));
@@ -709,7 +725,7 @@
       hud.querySelectorAll('.mk').forEach(m => { const on = hv >= +m.dataset.h - .01; m.style.color = on ? '#FFFFFF' : 'rgba(199,208,255,.55)'; }); }
     const src = document.getElementById('src'); const st = active && active.sc.source; src.textContent = st ? 'Fuente: ' + st : ''; const big = active && (BIGT.has(active.sc.type) && !['escaner','experimento','veredicto'].includes(active.sc.type)); src.style.left = big ? 'auto' : '60px'; src.style.right = big ? '120px' : 'auto'; src.style.opacity = st ? eo(prog(t, active.t0 + 1, .6)) * .9 : 0;
     const V = window.VIDEO, T0 = V.segStart || 0, T1 = V.segEnd || V.total;
-    document.getElementById('fade').style.opacity = 1 - eo(prog(t, T0, .35)) + prog(t, T1 - .5, .5);
+    document.getElementById('fade').style.opacity = (V.vertical ? 0 : 1 - eo(prog(t, T0, .35))) + prog(t, T1 - .5, .5);
     if (V.vertical) {
       particles2(t);
       const f = (hv != null ? hv : (active && active.hour != null ? active.hour : 0)) / (window.__hud ? window.__hud.max : 72);
@@ -717,10 +733,11 @@
       personRender(document.querySelector('#vchar svg'), t, f, mood);
       const hT = x => !!x && (BIGT.has(x.sc.type) || !!x.sc.tito), hasT = hT(active); // si el Tito ja surt al pla, no en posem un altre a sota
       const ai = sc.indexOf(active), vc = document.getElementById('vchar'); vc.style.opacity = hasT ? 0 : hT(sc[ai - 1]) ? eo(prog(t, active.t0, .4)) : 1;
-      const hk = document.querySelector('#vtop .hk'); if (hk) { const a = eo(prog(t, T0, .6)); hk.style.transform = `scale(${.85 + .15 * back(prog(t, T0, .6))})`; hk.style.opacity = a * (1 - prog(t, T0 + 2.5, .5)); }
+      document.getElementById('vcap').style.top = (1110 + 220 * (1 - (+vc.style.opacity || 0))).toFixed(0) + 'px'; // sense el Tito de sota, els subtítols baixen al mig de l'espai lliure
+      const hk = document.querySelector('#vtop .hk'); if (hk) { const sm = eio(prog(t, T0 + 2.6, .5)); hk.style.transform = `translateY(${(-26 * sm).toFixed(1)}px) scale(${(1 - .4 * sm).toFixed(3)})`; hk.style.opacity = 1; }
       const W2 = window.__words; let k = W2.findIndex(w => t >= w.t0 && t < w.t1); if (k < 0) k = W2.findIndex(w => w.t0 > t) - 1;
-      if (k >= 0) { const st = Math.floor(k / 5) * 5; const chunk = W2.slice(st, st + 5).filter(w => w.line === W2[k].line);
-        document.getElementById('vcap').innerHTML = '<div>' + chunk.map(w => `<span style="display:inline-block;margin:0 .12em;${w === W2[k] ? `color:${C.yellow};text-shadow:8px 8px 0 #0A1A8C` : ''}">${w.w}</span>`).join('') + '</div>'; }
+      if (k >= 0) { const g = W2[k].g; const chunk = W2.filter(w => w.g === g);
+        document.getElementById('vcap').innerHTML = '<div style="text-wrap:balance;max-width:960px">' + chunk.map(w => `<span style="display:inline-block;margin:0 .12em;${w === W2[k] ? `color:${C.yellow};text-shadow:8px 8px 0 #0A1A8C` : ''}">${w.w}</span>`).join('') + '</div>'; }
       if (t > T1 - 2.6) document.getElementById('vcap').innerHTML = `<div style="color:${C.cyan}">Video completo en el canal ▶</div>`;
     }
   }
